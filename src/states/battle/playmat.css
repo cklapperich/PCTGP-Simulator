@@ -1,0 +1,155 @@
+/* Playmat Layout System - Core Visual Effects Only */
+
+/* Playmat Container */
+.playmat-container {
+    position: relative;
+    width: var(--playmat-size);
+    height: var(--playmat-size);
+    margin: auto;
+    flex-shrink: 0;
+}
+
+.playmat {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform-origin: center center;
+    animation: unrollPlaymat 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes unrollPlaymat {
+    0% {
+        transform: scaleY(0.01);
+        opacity: 0;
+    }
+    20% {
+        opacity: 1;
+    }
+    60% {
+        transform: scaleY(0.8);
+    }
+    85% {
+        transform: scaleY(1.1);
+    }
+    100% {
+        transform: scaleY(1);
+    }
+}
+
+/* Position classes */
+.player-active {
+    left: var(--bench-2-x);
+    bottom: calc(var(--bench-y) + var(--card-height) + var(--card-gap)); /* One card height + gap above bench */
+}
+
+.player-bench-1 {
+    left: var(--bench-1-x);
+    bottom: var(--bench-y);
+}
+
+.player-bench-2 {
+    left: var(--bench-2-x);
+    bottom: var(--bench-y);
+}
+
+.player-bench-3 {
+    left: var(--bench-3-x);
+    bottom: var(--bench-y);
+}
+
+/* Player's deck and discard */
+.player-deck {
+    left: var(--pile-x);
+    bottom: var(--deck-y);
+}
+
+.player-discard {
+    left: var(--pile-x);
+    bottom: var(--discard-y);
+}
+
+/* Opponent side (mirrored numbering) */
+.opponent-active {
+    left: var(--bench-2-x);
+    top: calc(var(--bench-y) + var(--card-height) + var(--card-gap)); /* One card height + gap below bench */
+    transform: rotate(180deg);
+}
+
+.opponent-bench-1 {
+    left: var(--bench-3-x);
+    top: var(--bench-y);
+    transform: rotate(180deg);
+}
+
+.opponent-bench-2 {
+    left: var(--bench-2-x);
+    top: var(--bench-y);
+    transform: rotate(180deg);
+}
+
+.opponent-bench-3 {
+    left: var(--bench-1-x);
+    top: var(--bench-y);
+    transform: rotate(180deg);
+}
+
+/* Opponent's deck and discard (mirrored) */
+.opponent-deck {
+    right: var(--pile-x);
+    top: var(--deck-y);
+    transform: rotate(180deg);
+}
+
+.opponent-discard {
+    right: var(--pile-x);
+    top: var(--discard-y);
+    transform: rotate(180deg);
+}
+
+/* Card zones container */
+.card-zones {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    opacity: 0;
+    animation: fadeInZones 0.5s ease-out 1.5s forwards; /* 1.5s delay matches playmat unroll */
+}
+
+@keyframes fadeInZones {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Base card zone styling */
+.card-zone {
+    position: absolute;
+    width: calc(var(--card-height) / 1.41); /* Maintain card aspect ratio */
+    height: var(--card-height);
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+/* Layout variables based on new scaling */
+:root {
+    --bench-gap: var(--card-gap);
+    --total-bench-width: calc(3 * (var(--card-height) / 1.41) + 4 * var(--bench-gap));
+    --bench-start-x: calc((100% - var(--total-bench-width)) / 2 + var(--bench-gap));
+    --bench-1-x: var(--bench-start-x);
+    --bench-2-x: calc(var(--bench-start-x) + (var(--card-height) / 1.41) + var(--bench-gap));
+    --bench-3-x: calc(var(--bench-start-x) + 2 * (var(--card-height) / 1.41) + 2 * var(--bench-gap));
+    --pile-x: calc(var(--bench-3-x) + (var(--card-height) / 1.41) + var(--bench-gap));
+    --bench-y: var(--bench-gap);
+    --discard-y: calc(var(--bench-y) + var(--card-height) / 2);
+    --deck-y: calc(var(--discard-y) + var(--card-height) + var(--bench-gap));
+}
+
+/* Hover effect */
+.card-zone:hover {
+    border-color: rgba(255, 255, 255, 0.8);
+}

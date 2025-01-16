@@ -1,0 +1,45 @@
+.state-screen {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+    background: var(--matrix-darkest);
+    display: none;
+    overflow: hidden;
+}
+
+#battle-screen.active {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.playarea-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    border: 4px solid white;
+    box-sizing: border-box;
+}
+
+/* Calculate playmat dimensions based on viewport constraints */
+:root {
+    --playmat-size: min(60vh, 90vw); /* Square playmat that fits in the 60% middle section */
+    --card-height: calc(var(--playmat-size) * 0.2); /* 20% of playmat height */
+    --card-gap: calc(var(--card-height) * 0.1); /* 10% of card height */
+}
+
+.hand-zone {
+    width: var(--playmat-size); /* Match playmat width */
+    height: calc(20vh - var(--card-gap)); /* 20% of viewport height minus gap */
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    border-radius: 4px;
+    flex-shrink: 0;
+    z-index: 1;
+    box-sizing: border-box;
+    margin: var(--card-gap);
+}

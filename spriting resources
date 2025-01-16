@@ -1,0 +1,12 @@
+rescaler: https://vanceai.com/api/?source=topnav
+
+For sprite editing:
+aseprite
+Pixelorama 
+
+Assets:
+The Spriter's Resource - Has sprite sheets from classic GBC games you can study
+OpenGameArt.org - Filter for 8-bit/pixel art assets that fit GBC constraints
+GB Studio assets - https://gbstudio.dev has a built-in sprite editor and many free assets you can use
+
+Sounds: use BGB to rip sounds
