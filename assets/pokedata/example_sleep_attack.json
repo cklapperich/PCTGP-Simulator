@@ -1,0 +1,14 @@
+{
+    "name": "Hypnosis",
+    "cost": ["psychic"],
+    "text": "The Defending Pokemon is now Asleep.",
+    "effect": {
+        "type": "basic",
+        "base_damage": 10,
+        "additional_effects": [
+            {
+                "name": "SLEEP"
+            }
+        ]
+    }
+}

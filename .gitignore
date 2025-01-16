@@ -1,5 +1,9 @@
+assets/cardart
+assets/sounds
+assets/playmats
+assets/portraits
+
 node_modules
-assets
 .venv
 .env
 __pycache__

@@ -1,0 +1,22 @@
+{
+    "name": "Example Pokemon",
+    "id": "EXAMPLE_1", 
+    "type": "psychic",
+    "HP": 70,
+    "attacks": [
+        {
+            "name": "Hypnosis",
+            "cost": ["psychic"],
+            "text": "Flip a coin. If heads, the Defending Pokemon is now Asleep.",
+            "effect": {
+                "type": "flip",
+                "base_damage": 0,
+                "on_heads": {
+                    "type": "status",
+                    "status": "asleep"
+                },
+                "on_tails": null
+            }
+        }
+    ]
+}

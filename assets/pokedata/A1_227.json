@@ -1,0 +1,21 @@
+{
+    "name": "Bulbasaur",
+    "id": "A1-227",
+    "set": "A1",
+    "type": "grass",
+    "HP": 70,
+    "retreat": 1,
+    "weakness": "fire",
+    "rarity":"star_1",
+    "attacks": [
+        {
+            "name": "Vine Whip",
+            "cost": ["grass", "colorless"],
+            "text": "",
+            "effect": {
+                "type": "basic",
+                "base_damage": 20
+            }
+        }
+    ]
+}

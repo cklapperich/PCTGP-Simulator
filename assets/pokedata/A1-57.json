@@ -1,0 +1,28 @@
+{
+    "name": "Psyduck",
+    "id": "A1_57",
+    "set": "A1",
+    "type": "water",
+    "HP": 60,
+    "retreat": 1,
+    "weakness": "lightning",
+    "rarity":"diamond_1",
+    "attacks": [
+        {
+            "name": "Headache",
+            "cost": ["water"],
+            "text": "Your opponnent can't use any supporter cards from their hand during their next turn.",
+            "effect": {
+                "type": "basic",
+                "damage_effect":{
+                    "type":"basic",
+                    "value":10
+                },
+                "extra_effect":{
+                    "type":"supporter_block",
+                    "turns":1
+                }
+            }
+        }
+    ]
+}

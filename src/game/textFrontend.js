@@ -1,4 +1,4 @@
-import { EventType, Phase, Type } from './enums.js';
+import { EventType, Phase, Type, EnergyZone } from './enums.js';
 import { Card, Deck, PlayerState, Attack, BasicEffect } from './models.js';
 import { startGame, outputQueue } from './gameLoop.js';
 import { promises as fs } from 'fs';
@@ -46,6 +46,17 @@ function printCardDetails(card) {
 }
 
 /**
+ * Prints energy information for a Pokemon
+ * @param {Card} pokemon - Pokemon to display energy for
+ */
+function printEnergyDetails(pokemon) {
+    const energyTypes = Array.from(pokemon.attachedEnergy.entries())
+        .map(([type, count]) => `${count} ${type.toLowerCase()}`)
+        .join(', ');
+    console.log(`  Energy: ${energyTypes || 'none'}`);
+}
+
+/**
  * Handles shuffle event display
  * @param {Event} event - Shuffle event
  */
@@ -81,34 +92,43 @@ function handlePhaseChangeEvent(event) {
     } else if (phase === Phase.SETUP) {
         const firstPlayer = event.data.firstPlayer;
         console.log(`${firstPlayer.name} will go first!`);
+    } else if (phase === "POINTS_AWARDED") {
+        console.log(`${event.data.player.name} scored a point! (Total: ${event.data.player.points})`);
     }
 }
 
 /**
- * Handles search event display
- * @param {Event} event - Search event
+ * Handles energy attachment event display
+ * @param {Event} event - Energy attachment event
  */
-function handleSearchEvent(event) {
-    console.log("\n=== DECK SEARCH ===");
-    console.log(`Instructions: ${event.searchParams.instruction}`);
-    console.log(`Reason: ${event.searchParams.reason}`);
-    console.log(`Player ${event.searchParams.playerId + 1}, choose ${event.searchParams.minCards}-${event.searchParams.maxCards} cards from:`);
+function handleEnergyAttachment(event) {
+    const player = event.data.player;
+    const target = event.data.target;
+    const energyType = event.data.energyType;
+    
+    console.log(`\n${player.name} attached ${energyType.toLowerCase()} energy to ${target.name}`);
+    printEnergyDetails(target);
+}
 
-    // Show first 10 cards with a message if there are more
-    const displayLimit = 10;
-    event.searchParams.legalCards.slice(0, displayLimit).forEach((card, i) => {
-        process.stdout.write(`${i + 1}. `);
-        printCardDetails(card);
-    });
+/**
+ * Handles knockout event display
+ * @param {Event} event - Knockout event
+ */
+function handleKnockout(event) {
+    const pokemon = event.data.pokemon;
+    const player = event.data.player;
+    console.log(`\n${pokemon.name} was knocked out!`);
+}
 
-    const remaining = event.searchParams.legalCards.length - displayLimit;
-    if (remaining > 0) {
-        console.log(`...and ${remaining} more cards`);
-    }
-
-    if (event.searchParams.canCancel) {
-        console.log("(You may cancel this search)");
-    }
+/**
+ * Handles game end event display
+ * @param {Event} event - Game end event
+ */
+function handleGameEnd(event) {
+    const winner = event.data.winner;
+    const reason = event.data.reason;
+    console.log(`\n====== GAME OVER ======`);
+    console.log(`${winner.name} wins by ${reason}!`);
 }
 
 /**
@@ -116,9 +136,17 @@ function handleSearchEvent(event) {
  * @param {Event} event - Coin flip event
  */
 function handleCoinFlip(event) {
-    console.log(`flipping ${event.data.flip.length} coins.`);
-    const results = event.data.flip.map(flip => flip ? "Heads" : "Tails");
-    console.log(results.join("! "));
+    const flip = event.data.flip;
+    const count = flip.length;
+    
+    if (count === 1) {
+        console.log(`Coin flip result: ${flip[0] ? 'Heads' : 'Tails'}`);
+    } else {
+        console.log(`Flipping ${count} coins...`);
+        flip.forEach((result, index) => {
+            console.log(`Coin ${index + 1}: ${result ? 'Heads' : 'Tails'}`);
+        });
+    }
 }
 
 /**
@@ -128,9 +156,9 @@ export async function runGame() {
     console.log("=== POKEMON TRADING CARD GAME SIMULATOR ===\n");
     console.log("Game started!");
 
-    // Load card data and create decks
-    const pikachuData = await fs.readFile(join('..', '..', 'assets', 'pokedata', 'A1_094.json'), 'utf-8');
-    const bulbasaurData = await fs.readFile(join('..', '..', 'assets', 'pokedata', 'A1_227.json'), 'utf-8');
+    // Load card data
+    const pikachuData = await fs.readFile(join(process.cwd(), 'assets', 'pokedata', 'A1_094.json'), 'utf-8');
+    const bulbasaurData = await fs.readFile(join(process.cwd(), 'assets', 'pokedata', 'A1_227.json'), 'utf-8');
     
     const pikachu = JSON.parse(pikachuData);
     const bulbasaur = JSON.parse(bulbasaurData);
@@ -160,6 +188,12 @@ export async function runGame() {
         deck: deck2
     });
 
+    // Show available energy types
+    console.log("\nAvailable Energy Types:");
+    EnergyZone.BASIC_ENERGY.forEach(type => {
+        console.log(`- ${type.toLowerCase()}`);
+    });
+
     // Start game and process initial events
     const gameState = startGame(player1, player2);
 
@@ -179,8 +213,14 @@ export async function runGame() {
             case EventType.DRAW_CARD:
                 handleDrawEvent(event);
                 break;
-            case EventType.SEARCH_DECK:
-                handleSearchEvent(event);
+            case EventType.ATTACH_ENERGY:
+                handleEnergyAttachment(event);
+                break;
+            case EventType.KNOCKOUT:
+                handleKnockout(event);
+                break;
+            case EventType.GAME_END:
+                handleGameEnd(event);
                 break;
         }
     }

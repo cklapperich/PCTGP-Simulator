@@ -9,12 +9,26 @@ export const EventType = Object.freeze({
     FLIP_COINS: "flip_coins",
     PHASE_CHANGE: "phase_change",
     GAME_END: "game_end",
-    TURN_CHANGE: "turn_change",
+    TURN_START: "turn_start",
+    TURN_END: "turn_end",
+
+    // Pokemon state events
+    KNOCKOUT: "knockout",
+    EVOLVE: "evolve",
+    RETREAT: "retreat",
+    DAMAGE: "damage",
+    HEAL: "heal",
+    STATUS_APPLY: "status_apply",
+    STATUS_REMOVE: "status_remove",
+
+    // Effect events
+    EFFECT_START: "effect_start",
+    EFFECT_END: "effect_end",
+    ABILITY_ACTIVATE: "ability_activate",
 
     // Special interaction events
     SEARCH_DECK: "search_deck",
     SEARCH_DISCARD: "search_discard",
-    SELECT_PRIZE: "select_prize",
     WAIT_FOR_INPUT: "wait_for_input"
 });
 
@@ -41,12 +55,28 @@ export const Type = Object.freeze({
     LIGHTNING: "lightning",
     FIGHTING: "fighting",
     PSYCHIC: "psychic",
-    COLORLESS: "colorless"
+    COLORLESS: "colorless",
+    DARK:"dark",
+    DRAGON:"dragon",
+    METAL:"metal"
 });
 
 export const Rarity = Object.freeze({
-    COMMON: "common",
-    UNCOMMON: "uncommon",
-    RARE: "rare",
-    HOLO_RARE: "holo_rare"
+    DIAMOND_1: "diamond_1",
+    DIAMOND_2: "diamond_2",
+    DIAMOND_3: "diamond_3",
+    DIAMOND_4: "diamond_4",
+    STAR_1: "star_1",
+    STAR_2: "star_2",
+    STAR_3: "star_3",
+    CROWN: "crown"
+});
+
+export const MoveType = Object.freeze({
+    PLAY_CARD: "play_card",
+    ATTACK: "attack",
+    ACTIVATE_ABILITY: "activate_ability",
+    RETREAT: "retreat",
+    ATTACH_ENERGY: "attach_energy_from_zone",
+    CONCEDE: "concede"
 });

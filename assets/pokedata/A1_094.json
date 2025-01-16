@@ -1,0 +1,21 @@
+{
+    "name": "Pikachu",
+    "id": "A1_094",
+    "set": "A1",
+    "type": "lightning",
+    "HP": 60,
+    "retreat": 1,
+    "weakness": "fighting",
+    "rarity":"diamond_1",
+    "attacks": [
+        {
+            "name": "Gnaw",
+            "cost": ["lightning"],
+            "text": "",
+            "effect": {
+                "type": "basic",
+                "base_damage": 20
+            }
+        }
+    ]
+}

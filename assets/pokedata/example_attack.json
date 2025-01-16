@@ -1,0 +1,12 @@
+{
+    "name": "Hypnosis",
+    "cost": ["psychic"],
+    "text": "Flip a coin. If heads, the Defending Pokemon is now Asleep.",
+    "effect": {
+        "type": "flip",
+        "on_heads": {
+            "name": "SLEEP"
+        },
+        "on_tails": null
+    }
+}
