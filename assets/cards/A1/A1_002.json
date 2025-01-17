@@ -8,6 +8,7 @@
     "weakness": "fire",
     "rarity":"DIAMOND_2",
     "evolvesFrom":"Bulbasaur",
+    "artist":"Kurata So",
     "attacks": [
         {
             "name": "Razor Leaf",

@@ -1,5 +1,5 @@
 {
-    "mapId": "town_square",
+    "mapId": "laboratory",
     "tileKey": {
       ".": "floor",
       "#": "wall",

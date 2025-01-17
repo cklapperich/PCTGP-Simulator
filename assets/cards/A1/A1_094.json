@@ -8,6 +8,7 @@
     "weakness": "fighting",
     "rarity":"diamond_1",
     "stage":"basic",
+    "artist":"",
     "attacks": [
         {
             "name": "Gnaw",

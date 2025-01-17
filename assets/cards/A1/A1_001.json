@@ -1,12 +1,13 @@
 {
     "name": "Bulbasaur",
-    "id": "A1-227",
+    "id": "A1-001",
     "set": "A1",
     "type": "grass",
     "HP": 70,
     "retreat": 1,
     "weakness": "fire",
-    "rarity":"star_1",
+    "rarity":"diamond_1",
+    "artist":"Narumi Sato",
     "attacks": [
         {
             "name": "Vine Whip",

@@ -145,6 +145,7 @@ export class Card {
         this.attachedEnergy = new Map(); // Type -> count of attached energy
         this.damage = 0;
         this.owner = null; // Set when card is added to a player's deck/hand/field
+        this.reference_card = null; // Set for alternate-artwork cards, this is the 'rules reference', otherwise blank
     }
 
     /**
