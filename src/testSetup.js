@@ -1,7 +1,7 @@
-import { EventType, MoveType, InputType, Type } from './enums.js';
-import { RequestInputQueue, inputQueue } from './events.js';
-import { Move, Deck, PlayerState, Card, Attack, Effect } from './models.js';
-import { handleMove,startGame } from './gameLoop.js';
+import { EventType, MoveType, Type } from './rules_engine/enums.js';
+import { RequestInputQueue, inputQueue } from './rules_engine/events.js';
+import { Move, Deck, PlayerState, Card, Attack, Effect } from './rules_engine/models.js';
+import { handleMove,startGame } from './rules_engine/gameLoop.js';
 import { promises as fs } from 'fs';
 import { join } from 'path';
 import {processUIEvents} from './textFrontend.js'
