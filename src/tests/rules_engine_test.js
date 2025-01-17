@@ -1,10 +1,10 @@
-import { EventType, MoveType, Type } from './rules_engine/enums.js';
-import { RequestInputQueue, inputQueue } from './rules_engine/events.js';
-import { Move, Deck, PlayerState, Card, Attack, Effect } from './rules_engine/models.js';
-import { handleMove,startGame } from './rules_engine/gameLoop.js';
+import { EventType, MoveType, Type } from '../rules_engine/enums.js';
+import { RequestInputQueue, inputQueue, UIoutputQueue } from '../rules_engine/events.js';
+import assert from 'assert';
+import { Move, Deck, PlayerState, Card, Attack, Effect } from '../rules_engine/models.js';
+import { handleMove,startGame } from '../rules_engine/gameLoop.js';
 import { promises as fs } from 'fs';
 import { join } from 'path';
-import {processUIEvents} from './textFrontend.js'
 /**
  * Loads card data from a JSON file
  * @param {Object} data - Card data from JSON
@@ -44,21 +44,21 @@ export async function runGame() {
     console.log("Game started!");
 
     // Load card data
-    const pikachuData = await fs.readFile(join(process.cwd(), 'assets', 'pokedata', 'A1_094.json'), 'utf-8');
-    const bulbasaurData = await fs.readFile(join(process.cwd(), 'assets', 'pokedata', 'A1_227.json'), 'utf-8');
+    const pikachuData = await fs.readFile(join(process.cwd(), 'assets', 'cards', 'A1','A1_001.json'), 'utf-8');
+    const bulbasaurData = await fs.readFile(join(process.cwd(), 'assets', 'cards', 'A1','A1_094.json'), 'utf-8');
     
     const pikachu = JSON.parse(pikachuData);
     const bulbasaur = JSON.parse(bulbasaurData);
 
-    // Create deck with 30 of each card
+    // Create deck with 10 of each card
     const deck1Cards = [
-        ...Array(30).fill().map(() => createCard(pikachu)),
-        ...Array(30).fill().map(() => createCard(bulbasaur))
+        ...Array(10).fill().map(() => createCard(pikachu)),
+        ...Array(10).fill().map(() => createCard(bulbasaur))
     ];
 
     const deck2Cards = [
-        ...Array(30).fill().map(() => createCard(pikachu)),
-        ...Array(30).fill().map(() => createCard(bulbasaur))
+        ...Array(10).fill().map(() => createCard(pikachu)),
+        ...Array(10).fill().map(() => createCard(bulbasaur))
     ];
 
     // Create decks and players
@@ -75,17 +75,8 @@ export async function runGame() {
         deck: deck2
     });
 
-    // Show available energy types
-    console.log("\nAvailable Energy Types:");
-    Object.values(Type).forEach(type => {
-        if (type !== Type.COLORLESS) {
-            console.log(`- ${type.toLowerCase()}`);
-        }
-    });
-
     // Start game and process initial events
     let gameState = startGame(player1, player2);
-    processUIEvents();
     return gameState;
 }
 
@@ -107,6 +98,72 @@ const TEST_MOVES = [
     new Move(MoveType.PASS_TURN, { player: 1 })  // Player 2 done
 ];
 
+// Game setup phases in order
+const SETUP_PHASES = [
+    'INITIAL_COIN_FLIP',
+    'SETUP_PLACE_ACTIVE',
+    'SETUP_PLACE_BENCH',
+    'SETUP_COMPLETE',
+    'DRAW'
+];
+
+// Keep track of all events across the entire test
+let allEvents = [];
+
+// Custom processUIEvents that collects events
+function processUIEventsWithVerification() {
+    let event;
+    while ((event = UIoutputQueue.get()) !== undefined) {
+        allEvents.push(event);
+        console.log(`Event: ${event.eventType}${event.data?.phase ? ` (${event.data.phase})` : ''}`);
+    }
+}
+
+// Verify the sequence of events at the end of the test
+function verifyEventSequence() {
+    let seenPhases = new Set();
+    let seenInitialDraw = false;
+    let seenActivePlacement = false;
+    let seenBenchPlacement = false;
+    
+    // Go through all collected events
+    for (const event of allEvents) {
+        // Track phases
+        if (event.eventType === 'phase_change' && event.data?.phase) {
+            seenPhases.add(event.data.phase);
+            console.log(`✓ Saw phase: ${event.data.phase}`);
+        }
+        
+        // Track key events in sequence
+        if (['draw_card', 'card_reveal'].includes(event.eventType) && !seenBenchPlacement) {
+            seenInitialDraw = true;
+        }
+        if (event.eventType === 'card_move' && event.data?.destinationZone === 'active') {
+            assert(seenInitialDraw, 'Active placement should happen after initial draw');
+            seenActivePlacement = true;
+        }
+        if (event.eventType === 'card_move' && event.data?.destinationZone === 'bench') {
+            assert(seenActivePlacement, 'Bench placement should happen after active placement');
+            seenBenchPlacement = true;
+        }
+    }
+    
+    // Verify we saw all required phases
+    for (const phase of SETUP_PHASES) {
+        assert(seenPhases.has(phase), `Missing required phase: ${phase}`);
+    }
+    
+    // Verify we saw all key events
+    assert(seenInitialDraw, 'Missing initial card draw events');
+    assert(seenActivePlacement, 'Missing active Pokemon placement');
+    assert(seenBenchPlacement, 'Missing bench Pokemon placement');
+    
+    console.log('✓ All events occurred in roughly the correct order');
+    
+    // Clear events for next test run
+    allEvents = [];
+}
+
 // Run test
 async function runTest() {
     try {
@@ -116,8 +173,8 @@ async function runTest() {
         // Process each test move
         let moveIndex = 0;
         while (moveIndex < TEST_MOVES.length) {
-            // Process any UI events first
-            processUIEvents();
+            // Process and verify UI events
+            processUIEventsWithVerification();
             
             // Wait for input request from RequestInputQueue
             const inputRequest = RequestInputQueue.get();
@@ -160,10 +217,12 @@ async function runTest() {
             handleMove(gameState, move);
             moveIndex++;
 
-            // Process any UI events that resulted from the move
-            processUIEvents();
+            // Process and verify UI events that resulted from the move
+            processUIEventsWithVerification();
         }
 
+        // Verify the complete sequence of events
+        verifyEventSequence();
         console.log('Test completed successfully');
     } catch (error) {
         console.error('Test failed:', error.message);

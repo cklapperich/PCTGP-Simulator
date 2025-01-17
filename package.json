@@ -6,7 +6,9 @@
   "main": "index.js",
   "scripts": {
     "start": "node game/src/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node src/tests/pack_pull_test.js && node src/tests/rules_engine_test.js",
+    "test:pack": "node src/tests/pack_pull_test.js",
+    "test:rules": "node src/tests/rules_engine_test.js"
   },
   "keywords": [
     "pokemon",
