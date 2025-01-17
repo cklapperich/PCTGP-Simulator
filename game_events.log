@@ -1,0 +1,47 @@
+2025-01-17T23:12:54.233Z - Event: phase_change (INITIAL_COIN_FLIP)
+2025-01-17T23:12:54.252Z - Event: flip_coins
+2025-01-17T23:12:54.253Z - Event: phase_change (SETUP_PLACE_ACTIVE)
+2025-01-17T23:12:54.254Z - Event: shuffle
+2025-01-17T23:12:54.256Z - Event: draw_card
+2025-01-17T23:12:54.256Z - Event: card_move
+2025-01-17T23:12:54.256Z - Event: card_reveal
+2025-01-17T23:12:54.257Z - Event: draw_card
+2025-01-17T23:12:54.257Z - Event: card_move
+2025-01-17T23:12:54.258Z - Event: card_reveal
+2025-01-17T23:12:54.258Z - Event: draw_card
+2025-01-17T23:12:54.258Z - Event: card_move
+2025-01-17T23:12:54.259Z - Event: card_reveal
+2025-01-17T23:12:54.260Z - Event: card_move
+2025-01-17T23:12:54.260Z - Event: card_reveal
+2025-01-17T23:12:54.259Z - Event: draw_card
+2025-01-17T23:12:54.260Z - Event: draw_card
+2025-01-17T23:12:54.261Z - Event: card_move
+2025-01-17T23:12:54.261Z - Event: card_reveal
+2025-01-17T23:12:54.261Z - Event: shuffle
+2025-01-17T23:12:54.262Z - Event: draw_card
+2025-01-17T23:12:54.263Z - Event: card_move
+2025-01-17T23:12:54.264Z - Event: card_reveal
+2025-01-17T23:12:54.264Z - Event: draw_card
+2025-01-17T23:12:54.264Z - Event: card_move
+2025-01-17T23:12:54.264Z - Event: card_reveal
+2025-01-17T23:12:54.265Z - Event: draw_card
+2025-01-17T23:12:54.265Z - Event: card_move
+2025-01-17T23:12:54.265Z - Event: card_reveal
+2025-01-17T23:12:54.266Z - Event: draw_card
+2025-01-17T23:12:54.266Z - Event: card_move
+2025-01-17T23:12:54.267Z - Event: card_reveal
+2025-01-17T23:12:54.267Z - Event: draw_card
+2025-01-17T23:12:54.267Z - Event: card_move
+2025-01-17T23:12:54.268Z - Event: card_reveal
+2025-01-17T23:12:54.269Z - Event: phase_change (SETUP_PLACE_ACTIVE)
+2025-01-17T23:12:54.270Z - Event: card_move
+2025-01-17T23:12:54.271Z - Event: card_move
+2025-01-17T23:12:54.272Z - Event: phase_change (SETUP_PLACE_BENCH)
+2025-01-17T23:12:54.273Z - Event: card_move
+2025-01-17T23:12:54.274Z - Event: card_move
+2025-01-17T23:12:54.274Z - Event: card_move
+2025-01-17T23:12:54.275Z - Event: card_move
+2025-01-17T23:12:54.276Z - Event: phase_change (SETUP_COMPLETE)
+2025-01-17T23:12:54.277Z - Event: phase_change (SETUP_COMPLETE)
+2025-01-17T23:12:54.277Z - Event: phase_change (DRAW)
+2025-01-17T23:12:54.278Z - Event: turn_start

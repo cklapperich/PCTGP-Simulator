@@ -5,6 +5,32 @@ import { Move, Deck, PlayerState, Card, Attack, Effect } from '../rules_engine/m
 import { handleMove, startGame } from '../rules_engine/gameLoop.js';
 import { promises as fs } from 'fs';
 import { join } from 'path';
+import { initializeTextFrontend } from '../textFrontend.js';
+
+// Configuration
+const ENABLE_TEXT_FRONTEND = true; // Set to true to enable text-based UI
+const LOG_FILE = 'game_events.log';
+
+// Initialize text frontend if enabled
+if (ENABLE_TEXT_FRONTEND) {
+    initializeTextFrontend();
+}
+
+// Create file logger consumer
+const fileLogger = async (event) => {
+    const timestamp = new Date().toISOString();
+    const logEntry = `${timestamp} - Event: ${event.eventType}${event.data?.phase ? ` (${event.data.phase})` : ''}\n`;
+    await fs.appendFile(LOG_FILE, logEntry);
+};
+
+// Create console logger consumer
+const consoleLogger = (event) => {
+    console.log(`[Logger] Event: ${event.eventType}${event.data?.phase ? ` (${event.data.phase})` : ''}`);
+};
+
+// Subscribe all consumers to UI events
+UIoutputBus.subscribe(fileLogger);
+UIoutputBus.subscribe(consoleLogger);
 
 /**
  * Loads card data from a JSON file
@@ -107,14 +133,9 @@ const SETUP_PHASES = [
     'DRAW'
 ];
 
-// Keep track of all events across the entire test
+// Keep track of all events across the entire test for verification
 let allEvents = [];
-
-// Subscribe to UI events for verification
-UIoutputBus.subscribe(event => {
-    allEvents.push(event);
-    console.log(`Event: ${event.eventType}${event.data?.phase ? ` (${event.data.phase})` : ''}`);
-});
+UIoutputBus.subscribe(event => allEvents.push(event));
 
 // Verify the sequence of events at the end of the test
 function verifyEventSequence() {
