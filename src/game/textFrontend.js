@@ -1,6 +1,7 @@
-import { EventType, Phase, Type, EnergyZone } from './enums.js';
-import { Card, Deck, PlayerState, Attack, BasicEffect } from './models.js';
-import { startGame, outputQueue } from './gameLoop.js';
+import { EventType, Phase, Type } from './enums.js';
+import { Card, Deck, PlayerState, Attack,Effect } from './models.js';
+import { startGame,handleMove } from './gameLoop.js';
+import { outputQueue, inputQueue} from './events.js';
 import { promises as fs } from 'fs';
 import { join } from 'path';
 
@@ -10,9 +11,9 @@ import { join } from 'path';
  * @returns {Card} Constructed card object
  */
 function createCard(data) {
-    // Convert attacks
+     // Convert attacks
     const attacks = data.attacks.map(atk => {
-        const effect = new BasicEffect(atk.effect.base_damage);
+        const effect = new Effect(atk.effect.base_damage);
         return new Attack(
             atk.name,
             effect,
@@ -89,11 +90,29 @@ function handlePhaseChangeEvent(event) {
 
     if (phase === Phase.INITIAL_COIN_FLIP) {
         console.log("Flipping a coin to determine who goes first...");
-    } else if (phase === Phase.SETUP) {
-        const firstPlayer = event.data.firstPlayer;
-        console.log(`${firstPlayer.name} will go first!`);
-    } else if (phase === "POINTS_AWARDED") {
-        console.log(`${event.data.player.name} scored a point! (Total: ${event.data.player.points})`);
+    } else if (phase === Phase.SETUP_PLACE_ACTIVE) {
+        if (event.data.firstPlayer) {
+            console.log(`${event.data.firstPlayer.name} will go first!`);
+        }
+        console.log("Players must now place their active Pokemon");
+    } else if (phase === Phase.SETUP_PLACE_BENCH) {
+        console.log("Players may now place up to 3 bench Pokemon");
+    } else if (phase === "POKEMON_PLACED") {
+        const player = event.data.player;
+        const pokemon = event.data.pokemon;
+        const location = event.data.location;
+        const benchIndex = event.data.benchIndex;
+        if (location === 'active') {
+            console.log(`${player.name} placed ${pokemon.name} as their active Pokemon`);
+        } else {
+            console.log(`${player.name} placed ${pokemon.name} on bench slot ${benchIndex}`);
+        }
+    } else if (phase === "SETUP_COMPLETE") {
+        const player = event.data.player;
+        console.log(`${player.name} finished placing Pokemon`);
+    } else if (phase === Phase.DRAW) {
+        console.log("\n====== MAIN PHASE ======");
+        console.log("Setup complete, starting main phase");
     }
 }
 
@@ -150,6 +169,38 @@ function handleCoinFlip(event) {
 }
 
 /**
+ * Process all events in the output queue
+ */
+function processEvents() {
+    while (!outputQueue.empty()) {
+        const event = outputQueue.get();
+        switch (event.eventType) {
+            case EventType.PHASE_CHANGE:
+                handlePhaseChangeEvent(event);
+                break;
+            case EventType.FLIP_COINS:
+                handleCoinFlip(event);
+                break;
+            case EventType.SHUFFLE:
+                handleShuffleEvent(event);
+                break;
+            case EventType.DRAW_CARD:
+                handleDrawEvent(event);
+                break;
+            case EventType.ATTACH_ENERGY:
+                handleEnergyAttachment(event);
+                break;
+            case EventType.KNOCKOUT:
+                handleKnockout(event);
+                break;
+            case EventType.GAME_END:
+                handleGameEnd(event);
+                break;
+        }
+    }
+}
+
+/**
  * Initializes and runs the game simulation
  */
 export async function runGame() {
@@ -190,39 +241,21 @@ export async function runGame() {
 
     // Show available energy types
     console.log("\nAvailable Energy Types:");
-    EnergyZone.BASIC_ENERGY.forEach(type => {
-        console.log(`- ${type.toLowerCase()}`);
+    Object.values(Type).forEach(type => {
+        if (type !== Type.COLORLESS) {
+            console.log(`- ${type.toLowerCase()}`);
+        }
     });
 
-    // Start game and process initial events
-    const gameState = startGame(player1, player2);
+    // Start game
+    let gameState = startGame(player1, player2);
+    processEvents();
 
-    while (!outputQueue.empty()) {
-        const event = outputQueue.get();
-
-        switch (event.eventType) {
-            case EventType.PHASE_CHANGE:
-                handlePhaseChangeEvent(event);
-                break;
-            case EventType.FLIP_COINS:
-                handleCoinFlip(event);
-                break;
-            case EventType.SHUFFLE:
-                handleShuffleEvent(event);
-                break;
-            case EventType.DRAW_CARD:
-                handleDrawEvent(event);
-                break;
-            case EventType.ATTACH_ENERGY:
-                handleEnergyAttachment(event);
-                break;
-            case EventType.KNOCKOUT:
-                handleKnockout(event);
-                break;
-            case EventType.GAME_END:
-                handleGameEnd(event);
-                break;
-        }
+    // Process moves from input queue
+    while (!inputQueue.empty()) {
+        const move = inputQueue.get();
+        handleMove(gameState, move);
+        processEvents();
     }
 
     return gameState;

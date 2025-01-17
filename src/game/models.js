@@ -26,7 +26,37 @@ import { Type, Rarity } from './enums.js';
 // or maybe simpler, some effects are registered in the registry but dont belong to anything but the 'source"? consider an ability tha tdoubles the potency of all allied grass energy to 2
 // but then how do we know to call it? so it might have to go to global
 export class Effect{
+    basedamage=base_damage
+}
 
+/**
+ * Represents a legal move in the game
+ */
+export class Move {
+    constructor(type, data = {}) {
+        this.type = type;
+        this.data = data;
+    }
+}
+
+/**
+ * Represents the current state of the game
+ */
+export class GameState {
+    constructor() {
+        this.phase = Phase.INITIAL_COIN_FLIP;
+        this.players = {};
+        this.turn = 0;
+        this.currentPlayer = 0;
+    }
+
+    getCurrentPlayer() {
+        return this.players[this.currentPlayer];
+    }
+
+    getOpponentPlayer() {
+        return this.players[1 - this.currentPlayer];
+    }
 }
 
 
@@ -92,7 +122,10 @@ export class Card {
         retreat = 0, 
         rarity = Rarity.COMMON, 
         set = "", 
-        ability = null
+        ability = null,
+        stage = 'basic', // 'basic', 'stage1', or 'stage2'
+        evolvesFrom = null, // Name of Pokemon this evolves from
+        can_evolve = true // Whether this Pokemon can evolve this turn
     }) {
         this.id = Card.nextId++;
         this.name = name;
@@ -103,6 +136,9 @@ export class Card {
         this.rarity = rarity;
         this.set = set;
         this.ability = ability;
+        this.stage = stage;
+        this.evolvesFrom = evolvesFrom;
+        this.can_evolve = can_evolve;
         this.attachedEnergy = new Map(); // Type -> count of attached energy
         this.damage = 0;
         this.owner = null; // Set when card is added to a player's deck/hand/field
@@ -177,8 +213,9 @@ export class Card {
  * Represents a deck of Pokemon cards
  */
 export class Deck {
-    constructor(cards = []) {
+    constructor(cards = [], energyTypes = []) {
         this.cards = [...cards];
+        this.energyTypes = energyTypes; // Array of energy types available in this deck
     }
 
     shuffle() {
@@ -210,8 +247,8 @@ export class PlayerState {
         points = 0,
         deck = null,
         discard = [],
-        energy = null,
-        nextEnergy = null,
+        currentEnergyZone = null,
+        nextEnergyZone = null,
         isAI = false
     } = {}) {
         this.name = name;
@@ -221,10 +258,12 @@ export class PlayerState {
         this.points = points;
         this.deck = deck;
         this.discard = discard;
-        this.nextEnergy = null; // Next energy type that can be attached
+        this.currentEnergyZone = currentEnergyZone; // Current available energy type
+        this.nextEnergyZone = nextEnergyZone; // Next energy type to become available
         this.isAI = isAI;
         this.canAttachEnergy = true;
         this.canAttack = true;
+        this.setupComplete = false;
     }
 }
 

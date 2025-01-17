@@ -1,0 +1,22 @@
+{
+    "name": "Ivysaur",
+    "id": "A1-002",
+    "set": "A1-M",
+    "type": "grass",
+    "HP": 90,
+    "retreat": 2,
+    "weakness": "fire",
+    "rarity":"DIAMOND_2",
+    "evolvesFrom":"Bulbasaur",
+    "attacks": [
+        {
+            "name": "Razor Leaf",
+            "cost": ["grass", "colorless","colorless"],
+            "text": "",
+            "effect": {
+                "type": "basic",
+                "base_damage": 60
+            }
+        }
+    ]
+}

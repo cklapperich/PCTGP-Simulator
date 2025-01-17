@@ -1,15 +1,9 @@
 Core Technology Stack
 
-Frontend: HTML/CSS/JavaScript with Electron
-- Desktop application powered by Electron
+Frontend: HTML/CSS/JavaScript
 - Each game state has its own HTML template and CSS
 - JavaScript handles state management and game logic
-- Node.js integration for file system access and native features
-
-Electron Architecture
-- main.js: Main process, handles window creation and app lifecycle
-- preload.js: Secure bridge between renderer and main process
-- index.html: Entry point for renderer process
+- send the user the entire app, maybe with a loading scscreen while it loads. Images are the only thing loaded in a 'lazy' way.
 
 State Management System
 
@@ -42,14 +36,10 @@ project_root/
 │   ├── styles.css      # Global styles
 │   └── states/         # Game states
 │       ├── State.js    # Base state class
-│       └── battleSelect/
-│           ├── battleSelect.js   # State implementation
-│           ├── battleSelect.css  # State-specific styles
-│           └── battleSelect.html # State template (reference)
+
 └── assets/             # Game resources
     └── portraits/      # Character images
-        ├── Hilbert.png
-        └── Hilda.png
+
 
 State System
 states/
@@ -66,5 +56,3 @@ UI Architecture
 - No dynamic DOM creation - all elements exist in index.html
 - CSS handles transitions and animations
 - JavaScript manages state changes and event handling
-
-This is an Electron-powered desktop application with a focus on simplicity and maintainability. Each state is self-contained with its own HTML, CSS, and JavaScript, making it easy to add new states or modify existing ones while leveraging native desktop capabilities through Electron.

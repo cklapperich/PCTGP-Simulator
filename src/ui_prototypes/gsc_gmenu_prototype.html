@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        @font-face {
+            font-family: 'Pokemon';
+            src: url('PKMN RBYGSC.ttf') format('truetype');
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #333;
+        }
+
+        @keyframes blink {
+            0% { opacity: 1; }
+            50% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        .game-container {
+            background-color: #90A860;
+            padding: 20px;
+            image-rendering: pixelated;
+        }
+
+        .menu {
+            background-color: white;
+            border: 4px double #071810;
+            padding: 12px;
+            width: fit-content;
+            position: relative;
+        }
+
+        .menu-item {
+            font-family: 'Pokemon', monospace;
+            font-size: 16px;
+            line-height: 24px;
+            position: relative;
+            padding-left: 24px;
+            white-space: pre;
+            color: #071810;
+        }
+
+        .cursor {
+            animation: blink 1s infinite;
+            position: absolute;
+            left: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <div class="menu">
+            <div class="menu-item"><span class="cursor">▶</span>POKéDEX</div>
+            <div class="menu-item">POKéMON</div>
+            <div class="menu-item">PACK</div>
+            <div class="menu-item">GEAR</div>
+            <div class="menu-item">TRAINER</div>
+            <div class="menu-item">SAVE</div>
+            <div class="menu-item">OPTION</div>
+            <div class="menu-item">EXIT</div>
+        </div>
+    </div>
+</body>
+</html>

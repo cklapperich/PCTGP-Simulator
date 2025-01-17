@@ -34,10 +34,10 @@ export const EventType = Object.freeze({
 
 export const Phase = Object.freeze({
     // INITIAL setup
-    SETUP: "SETUP",
     INITIAL_COIN_FLIP: "INITIAL_COIN_FLIP",
-    DEAL_CARDS: "DEAL_CARDS", 
-    SETUP_PLACE_CARDS: "SETUP_PLACE_CARDS",
+    DEAL_CARDS: "DEAL_CARDS",
+    SETUP_PLACE_ACTIVE: "SETUP_PLACE_ACTIVE",
+    SETUP_PLACE_BENCH: "SETUP_PLACE_BENCH",
 
     // normal game flow
     DRAW: "DRAW",
@@ -73,10 +73,17 @@ export const Rarity = Object.freeze({
 });
 
 export const MoveType = Object.freeze({
-    PLAY_CARD: "play_card",
+    // Game actions
     ATTACK: "attack",
     ACTIVATE_ABILITY: "activate_ability",
     RETREAT: "retreat",
     ATTACH_ENERGY: "attach_energy_from_zone",
-    CONCEDE: "concede"
+    
+    // Raw inputs
+    CHOOSE_HAND_CARD: "choose_hand_card",     // Player selected a card in their hand
+    CHOOSE_FIELD_CARD: "choose_field_card",   // Player selected a card on the field
+    PASS_TURN: "pass_turn",                   // Player wants to end their turn/action
+    
+    // Special
+    CONCEDE: "concede"                        // Player gives up
 });

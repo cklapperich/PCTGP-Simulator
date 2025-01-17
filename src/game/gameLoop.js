@@ -1,60 +1,9 @@
 import { EventType, Phase, MoveType} from './enums.js';
-import { Event, PlayerState } from './models.js';
-import { startFirstTurn, endTurn, checkEndOfTurnTriggers } from './turns.js';
+import { Event, PlayerState, GameState, Move } from './models.js';
+import { startFirstTurn, endTurn, checkEndOfTurnTriggers, startBenchPlacement, startMainPhase } from './turns.js';
 import { drawCard, discardPokemon } from './cardActions.js';
+import { inputQueue, outputQueue} from './events.js';
 
-// Simple queue implementation for events
-export class EventQueue {
-    constructor() {
-        this.items = [];
-    }
-
-    put(item) {
-        this.items.push(item);
-    }
-
-    get() {
-        return this.items.shift();
-    }
-
-    empty() {
-        return this.items.length === 0;
-    }
-}
-
-// Global event queues
-export const outputQueue = new EventQueue();
-export const inputQueue = new EventQueue();
-
-/**
- * Represents a legal move in the game
- */
-export class Move {
-    constructor(type, data = {}) {
-        this.type = type;
-        this.data = data;
-    }
-}
-
-/**
- * Represents the current state of the game
- */
-export class GameState {
-    constructor() {
-        this.phase = Phase.INITIAL_COIN_FLIP;
-        this.players = {};
-        this.turn = 0;
-        this.currentPlayer = 0;
-    }
-
-    getCurrentPlayer() {
-        return this.players[this.currentPlayer];
-    }
-
-    getOpponentPlayer() {
-        return this.players[1 - this.currentPlayer];
-    }
-}
 
 /**
  * Flips coins and returns array of boolean results
@@ -104,10 +53,10 @@ export function startGame(player1, player2) {
     outputQueue.put(flipEvent);
     //effectRegistry.handleEvent(flipEvent);
 
-    // Setup phase
-    gameState.phase = Phase.SETUP;
+    // Start with placing active Pokemon
+    gameState.phase = Phase.SETUP_PLACE_ACTIVE;
     const setupEvent = new Event(EventType.PHASE_CHANGE, {
-        phase: Phase.SETUP,
+        phase: Phase.SETUP_PLACE_ACTIVE,
         firstPlayer: gameState.players[gameState.currentPlayer]
     });
     outputQueue.put(setupEvent);
@@ -123,8 +72,8 @@ export function startGame(player1, player2) {
         outputQueue.put(shuffleEvent);
         //effectRegistry.handleEvent(shuffleEvent);
 
-        // Draw 7 cards
-        for (let i = 0; i < 7; i++) {
+        // Draw 5 cards
+        for (let i = 0; i < 5; i++) {
             drawCard(player);
         }
     });
@@ -139,6 +88,12 @@ export function startGame(player1, player2) {
  * @param {GameState} gameState - Current game state
  */
 export function checkStateBasedActions(gameState) {
+    // Don't check during setup phases
+    if (gameState.phase === Phase.SETUP_PLACE_ACTIVE || 
+        gameState.phase === Phase.SETUP_PLACE_BENCH) {
+        return;
+    }
+
     const currentPlayer = gameState.getCurrentPlayer();
     const opponentPlayer = gameState.getOpponentPlayer();
 
@@ -150,10 +105,6 @@ export function checkStateBasedActions(gameState) {
                 pokemon: player.active,
                 player: player
             }));
-            // effectRegistry.handleEvent(new Event(EventType.KNOCKOUT, {
-            //     pokemon: player.active,
-            //     player: player
-            // }));
 
             const otherPlayer = player === currentPlayer ? opponentPlayer : currentPlayer;
             // Move knocked out Pokemon to discard pile and award point
@@ -172,11 +123,6 @@ export function checkStateBasedActions(gameState) {
                     player: player,
                     benchIndex: index
                 }));
-                // effectRegistry.handleEvent(new Event(EventType.KNOCKOUT, {
-                //     pokemon: pokemon,
-                //     player: player,
-                //     benchIndex: index
-                // }));
 
                 const otherPlayer = player === currentPlayer ? opponentPlayer : currentPlayer;
                 // Move knocked out Pokemon to discard pile and award point
@@ -198,7 +144,6 @@ export function checkStateBasedActions(gameState) {
                     options: benchPokemon
                 });
                 outputQueue.put(selectEvent);
-                //effectRegistry.handleEvent(selectEvent);
             } else {
                 // No Pokemon left - game over
                 const gameEndEvent = new Event(EventType.GAME_END, {
@@ -206,7 +151,6 @@ export function checkStateBasedActions(gameState) {
                     reason: "no_pokemon"
                 });
                 outputQueue.put(gameEndEvent);
-                //effectRegistry.handleEvent(gameEndEvent);
             }
         }
     });
@@ -219,10 +163,8 @@ export function checkStateBasedActions(gameState) {
                 reason: "knockouts"
             });
             outputQueue.put(gameEndEvent);
-            //effectRegistry.handleEvent(gameEndEvent);
         }
 
-        // we need to make sure this ONLY happens at the start of the turn
         // Win by deck out (opponent can't draw)
         if (player.deck.cards.length === 0) {
             const gameEndEvent = new Event(EventType.GAME_END, {
@@ -230,9 +172,150 @@ export function checkStateBasedActions(gameState) {
                 reason: "deck_out"
             });
             outputQueue.put(gameEndEvent);
-            //effectRegistry.handleEvent(gameEndEvent);
         }
     });
+}
+
+/**
+ * Handle placing a Pokemon from hand during setup
+ * @param {GameState} gameState - Current game state
+ * @param {number} handIndex - Index of card in hand to place
+ * @param {PlayerState} player - Player making the move
+ */
+function handleSetupPlacement(gameState, handIndex, player) {
+    const card = player.hand[handIndex];
+
+    if (gameState.phase === Phase.SETUP_PLACE_ACTIVE) {
+        // Place as active Pokemon
+        player.active = card;
+        player.hand.splice(handIndex, 1);
+
+        // Emit event for placing active Pokemon
+        outputQueue.put(new Event(EventType.PHASE_CHANGE, {
+            phase: "POKEMON_PLACED",
+            player: player,
+            pokemon: card,
+            location: 'active'
+        }));
+
+        // Move to bench placement if both players have placed active
+        if (gameState.players[0].active && gameState.players[1].active) {
+            startBenchPlacement(gameState);
+        }
+    }
+    else if (gameState.phase === Phase.SETUP_PLACE_BENCH) {
+        // Place on bench
+        const benchIndex = Object.keys(player.bench).length;
+        player.bench[benchIndex] = card;
+        player.hand.splice(handIndex, 1);
+
+        // Emit event for placing bench Pokemon
+        outputQueue.put(new Event(EventType.PHASE_CHANGE, {
+            phase: "POKEMON_PLACED",
+            player: player,
+            pokemon: card,
+            location: 'bench',
+            benchIndex: benchIndex
+        }));
+    }
+}
+
+/**
+ * Handle placing a basic Pokemon during normal gameplay
+ * @param {GameState} gameState - Current game state
+ * @param {number} handIndex - Index of card in hand to place
+ */
+function handlePlaceBasic(gameState, handIndex) {
+    const currentPlayer = gameState.getCurrentPlayer();
+    const card = currentPlayer.hand[handIndex];
+
+    // Can only place on bench during normal gameplay
+    const benchIndex = Object.keys(currentPlayer.bench).length;
+    currentPlayer.bench[benchIndex] = card;
+    currentPlayer.hand.splice(handIndex, 1);
+
+    // Emit event for placing Pokemon
+    outputQueue.put(new Event(EventType.PHASE_CHANGE, {
+        phase: "POKEMON_PLACED",
+        player: currentPlayer,
+        pokemon: card,
+        location: 'bench',
+        benchIndex: benchIndex
+    }));
+}
+
+/**
+ * Handle a move made by a player
+ * @param {GameState} gameState - Current game state
+ * @param {Move} move - Move to handle
+ */
+export function handleMove(gameState, move) {
+    // During setup, use the player specified in the move
+    const player = (gameState.phase === Phase.SETUP_PLACE_ACTIVE || 
+                   gameState.phase === Phase.SETUP_PLACE_BENCH) && 
+                  move.data.player !== undefined ? 
+                  gameState.players[move.data.player] : 
+                  gameState.getCurrentPlayer();
+
+    switch (move.type) {
+        case MoveType.CHOOSE_HAND_CARD:
+            if (gameState.phase === Phase.SETUP_PLACE_ACTIVE || 
+                gameState.phase === Phase.SETUP_PLACE_BENCH) {
+                handleSetupPlacement(gameState, move.data.handIndex, player);
+            } else {
+                // During normal gameplay, check if it's a basic Pokemon
+                const card = player.hand[move.data.handIndex];
+                if (card.stage === 'basic' && Object.keys(player.bench).length < 5) {
+                    handlePlaceBasic(gameState, move.data.handIndex);
+                }
+            }   
+            break;
+
+        case MoveType.PASS_TURN:
+            if (gameState.phase === Phase.SETUP_PLACE_BENCH) {
+                player.setupComplete = true;
+                // Emit event for passing bench placement
+                outputQueue.put(new Event(EventType.PHASE_CHANGE, {
+                    phase: "SETUP_COMPLETE",
+                    player: player
+                }));
+                // Move to main phase if both players are done with setup
+                if (gameState.players[0].setupComplete && gameState.players[1].setupComplete) {
+                    startMainPhase(gameState);
+                }
+            } else {
+                processTurnEnd(gameState);
+            }
+            break;
+
+        case MoveType.ATTACK:
+            if (player.canAttack && player.active) {
+                const attack = player.active.attacks[move.data.attackIndex];
+                // TODO: Handle attack execution
+                processTurnEnd(gameState);
+            }
+            break;
+
+        case MoveType.RETREAT:
+            if (player.active && Object.keys(player.bench).length > 0) {
+                // TODO: Handle retreat cost and switching Pokemon
+            }
+            break;
+
+        case MoveType.ATTACH_ENERGY:
+            if (player.canAttachEnergy && player.currentEnergyZone) {
+                // TODO: Handle energy attachment
+                player.canAttachEnergy = false;
+            }
+            break;
+
+        case MoveType.CONCEDE:
+            outputQueue.put(new Event(EventType.GAME_END, {
+                winner: gameState.getOpponentPlayer(),
+                reason: "concede"
+            }));
+            break;
+    }
 }
 
 /**
@@ -240,7 +323,6 @@ export function checkStateBasedActions(gameState) {
  * @param {GameState} gameState - Current game state
  */
 export function processTurnEnd(gameState) {
-    
     // Check for end of turn triggers before ending turn
     checkEndOfTurnTriggers(gameState);
     
@@ -260,76 +342,81 @@ export function getLegalMoves(gameState) {
     // Concede is always a legal move
     moves.push(new Move(MoveType.CONCEDE));
 
-    // Playing cards from hand
-    currentPlayer.hand.forEach((card, index) => {
-        // TODO: CHECK IF CARD CAN ACTUALLY BE PLAYED: EVOLUTION RULES, EMPTY BENCH SLOT, ETC.
-        // for basics you need an empty bench slot
-        // for evolutions you need a matching basic on the bench and can_evolve=True
-        // TODO: need to update can_evolve at the start of each turn
-        // Can always attempt to play a card
-        moves.push(new Move(MoveType.PLAY_CARD, {
-            card: card,
-            handIndex: index
-        }));
-    });
-
-    // Active Pokemon attacks
-    if (currentPlayer.active && currentPlayer.canAttack) {
-        currentPlayer.active.attacks.forEach((attack, index) => {
-            //if (attack.canUse(currentPlayer.active, effectRegistry)) {
-                moves.push(new Move(MoveType.ATTACK, {
-                    attackIndex: index,
-                    attack: attack
+    if (gameState.phase === Phase.SETUP_PLACE_ACTIVE) {
+        // During setup active placement, can choose any basic Pokemon from hand
+        currentPlayer.hand.forEach((card, index) => {
+            if (card.stage === 'basic') {
+                moves.push(new Move(MoveType.CHOOSE_HAND_CARD, {
+                    handIndex: index,
+                    player: currentPlayer === gameState.players[0] ? 0 : 1
                 }));
-            //}
+            }
         });
+    } 
+    else if (gameState.phase === Phase.SETUP_PLACE_BENCH) {
+        // During setup bench placement, can choose basic Pokemon from hand (up to 3)
+        if (Object.keys(currentPlayer.bench).length < 3) {
+            currentPlayer.hand.forEach((card, index) => {
+                if (card.stage === 'basic') {
+                    moves.push(new Move(MoveType.CHOOSE_HAND_CARD, {
+                        handIndex: index,
+                        player: currentPlayer === gameState.players[0] ? 0 : 1
+                    }));
+                }
+            });
+        }
+        // Can pass to end bench placement early
+        moves.push(new Move(MoveType.PASS_TURN, {
+            player: currentPlayer === gameState.players[0] ? 0 : 1
+        }));
     }
+    else {
+        // Normal gameplay - can select any card from hand
+        currentPlayer.hand.forEach((card, index) => {
+            moves.push(new Move(MoveType.CHOOSE_HAND_CARD, {
+                handIndex: index
+            }));
+        });
 
-    // Retreat
-    if (currentPlayer.active){
-        // Can only retreat if we have a bench Pokemon to switch to
-        if (Object.keys(currentPlayer.bench).length > 0) {
-            // Check if any effects prevent retreat
-            let canRetreat = true;
-            // effectRegistry.effects.forEach(effect => {
-            //     if (effect.isActive && effect.preventsRetreat?.(currentPlayer.active)) {
-            //         canRetreat = false;
-            //     }
-            // });
+        // Can select any card on field (active or bench)
+        if (currentPlayer.active) {
+            moves.push(new Move(MoveType.CHOOSE_FIELD_CARD, {
+                location: 'active'
+            }));
+        }
+        Object.keys(currentPlayer.bench).forEach(benchIndex => {
+            moves.push(new Move(MoveType.CHOOSE_FIELD_CARD, {
+                location: 'bench',
+                benchIndex: parseInt(benchIndex)
+            }));
+        });
 
-            if (canRetreat) {
+        // Game actions if conditions are met
+        if (currentPlayer.active) {
+            // Can retreat if bench has Pokemon
+            if (Object.keys(currentPlayer.bench).length > 0) {
                 moves.push(new Move(MoveType.RETREAT));
             }
+
+            // Can attack if allowed this turn
+            if (currentPlayer.canAttack) {
+                currentPlayer.active.attacks.forEach((attack, index) => {
+                    moves.push(new Move(MoveType.ATTACK, {
+                        attackIndex: index
+                    }));
+                });
+            }
         }
-    }
 
-    // Attach energy from energy zone
-    if (currentPlayer.canAttachEnergy) {
-        // TODO
-        // assign the players current and next energy zone
-        // assign each deck an 'energy types' array
-        // each turn, if the energy zone is empty, move the next energy into current energy zone, then randomly generate a new energy from the list of types for the next energy
-        // then, if the zone has energy, attaching an energy is legal
-        // when you attach an energy ,remove an energy from the current zone
-        // the current and next need to be updated at the start of each turn as necessary.
+        // Can attach energy if allowed and not first turn
+        if (currentPlayer.canAttachEnergy && 
+            gameState.turn > 1 && 
+            currentPlayer.currentEnergyZone) {
+            moves.push(new Move(MoveType.ATTACH_ENERGY));
+        }
 
-        // EnergyZone.BASIC_ENERGY.forEach(energyType => {
-        //     // Can attach to active
-        //     if (currentPlayer.active) {
-        //         moves.push(new Move(MoveType.ATTACH_ENERGY, {
-        //             energyType: energyType,
-        //             target: 'active'
-        //         }));
-        //     }
-        //     // Can attach to any bench pokemon
-        //     Object.keys(currentPlayer.bench).forEach(benchIndex => {
-        //         moves.push(new Move(MoveType.ATTACH_ENERGY, {
-        //             energyType: energyType,
-        //             target: 'bench',
-        //             benchIndex: parseInt(benchIndex)
-        //         }));
-        //     });
-        // });
+        // Can pass turn during normal gameplay
+        moves.push(new Move(MoveType.PASS_TURN));
     }
 
     return moves;

@@ -1,12 +1,19 @@
 {
-    "name": "pokemon-tcg-pack-opener",
-    "version": "1.0.0",
-    "description": "Pokemon TCG Pack Opening Simulator",
-    "type": "module",
-    "scripts": {
-      "start": "npx http-server . -o -p 3000",
-      "test": "echo \"Error: no test specified\" && exit 1"
-    },
-    "author": "",
-    "license": "ISC"
+  "name": "pokemon-tcg-simulator",
+  "version": "1.0.0",
+  "description": "Pokemon Trading Card Game Simulator",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "node game/src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "pokemon",
+    "tcg",
+    "game",
+    "simulator"
+  ],
+  "author": "",
+  "license": "ISC"
 }

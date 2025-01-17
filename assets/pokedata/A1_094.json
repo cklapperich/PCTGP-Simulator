@@ -7,6 +7,7 @@
     "retreat": 1,
     "weakness": "fighting",
     "rarity":"diamond_1",
+    "stage":"basic",
     "attacks": [
         {
             "name": "Gnaw",
