@@ -1,6 +1,6 @@
 import { EventType } from './enums.js';
 import { Event } from './models.js';
-import { outputQueue } from './gameLoop.js';
+import { UIoutputQueue } from './events.js';
 
 /**
  * Draw a card from deck to hand
@@ -13,16 +13,33 @@ import { outputQueue } from './gameLoop.js';
 // 1 card in deck, draw 3 -> draw 1
 export function drawCard(player) {
     const card = player.deck.draw();
+    const deckIndex = player.deck.cards.length; // Index card was drawn from
     card.setOwner(player);
     player.hand.push(card);
     
+    // Emit game state event
     const drawEvent = new Event(EventType.DRAW_CARD, {
         player: player,
         card: card,
         hand: player.hand
     });
-    outputQueue.put(drawEvent);
-    //effectRegistry.handleEvent(drawEvent);
+    UIoutputQueue.put(drawEvent);
+
+    // Emit UI events
+    UIoutputQueue.put(new Event(EventType.CARD_MOVE, {
+        card: card,
+        player: player,
+        sourceZone: 'deck',
+        sourceIndex: deckIndex,
+        destinationZone: 'hand',
+        destinationIndex: player.hand.length - 1
+    }));
+
+    UIoutputQueue.put(new Event(EventType.CARD_REVEAL, {
+        card: card,
+        player: player
+    }));
+
     return card;
 }
 
@@ -47,13 +64,13 @@ export function playPokemonCard(card, player ,gameState) {
     // Place as active if no active Pokemon
     if (!player.active) {
         player.active = card;
-        const event = new Event(EventType.PHASE_CHANGE, {
-            phase: "PLACE_ACTIVE",
+        UIoutputQueue.put(new Event(EventType.CARD_MOVE, {
+            card: card,
             player: player,
-            card: card
-        });
-        outputQueue.put(event);
-        //effectRegistry.handleEvent(event);
+            sourceZone: 'hand',
+            sourceIndex: handIndex,
+            destinationZone: 'active'
+        }));
         return true;
     }
 
@@ -65,25 +82,20 @@ export function playPokemonCard(card, player ,gameState) {
         while (player.bench[benchIndex]) benchIndex++;
         player.bench[benchIndex] = card;
         
-        const event = new Event(EventType.PHASE_CHANGE, {
-            phase: "PLACE_BENCH",
-            player: player,
+        UIoutputQueue.put(new Event(EventType.CARD_MOVE, {
             card: card,
-            benchIndex: benchIndex
-        });
-        outputQueue.put(event);
-        //effectRegistry.handleEvent(event);
+            player: player,
+            sourceZone: 'hand',
+            sourceIndex: handIndex,
+            destinationZone: 'bench',
+            destinationIndex: benchIndex
+        }));
         return true;
     }
 
     // Bench is full, return card to hand
     player.hand.splice(handIndex, 0, card);
-    const event = new Event(EventType.PHASE_CHANGE, {
-        phase: "BENCH_FULL",
-        player: player
-    });
-    outputQueue.put(event);
-    //effectRegistry.handleEvent(event);
+    // No need for a CARD_MOVE event since the card stays in hand
     return false;
 }
 
@@ -98,13 +110,33 @@ export function attachEnergy(energyType, targetPokemon, player) {
     if (!player.canAttachEnergy) return false;
 
     if (targetPokemon.attachEnergy(energyType)) {
-        const event = new Event(EventType.ATTACH_ENERGY, {
+        // Emit game state event
+        UIoutputQueue.put(new Event(EventType.ATTACH_ENERGY, {
             player: player,
             energyType: energyType,
             target: targetPokemon
-        });
-        outputQueue.put(event);
-        //effectRegistry.handleEvent(event);
+        }));
+
+        // Find target zone and index
+        let destinationZone, destinationIndex;
+        if (targetPokemon === player.active) {
+            destinationZone = 'active';
+            destinationIndex = null;
+        } else {
+            destinationZone = 'bench';
+            destinationIndex = Object.entries(player.bench)
+                .find(([_, card]) => card === targetPokemon)?.[0];
+        }
+
+        // Emit UI event for energy movement
+        UIoutputQueue.put(new Event(EventType.CARD_MOVE, {
+            card: { type: energyType }, // Energy cards are virtual
+            player: player,
+            sourceZone: 'energy_zone',
+            destinationZone: destinationZone,
+            destinationIndex: destinationIndex
+        }));
+
         return true;
     }
     return false;
@@ -126,17 +158,10 @@ export function discardPokemon(pokemon, player, opponent) {
             amount: 1,
             reason: "knockout"
         });
-        outputQueue.put(pointEvent);
-        //effectRegistry.handleEvent(pointEvent);
+        UIoutputQueue.put(pointEvent);
     }
 
+    // Note: The CARD_MOVE event for discarding is now emitted by the caller
+    // (e.g., in checkStateBasedActions) since they know the source zone
     player.discard.push(pokemon);
-    
-    const discardEvent = new Event(EventType.PHASE_CHANGE, {
-        phase: "DISCARD",
-        player: player,
-        card: pokemon
-    });
-    outputQueue.put(discardEvent);
-    //effectRegistry.handleEvent(discardEvent);
 }

@@ -1,38 +1,7 @@
 import { EventType, Phase, Type } from './enums.js';
-import { Card, Deck, PlayerState, Attack,Effect } from './models.js';
-import { startGame,handleMove } from './gameLoop.js';
-import { outputQueue, inputQueue} from './events.js';
-import { promises as fs } from 'fs';
-import { join } from 'path';
+import { Card} from './models.js';
+import { UIoutputQueue} from './events.js';
 
-/**
- * Loads card data from a JSON file
- * @param {Object} data - Card data from JSON
- * @returns {Card} Constructed card object
- */
-function createCard(data) {
-     // Convert attacks
-    const attacks = data.attacks.map(atk => {
-        const effect = new Effect(atk.effect.base_damage);
-        return new Attack(
-            atk.name,
-            effect,
-            atk.cost.map(c => Type[c.toUpperCase()]),
-            atk.effect.base_damage
-        );
-    });
-
-    // Create card
-    return new Card({
-        name: data.name,
-        HP: data.HP,
-        type: Type[data.type.toUpperCase()],
-        attacks: attacks,
-        retreat: data.retreat,
-        rarity: data.rarity,
-        set: data.set
-    });
-}
 
 /**
  * Prints detailed card information
@@ -97,16 +66,6 @@ function handlePhaseChangeEvent(event) {
         console.log("Players must now place their active Pokemon");
     } else if (phase === Phase.SETUP_PLACE_BENCH) {
         console.log("Players may now place up to 3 bench Pokemon");
-    } else if (phase === "POKEMON_PLACED") {
-        const player = event.data.player;
-        const pokemon = event.data.pokemon;
-        const location = event.data.location;
-        const benchIndex = event.data.benchIndex;
-        if (location === 'active') {
-            console.log(`${player.name} placed ${pokemon.name} as their active Pokemon`);
-        } else {
-            console.log(`${player.name} placed ${pokemon.name} on bench slot ${benchIndex}`);
-        }
     } else if (phase === "SETUP_COMPLETE") {
         const player = event.data.player;
         console.log(`${player.name} finished placing Pokemon`);
@@ -114,6 +73,33 @@ function handlePhaseChangeEvent(event) {
         console.log("\n====== MAIN PHASE ======");
         console.log("Setup complete, starting main phase");
     }
+}
+
+/**
+ * Handles card movement event display
+ * @param {Event} event - Card movement event
+ */
+function handleCardMove(event) {
+    const { card, player, sourceZone, destinationZone, destinationIndex } = event.data;
+    
+    if (destinationZone === 'active') {
+        console.log(`${player.name} placed ${card.name} as their active Pokemon`);
+    } else if (destinationZone === 'bench') {
+        console.log(`${player.name} placed ${card.name} on bench slot ${destinationIndex}`);
+    } else if (destinationZone === 'discard') {
+        console.log(`${card.name} was moved to ${player.name}'s discard pile`);
+    } else if (destinationZone === 'hand') {
+        // Don't log card movement to hand - we handle this in draw events
+    }
+}
+
+/**
+ * Handles card reveal event display
+ * @param {Event} event - Card reveal event
+ */
+function handleCardReveal(event) {
+    // For text frontend, we don't need to handle reveals separately
+    // as we show cards when they're drawn or played
 }
 
 /**
@@ -171,9 +157,31 @@ function handleCoinFlip(event) {
 /**
  * Process all events in the output queue
  */
-function processEvents() {
-    while (!outputQueue.empty()) {
-        const event = outputQueue.get();
+/**
+ * Handles wait for input event display and processing
+ * @param {Event} event - Wait for input event
+ */
+function handleWaitForInput(event) {
+    const { inputType, player, phase, legalMoves } = event.data;
+    console.log(`\n=== ${player.name}'s turn - ${phase} ===`);
+    console.log("Legal moves:");
+    legalMoves.forEach((move, index) => {
+        console.log(`${index + 1}: ${move.type} - ${JSON.stringify(move.data)}`);
+    });
+}
+
+/**
+ * Handles invalid move event display
+ * @param {Event} event - Invalid move event
+ */
+function handleInvalidMove(event) {
+    const { move, reason } = event.data;
+    console.log(`\nInvalid move: ${move.type} - ${reason}`);
+}
+
+export function processUIEvents() {
+    while (!UIoutputQueue.empty()) {
+        const event = UIoutputQueue.get();
         switch (event.eventType) {
             case EventType.PHASE_CHANGE:
                 handlePhaseChangeEvent(event);
@@ -196,67 +204,18 @@ function processEvents() {
             case EventType.GAME_END:
                 handleGameEnd(event);
                 break;
+            case EventType.CARD_MOVE:
+                handleCardMove(event);
+                break;
+            case EventType.CARD_REVEAL:
+                handleCardReveal(event);
+                break;
+            case EventType.WAIT_FOR_INPUT:
+                handleWaitForInput(event);
+                break;
+            case EventType.INVALID_MOVE:
+                handleInvalidMove(event);
+                break;
         }
     }
-}
-
-/**
- * Initializes and runs the game simulation
- */
-export async function runGame() {
-    console.log("=== POKEMON TRADING CARD GAME SIMULATOR ===\n");
-    console.log("Game started!");
-
-    // Load card data
-    const pikachuData = await fs.readFile(join(process.cwd(), 'assets', 'pokedata', 'A1_094.json'), 'utf-8');
-    const bulbasaurData = await fs.readFile(join(process.cwd(), 'assets', 'pokedata', 'A1_227.json'), 'utf-8');
-    
-    const pikachu = JSON.parse(pikachuData);
-    const bulbasaur = JSON.parse(bulbasaurData);
-
-    // Create deck with 30 of each card
-    const deck1Cards = [
-        ...Array(30).fill().map(() => createCard(pikachu)),
-        ...Array(30).fill().map(() => createCard(bulbasaur))
-    ];
-
-    const deck2Cards = [
-        ...Array(30).fill().map(() => createCard(pikachu)),
-        ...Array(30).fill().map(() => createCard(bulbasaur))
-    ];
-
-    // Create decks and players
-    const deck1 = new Deck(deck1Cards);
-    const deck2 = new Deck(deck2Cards);
-
-    const player1 = new PlayerState({
-        name: "Player 1",
-        deck: deck1
-    });
-
-    const player2 = new PlayerState({
-        name: "Player 2",
-        deck: deck2
-    });
-
-    // Show available energy types
-    console.log("\nAvailable Energy Types:");
-    Object.values(Type).forEach(type => {
-        if (type !== Type.COLORLESS) {
-            console.log(`- ${type.toLowerCase()}`);
-        }
-    });
-
-    // Start game
-    let gameState = startGame(player1, player2);
-    processEvents();
-
-    // Process moves from input queue
-    while (!inputQueue.empty()) {
-        const move = inputQueue.get();
-        handleMove(gameState, move);
-        processEvents();
-    }
-
-    return gameState;
 }

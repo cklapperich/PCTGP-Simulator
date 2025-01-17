@@ -1,8 +1,8 @@
-import { EventType, Phase, MoveType} from './enums.js';
+import { EventType, Phase, MoveType, InputType } from './enums.js';
 import { Event, PlayerState, GameState, Move } from './models.js';
 import { startFirstTurn, endTurn, checkEndOfTurnTriggers, startBenchPlacement, startMainPhase } from './turns.js';
 import { drawCard, discardPokemon } from './cardActions.js';
-import { inputQueue, outputQueue} from './events.js';
+import { inputQueue, RequestInputQueue, UIoutputQueue} from './events.js';
 
 
 /**
@@ -41,7 +41,7 @@ export function startGame(player1, player2) {
     const phaseEvent = new Event(EventType.PHASE_CHANGE, {
         phase: Phase.INITIAL_COIN_FLIP
     });
-    outputQueue.put(phaseEvent);
+    UIoutputQueue.put(phaseEvent);
     //effectRegistry.handleEvent(phaseEvent);
 
     // Perform initial coin flip
@@ -50,7 +50,7 @@ export function startGame(player1, player2) {
     const flipEvent = new Event(EventType.FLIP_COINS, {
         flip: flip
     });
-    outputQueue.put(flipEvent);
+    UIoutputQueue.put(flipEvent);
     //effectRegistry.handleEvent(flipEvent);
 
     // Start with placing active Pokemon
@@ -59,7 +59,7 @@ export function startGame(player1, player2) {
         phase: Phase.SETUP_PLACE_ACTIVE,
         firstPlayer: gameState.players[gameState.currentPlayer]
     });
-    outputQueue.put(setupEvent);
+    UIoutputQueue.put(setupEvent);
     //effectRegistry.handleEvent(setupEvent);
 
     // Shuffle decks and draw initial hands
@@ -69,7 +69,7 @@ export function startGame(player1, player2) {
         const shuffleEvent = new Event(EventType.SHUFFLE, {
             player: player
         });
-        outputQueue.put(shuffleEvent);
+        UIoutputQueue.put(shuffleEvent);
         //effectRegistry.handleEvent(shuffleEvent);
 
         // Draw 5 cards
@@ -78,8 +78,17 @@ export function startGame(player1, player2) {
         }
     });
 
-    // Start first turn
+    // Start first turn and wait for input
     startFirstTurn(gameState);
+    
+    // Request input for first action
+    RequestInputQueue.put(new Event(EventType.WAIT_FOR_INPUT, {
+        inputType: InputType.PLACE_ACTIVE,
+        player: gameState.getCurrentPlayer(),
+        phase: gameState.phase,
+        legalMoves: getLegalMoves(gameState)
+    }));
+    
     return gameState;
 }
 
@@ -100,15 +109,26 @@ export function checkStateBasedActions(gameState) {
     // Check active Pokemon knockouts
     [currentPlayer, opponentPlayer].forEach(player => {
         if (player.active && player.active.isKnockedOut()) {
-            // Emit knockout event
-            outputQueue.put(new Event(EventType.KNOCKOUT, {
-                pokemon: player.active,
+            const pokemon = player.active;
+            
+            // Emit knockout event first
+            UIoutputQueue.put(new Event(EventType.KNOCKOUT, {
+                pokemon: pokemon,
                 player: player
+            }));
+
+            // Then emit UI event for card movement to discard
+            UIoutputQueue.put(new Event(EventType.CARD_MOVE, {
+                card: pokemon,
+                player: player,
+                sourceZone: 'active',
+                destinationZone: 'discard',
+                destinationIndex: player.discard.length
             }));
 
             const otherPlayer = player === currentPlayer ? opponentPlayer : currentPlayer;
             // Move knocked out Pokemon to discard pile and award point
-            discardPokemon(player.active, player, otherPlayer);
+            discardPokemon(pokemon, player, otherPlayer);
             player.active = null;
         }
     });
@@ -117,11 +137,21 @@ export function checkStateBasedActions(gameState) {
     [currentPlayer, opponentPlayer].forEach(player => {
         Object.entries(player.bench).forEach(([index, pokemon]) => {
             if (pokemon.isKnockedOut()) {
-                // Emit knockout event
-                outputQueue.put(new Event(EventType.KNOCKOUT, {
+                // Emit knockout event first
+                UIoutputQueue.put(new Event(EventType.KNOCKOUT, {
                     pokemon: pokemon,
                     player: player,
                     benchIndex: index
+                }));
+
+                // Then emit UI event for card movement to discard
+                UIoutputQueue.put(new Event(EventType.CARD_MOVE, {
+                    card: pokemon,
+                    player: player,
+                    sourceZone: 'bench',
+                    sourceIndex: index,
+                    destinationZone: 'discard',
+                    destinationIndex: player.discard.length
                 }));
 
                 const otherPlayer = player === currentPlayer ? opponentPlayer : currentPlayer;
@@ -138,19 +168,20 @@ export function checkStateBasedActions(gameState) {
             // If there are Pokemon on the bench, prompt to select one
             const benchPokemon = Object.values(player.bench);
             if (benchPokemon.length > 0) {
-                const selectEvent = new Event(EventType.WAIT_FOR_INPUT, {
-                    player: player,
-                    type: "select_active",
-                    options: benchPokemon
-                });
-                outputQueue.put(selectEvent);
+            const selectEvent = new Event(EventType.WAIT_FOR_INPUT, {
+                player: player,
+                inputType: InputType.PLACE_ACTIVE,
+                options: benchPokemon,
+                legalMoves: getLegalMoves(gameState)
+            });
+                RequestInputQueue.put(selectEvent);
             } else {
                 // No Pokemon left - game over
                 const gameEndEvent = new Event(EventType.GAME_END, {
                     winner: player === currentPlayer ? opponentPlayer : currentPlayer,
                     reason: "no_pokemon"
                 });
-                outputQueue.put(gameEndEvent);
+                RequestInputQueue.put(gameEndEvent);
             }
         }
     });
@@ -162,7 +193,7 @@ export function checkStateBasedActions(gameState) {
                 winner: player,
                 reason: "knockouts"
             });
-            outputQueue.put(gameEndEvent);
+            UIoutputQueue.put(gameEndEvent);
         }
 
         // Win by deck out (opponent can't draw)
@@ -171,7 +202,7 @@ export function checkStateBasedActions(gameState) {
                 winner: player === currentPlayer ? opponentPlayer : currentPlayer,
                 reason: "deck_out"
             });
-            outputQueue.put(gameEndEvent);
+            UIoutputQueue.put(gameEndEvent);
         }
     });
 }
@@ -190,17 +221,35 @@ function handleSetupPlacement(gameState, handIndex, player) {
         player.active = card;
         player.hand.splice(handIndex, 1);
 
-        // Emit event for placing active Pokemon
-        outputQueue.put(new Event(EventType.PHASE_CHANGE, {
-            phase: "POKEMON_PLACED",
+        // Emit UI event for card movement
+        UIoutputQueue.put(new Event(EventType.CARD_MOVE, {
+            card: card,
             player: player,
-            pokemon: card,
-            location: 'active'
+            sourceZone: 'hand',
+            sourceIndex: handIndex,
+            destinationZone: 'active'
         }));
 
         // Move to bench placement if both players have placed active
         if (gameState.players[0].active && gameState.players[1].active) {
             startBenchPlacement(gameState);
+            // Request input for bench placement
+            RequestInputQueue.put(new Event(EventType.WAIT_FOR_INPUT, {
+                inputType: InputType.PLACE_BENCH,
+                player: gameState.getCurrentPlayer(),
+                phase: gameState.phase,
+                legalMoves: getLegalMoves(gameState)
+            }));
+        } else {
+            // Switch to other player for active placement
+            gameState.currentPlayer = 1 - gameState.currentPlayer;
+            // Request input from other player
+            RequestInputQueue.put(new Event(EventType.WAIT_FOR_INPUT, {
+                inputType: InputType.PLACE_ACTIVE,
+                player: gameState.getCurrentPlayer(),
+                phase: gameState.phase,
+                legalMoves: getLegalMoves(gameState)
+            }));
         }
     }
     else if (gameState.phase === Phase.SETUP_PLACE_BENCH) {
@@ -209,14 +258,36 @@ function handleSetupPlacement(gameState, handIndex, player) {
         player.bench[benchIndex] = card;
         player.hand.splice(handIndex, 1);
 
-        // Emit event for placing bench Pokemon
-        outputQueue.put(new Event(EventType.PHASE_CHANGE, {
-            phase: "POKEMON_PLACED",
+        // Emit UI event for card movement
+        UIoutputQueue.put(new Event(EventType.CARD_MOVE, {
+            card: card,
             player: player,
-            pokemon: card,
-            location: 'bench',
-            benchIndex: benchIndex
+            sourceZone: 'hand',
+            sourceIndex: handIndex,
+            destinationZone: 'bench',
+            destinationIndex: benchIndex
         }));
+
+        // Switch to other player for bench placement if they haven't finished
+        const otherPlayer = player === gameState.players[0] ? gameState.players[1] : gameState.players[0];
+        if (!otherPlayer.setupComplete) {
+            gameState.currentPlayer = otherPlayer === gameState.players[0] ? 0 : 1;
+            // Request input from other player
+            RequestInputQueue.put(new Event(EventType.WAIT_FOR_INPUT, {
+                inputType: InputType.PLACE_BENCH,
+                player: otherPlayer,
+                phase: gameState.phase,
+                legalMoves: getLegalMoves(gameState)
+            }));
+        } else {
+            // Other player is done, request input from current player again
+            RequestInputQueue.put(new Event(EventType.WAIT_FOR_INPUT, {
+                inputType: InputType.PLACE_BENCH,
+                player: player,
+                phase: gameState.phase,
+                legalMoves: getLegalMoves(gameState)
+            }));
+        }
     }
 }
 
@@ -234,13 +305,14 @@ function handlePlaceBasic(gameState, handIndex) {
     currentPlayer.bench[benchIndex] = card;
     currentPlayer.hand.splice(handIndex, 1);
 
-    // Emit event for placing Pokemon
-    outputQueue.put(new Event(EventType.PHASE_CHANGE, {
-        phase: "POKEMON_PLACED",
+    // Emit UI event for card movement
+    UIoutputQueue.put(new Event(EventType.CARD_MOVE, {
+        card: card,
         player: currentPlayer,
-        pokemon: card,
-        location: 'bench',
-        benchIndex: benchIndex
+        sourceZone: 'hand',
+        sourceIndex: handIndex,
+        destinationZone: 'bench',
+        destinationIndex: benchIndex
     }));
 }
 
@@ -256,6 +328,21 @@ export function handleMove(gameState, move) {
                   move.data.player !== undefined ? 
                   gameState.players[move.data.player] : 
                   gameState.getCurrentPlayer();
+
+    // Validate move is legal
+    const legalMoves = getLegalMoves(gameState);
+    const isLegal = legalMoves.some(legalMove => 
+        legalMove.type === move.type && 
+        JSON.stringify(legalMove.data) === JSON.stringify(move.data)
+    );
+
+    if (!isLegal) {
+        UIoutputQueue.put(new Event(EventType.INVALID_MOVE, {
+            move: move,
+            reason: "Move is not legal in current game state"
+        }));
+        return;
+    }
 
     switch (move.type) {
         case MoveType.CHOOSE_HAND_CARD:
@@ -275,13 +362,26 @@ export function handleMove(gameState, move) {
             if (gameState.phase === Phase.SETUP_PLACE_BENCH) {
                 player.setupComplete = true;
                 // Emit event for passing bench placement
-                outputQueue.put(new Event(EventType.PHASE_CHANGE, {
+                UIoutputQueue.put(new Event(EventType.PHASE_CHANGE, {
                     phase: "SETUP_COMPLETE",
                     player: player
                 }));
+
                 // Move to main phase if both players are done with setup
                 if (gameState.players[0].setupComplete && gameState.players[1].setupComplete) {
                     startMainPhase(gameState);
+                } else {
+                    // Switch to other player if they haven't finished bench placement
+                    const otherPlayer = player === gameState.players[0] ? gameState.players[1] : gameState.players[0];
+                    if (!otherPlayer.setupComplete) {
+                        gameState.currentPlayer = otherPlayer === gameState.players[0] ? 0 : 1;
+                        RequestInputQueue.put(new Event(EventType.WAIT_FOR_INPUT, {
+                            inputType: InputType.PLACE_BENCH,
+                            player: otherPlayer,
+                            phase: gameState.phase,
+                            legalMoves: getLegalMoves(gameState)
+                        }));
+                    }
                 }
             } else {
                 processTurnEnd(gameState);
@@ -310,7 +410,7 @@ export function handleMove(gameState, move) {
             break;
 
         case MoveType.CONCEDE:
-            outputQueue.put(new Event(EventType.GAME_END, {
+            UIoutputQueue.put(new Event(EventType.GAME_END, {
                 winner: gameState.getOpponentPlayer(),
                 reason: "concede"
             }));

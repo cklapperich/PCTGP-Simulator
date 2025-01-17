@@ -1,6 +1,7 @@
 import { EventType, Type, Phase } from './enums.js';
 import { Event } from './models.js';
-import { outputQueue, checkStateBasedActions, flipCoins } from './gameLoop.js';
+import { checkStateBasedActions, flipCoins } from './gameLoop.js';
+import { UIoutputQueue } from './events.js';
 
 /**
  * Update a player's energy zones
@@ -49,7 +50,7 @@ export function endTurn(gameState) {
         player: currentPlayer,
         turn: gameState.turn
     });
-    outputQueue.put(endEvent);
+    UIoutputQueue.put(endEvent);
     //effectRegistry.handleEvent(endEvent);
 
     // Switch current player
@@ -74,7 +75,7 @@ export function endTurn(gameState) {
         player: nextPlayer,
         turn: gameState.turn
     });
-    outputQueue.put(startEvent);
+    UIoutputQueue.put(startEvent);
     // effectRegistry.handleEvent(startEvent);
 
     // Check state-based actions after turn change
@@ -95,7 +96,7 @@ export function startFirstTurn(gameState) {
 
     // Start in setup phase - players must place active Pokemon first
     gameState.phase = Phase.SETUP_PLACE_ACTIVE;
-    outputQueue.put(new Event(EventType.PHASE_CHANGE, {
+    UIoutputQueue.put(new Event(EventType.PHASE_CHANGE, {
         phase: Phase.SETUP_PLACE_ACTIVE,
         firstPlayer: firstPlayer
     }));
@@ -107,7 +108,7 @@ export function startFirstTurn(gameState) {
  */
 export function switchSetupPlayer(gameState) {
     gameState.currentPlayer = 1 - gameState.currentPlayer;
-    outputQueue.put(new Event(EventType.PHASE_CHANGE, {
+    UIoutputQueue.put(new Event(EventType.PHASE_CHANGE, {
         phase: gameState.phase,
         player: gameState.getCurrentPlayer()
     }));
@@ -119,7 +120,7 @@ export function switchSetupPlayer(gameState) {
  */
 export function startBenchPlacement(gameState) {
     gameState.phase = Phase.SETUP_PLACE_BENCH;
-    outputQueue.put(new Event(EventType.PHASE_CHANGE, {
+    UIoutputQueue.put(new Event(EventType.PHASE_CHANGE, {
         phase: Phase.SETUP_PLACE_BENCH,
         player: gameState.getCurrentPlayer()
     }));
@@ -138,7 +139,7 @@ export function startMainPhase(gameState) {
 
     // Change to draw phase to start main gameplay
     gameState.phase = Phase.DRAW;
-    outputQueue.put(new Event(EventType.PHASE_CHANGE, {
+    UIoutputQueue.put(new Event(EventType.PHASE_CHANGE, {
         phase: Phase.DRAW
     }));
 
@@ -147,7 +148,7 @@ export function startMainPhase(gameState) {
         player: firstPlayer,
         turn: gameState.turn
     });
-    outputQueue.put(startEvent);
+    UIoutputQueue.put(startEvent);
 }
 
 /**

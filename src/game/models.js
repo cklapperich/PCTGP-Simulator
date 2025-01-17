@@ -1,4 +1,4 @@
-import { Type, Rarity } from './enums.js';
+import { Type, Rarity, Phase } from './enums.js';
 
 /**
  * Represents a Pokemon card attack
@@ -25,8 +25,11 @@ import { Type, Rarity } from './enums.js';
 // but we might need an 'oponnents field' and an 'allied field' and a 'global' as well.
 // or maybe simpler, some effects are registered in the registry but dont belong to anything but the 'source"? consider an ability tha tdoubles the potency of all allied grass energy to 2
 // but then how do we know to call it? so it might have to go to global
-export class Effect{
-    basedamage=base_damage
+export class Effect {
+    constructor(base_damage = 0) {
+        this.type = 'basic';  // Default to basic effect
+        this.base_damage = base_damage || 0;  // Default to 0 if undefined
+    }
 }
 
 /**

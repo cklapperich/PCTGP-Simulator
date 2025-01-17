@@ -1,7 +1,12 @@
 // Converted from Python Enums
 
 export const EventType = Object.freeze({
-    // Game state events
+    // UI Update Events - these tell the UI exactly what changed visually
+    CARD_MOVE: "card_move",     // Card moved from one zone to another (hand->bench, bench->active, etc)
+    CARD_REVEAL: "card_reveal", // Card was revealed (e.g. from deck to hand)
+    CARD_HIDE: "card_hide",     // Card was hidden (e.g. shuffled into deck)
+    
+    // Game State Events
     SHUFFLE: "shuffle",
     DRAW_CARD: "draw_card", 
     ATTACH_ENERGY: "attach_energy",
@@ -12,7 +17,7 @@ export const EventType = Object.freeze({
     TURN_START: "turn_start",
     TURN_END: "turn_end",
 
-    // Pokemon state events
+    // Pokemon State Events
     KNOCKOUT: "knockout",
     EVOLVE: "evolve",
     RETREAT: "retreat",
@@ -21,12 +26,12 @@ export const EventType = Object.freeze({
     STATUS_APPLY: "status_apply",
     STATUS_REMOVE: "status_remove",
 
-    // Effect events
+    // Effect Events
     EFFECT_START: "effect_start",
     EFFECT_END: "effect_end",
     ABILITY_ACTIVATE: "ability_activate",
 
-    // Special interaction events
+    // Special Interaction Events
     SEARCH_DECK: "search_deck",
     SEARCH_DISCARD: "search_discard",
     WAIT_FOR_INPUT: "wait_for_input"
@@ -86,4 +91,13 @@ export const MoveType = Object.freeze({
     
     // Special
     CONCEDE: "concede"                        // Player gives up
+});
+
+export const InputType = Object.freeze({
+    PLACE_ACTIVE: "place_active",           // Player must place their active Pokemon
+    PLACE_BENCH: "place_bench",             // Player may place bench Pokemon
+    MAIN_ACTION: "main_action",             // Player's main turn action (attach energy, evolve, etc)
+    ATTACK_TARGET: "attack_target",         // Player must choose attack target
+    SEARCH_DECK: "search_deck",             // Player is searching their deck
+    SEARCH_DISCARD: "search_discard"        // Player is searching their discard pile
 });

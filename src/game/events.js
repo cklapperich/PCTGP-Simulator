@@ -19,5 +19,6 @@ export class EventQueue {
 }
 
 // Global event queues
-export const outputQueue = new EventQueue();
+export const UIoutputQueue = new EventQueue();
+export const RequestInputQueue = new EventQueue();
 export const inputQueue = new EventQueue();
