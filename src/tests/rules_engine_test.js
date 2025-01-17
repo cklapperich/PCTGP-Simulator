@@ -1,10 +1,11 @@
 import { EventType, MoveType, Type } from '../rules_engine/enums.js';
-import { RequestInputQueue, inputQueue, UIoutputQueue } from '../rules_engine/events.js';
+import { RequestInputBus, inputBus, UIoutputBus } from '../rules_engine/events.js';
 import assert from 'assert';
 import { Move, Deck, PlayerState, Card, Attack, Effect } from '../rules_engine/models.js';
-import { handleMove,startGame } from '../rules_engine/gameLoop.js';
+import { handleMove, startGame } from '../rules_engine/gameLoop.js';
 import { promises as fs } from 'fs';
 import { join } from 'path';
+
 /**
  * Loads card data from a JSON file
  * @param {Object} data - Card data from JSON
@@ -12,28 +13,28 @@ import { join } from 'path';
  */
 function createCard(data) {
     // Convert attacks
-   const attacks = data.attacks.map(atk => {
-       // Create effect with base damage
-       const effect = new Effect(atk.effect.base_damage || 0);
-       // Pass same base_damage to Attack for display/reference
-       return new Attack(
-           atk.name,
-           effect,
-           atk.cost.map(c => Type[c.toUpperCase()]),
-           atk.effect.base_damage || 0
-       );
-   });
+    const attacks = data.attacks.map(atk => {
+        // Create effect with base damage
+        const effect = new Effect(atk.effect.base_damage || 0);
+        // Pass same base_damage to Attack for display/reference
+        return new Attack(
+            atk.name,
+            effect,
+            atk.cost.map(c => Type[c.toUpperCase()]),
+            atk.effect.base_damage || 0
+        );
+    });
 
-   // Create card
-   return new Card({
-       name: data.name,
-       HP: data.HP,
-       type: Type[data.type.toUpperCase()],
-       attacks: attacks,
-       retreat: data.retreat,
-       rarity: data.rarity,
-       set: data.set
-   });
+    // Create card
+    return new Card({
+        name: data.name,
+        HP: data.HP,
+        type: Type[data.type.toUpperCase()],
+        attacks: attacks,
+        retreat: data.retreat,
+        rarity: data.rarity,
+        set: data.set
+    });
 }
 
 /**
@@ -80,7 +81,6 @@ export async function runGame() {
     return gameState;
 }
 
-
 // Test moves to execute
 const TEST_MOVES = [
     // Players place active Pokemon
@@ -110,14 +110,11 @@ const SETUP_PHASES = [
 // Keep track of all events across the entire test
 let allEvents = [];
 
-// Custom processUIEvents that collects events
-function processUIEventsWithVerification() {
-    let event;
-    while ((event = UIoutputQueue.get()) !== undefined) {
-        allEvents.push(event);
-        console.log(`Event: ${event.eventType}${event.data?.phase ? ` (${event.data.phase})` : ''}`);
-    }
-}
+// Subscribe to UI events for verification
+UIoutputBus.subscribe(event => {
+    allEvents.push(event);
+    console.log(`Event: ${event.eventType}${event.data?.phase ? ` (${event.data.phase})` : ''}`);
+});
 
 // Verify the sequence of events at the end of the test
 function verifyEventSequence() {
@@ -167,17 +164,17 @@ function verifyEventSequence() {
 // Run test
 async function runTest() {
     try {
+        // Clear any existing events
+        allEvents = [];
+        
         // Start the game
         let gameState = await runGame();
         
         // Process each test move
         let moveIndex = 0;
         while (moveIndex < TEST_MOVES.length) {
-            // Process and verify UI events
-            processUIEventsWithVerification();
-            
-            // Wait for input request from RequestInputQueue
-            const inputRequest = RequestInputQueue.get();
+            // Wait for input request from RequestInputBus
+            const inputRequest = RequestInputBus.get();
             if (!inputRequest) {
                 throw new Error('Game did not request input');
             }
@@ -212,13 +209,10 @@ async function runTest() {
                 throw new Error(`Move ${move.type} is not legal for input type ${inputRequest.data.inputType}`);
             }
 
-            // Submit the move to the input queue and process it
-            inputQueue.put(move);
+            // Submit the move to the input bus and process it
+            inputBus.publish(move);
             handleMove(gameState, move);
             moveIndex++;
-
-            // Process and verify UI events that resulted from the move
-            processUIEventsWithVerification();
         }
 
         // Verify the complete sequence of events

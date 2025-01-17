@@ -1,7 +1,6 @@
 import { EventType, Phase} from './rules_engine/enums.js';
 import { Card} from './rules_engine/models.js';
-import { UIoutputQueue} from './rules_engine/events.js';
-
+import { UIoutputBus } from './rules_engine/events.js';
 
 /**
  * Prints detailed card information
@@ -155,9 +154,6 @@ function handleCoinFlip(event) {
 }
 
 /**
- * Process all events in the output queue
- */
-/**
  * Handles wait for input event display and processing
  * @param {Event} event - Wait for input event
  */
@@ -179,43 +175,45 @@ function handleInvalidMove(event) {
     console.log(`\nInvalid move: ${move.type} - ${reason}`);
 }
 
+/**
+ * Event handler mapping
+ */
+const eventHandlers = {
+    [EventType.PHASE_CHANGE]: handlePhaseChangeEvent,
+    [EventType.FLIP_COINS]: handleCoinFlip,
+    [EventType.SHUFFLE]: handleShuffleEvent,
+    [EventType.DRAW_CARD]: handleDrawEvent,
+    [EventType.ATTACH_ENERGY]: handleEnergyAttachment,
+    [EventType.KNOCKOUT]: handleKnockout,
+    [EventType.GAME_END]: handleGameEnd,
+    [EventType.CARD_MOVE]: handleCardMove,
+    [EventType.CARD_REVEAL]: handleCardReveal,
+    [EventType.WAIT_FOR_INPUT]: handleWaitForInput,
+    [EventType.INVALID_MOVE]: handleInvalidMove
+};
+
+/**
+ * Initialize the text frontend by subscribing to UI events
+ */
+export function initializeTextFrontend() {
+    // Subscribe to UI events
+    UIoutputBus.subscribe(event => {
+        const handler = eventHandlers[event.eventType];
+        if (handler) {
+            handler(event);
+        }
+    });
+}
+
+/**
+ * For backwards compatibility - processes any events in the queue
+ */
 export function processUIEvents() {
-    while (!UIoutputQueue.empty()) {
-        const event = UIoutputQueue.get();
-        switch (event.eventType) {
-            case EventType.PHASE_CHANGE:
-                handlePhaseChangeEvent(event);
-                break;
-            case EventType.FLIP_COINS:
-                handleCoinFlip(event);
-                break;
-            case EventType.SHUFFLE:
-                handleShuffleEvent(event);
-                break;
-            case EventType.DRAW_CARD:
-                handleDrawEvent(event);
-                break;
-            case EventType.ATTACH_ENERGY:
-                handleEnergyAttachment(event);
-                break;
-            case EventType.KNOCKOUT:
-                handleKnockout(event);
-                break;
-            case EventType.GAME_END:
-                handleGameEnd(event);
-                break;
-            case EventType.CARD_MOVE:
-                handleCardMove(event);
-                break;
-            case EventType.CARD_REVEAL:
-                handleCardReveal(event);
-                break;
-            case EventType.WAIT_FOR_INPUT:
-                handleWaitForInput(event);
-                break;
-            case EventType.INVALID_MOVE:
-                handleInvalidMove(event);
-                break;
+    while (!UIoutputBus.empty()) {
+        const event = UIoutputBus.get();
+        const handler = eventHandlers[event.eventType];
+        if (handler) {
+            handler(event);
         }
     }
 }

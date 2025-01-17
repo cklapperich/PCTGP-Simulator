@@ -2,8 +2,7 @@ import { EventType, Phase, MoveType, InputType } from './enums.js';
 import { Event, PlayerState, GameState, Move } from './models.js';
 import { startFirstTurn, endTurn, checkEndOfTurnTriggers, startBenchPlacement, startMainPhase } from './turns.js';
 import { drawCard, discardPokemon } from './cardActions.js';
-import { inputQueue, RequestInputQueue, UIoutputQueue} from './events.js';
-
+import { inputBus, RequestInputBus, UIoutputBus } from './events.js';
 
 /**
  * Flips coins and returns array of boolean results
@@ -41,7 +40,7 @@ export function startGame(player1, player2) {
     const phaseEvent = new Event(EventType.PHASE_CHANGE, {
         phase: Phase.INITIAL_COIN_FLIP
     });
-    UIoutputQueue.put(phaseEvent);
+    UIoutputBus.publish(phaseEvent);
     //effectRegistry.handleEvent(phaseEvent);
 
     // Perform initial coin flip
@@ -50,7 +49,7 @@ export function startGame(player1, player2) {
     const flipEvent = new Event(EventType.FLIP_COINS, {
         flip: flip
     });
-    UIoutputQueue.put(flipEvent);
+    UIoutputBus.publish(flipEvent);
     //effectRegistry.handleEvent(flipEvent);
 
     // Start with placing active Pokemon
@@ -59,7 +58,7 @@ export function startGame(player1, player2) {
         phase: Phase.SETUP_PLACE_ACTIVE,
         firstPlayer: gameState.players[gameState.currentPlayer]
     });
-    UIoutputQueue.put(setupEvent);
+    UIoutputBus.publish(setupEvent);
     //effectRegistry.handleEvent(setupEvent);
 
     // Shuffle decks and draw initial hands
@@ -69,7 +68,7 @@ export function startGame(player1, player2) {
         const shuffleEvent = new Event(EventType.SHUFFLE, {
             player: player
         });
-        UIoutputQueue.put(shuffleEvent);
+        UIoutputBus.publish(shuffleEvent);
         //effectRegistry.handleEvent(shuffleEvent);
 
         // Draw 5 cards
@@ -82,7 +81,7 @@ export function startGame(player1, player2) {
     startFirstTurn(gameState);
     
     // Request input for first action
-    RequestInputQueue.put(new Event(EventType.WAIT_FOR_INPUT, {
+    RequestInputBus.publish(new Event(EventType.WAIT_FOR_INPUT, {
         inputType: InputType.PLACE_ACTIVE,
         player: gameState.getCurrentPlayer(),
         phase: gameState.phase,
@@ -112,13 +111,13 @@ export function checkStateBasedActions(gameState) {
             const pokemon = player.active;
             
             // Emit knockout event first
-            UIoutputQueue.put(new Event(EventType.KNOCKOUT, {
+            UIoutputBus.publish(new Event(EventType.KNOCKOUT, {
                 pokemon: pokemon,
                 player: player
             }));
 
             // Then emit UI event for card movement to discard
-            UIoutputQueue.put(new Event(EventType.CARD_MOVE, {
+            UIoutputBus.publish(new Event(EventType.CARD_MOVE, {
                 card: pokemon,
                 player: player,
                 sourceZone: 'active',
@@ -138,14 +137,14 @@ export function checkStateBasedActions(gameState) {
         Object.entries(player.bench).forEach(([index, pokemon]) => {
             if (pokemon.isKnockedOut()) {
                 // Emit knockout event first
-                UIoutputQueue.put(new Event(EventType.KNOCKOUT, {
+                UIoutputBus.publish(new Event(EventType.KNOCKOUT, {
                     pokemon: pokemon,
                     player: player,
                     benchIndex: index
                 }));
 
                 // Then emit UI event for card movement to discard
-                UIoutputQueue.put(new Event(EventType.CARD_MOVE, {
+                UIoutputBus.publish(new Event(EventType.CARD_MOVE, {
                     card: pokemon,
                     player: player,
                     sourceZone: 'bench',
@@ -168,20 +167,20 @@ export function checkStateBasedActions(gameState) {
             // If there are Pokemon on the bench, prompt to select one
             const benchPokemon = Object.values(player.bench);
             if (benchPokemon.length > 0) {
-            const selectEvent = new Event(EventType.WAIT_FOR_INPUT, {
-                player: player,
-                inputType: InputType.PLACE_ACTIVE,
-                options: benchPokemon,
-                legalMoves: getLegalMoves(gameState)
-            });
-                RequestInputQueue.put(selectEvent);
+                const selectEvent = new Event(EventType.WAIT_FOR_INPUT, {
+                    player: player,
+                    inputType: InputType.PLACE_ACTIVE,
+                    options: benchPokemon,
+                    legalMoves: getLegalMoves(gameState)
+                });
+                RequestInputBus.publish(selectEvent);
             } else {
                 // No Pokemon left - game over
                 const gameEndEvent = new Event(EventType.GAME_END, {
                     winner: player === currentPlayer ? opponentPlayer : currentPlayer,
                     reason: "no_pokemon"
                 });
-                RequestInputQueue.put(gameEndEvent);
+                RequestInputBus.publish(gameEndEvent);
             }
         }
     });
@@ -193,7 +192,7 @@ export function checkStateBasedActions(gameState) {
                 winner: player,
                 reason: "knockouts"
             });
-            UIoutputQueue.put(gameEndEvent);
+            UIoutputBus.publish(gameEndEvent);
         }
 
         // Win by deck out (opponent can't draw)
@@ -202,7 +201,7 @@ export function checkStateBasedActions(gameState) {
                 winner: player === currentPlayer ? opponentPlayer : currentPlayer,
                 reason: "deck_out"
             });
-            UIoutputQueue.put(gameEndEvent);
+            UIoutputBus.publish(gameEndEvent);
         }
     });
 }
@@ -222,7 +221,7 @@ function handleSetupPlacement(gameState, handIndex, player) {
         player.hand.splice(handIndex, 1);
 
         // Emit UI event for card movement
-        UIoutputQueue.put(new Event(EventType.CARD_MOVE, {
+        UIoutputBus.publish(new Event(EventType.CARD_MOVE, {
             card: card,
             player: player,
             sourceZone: 'hand',
@@ -234,7 +233,7 @@ function handleSetupPlacement(gameState, handIndex, player) {
         if (gameState.players[0].active && gameState.players[1].active) {
             startBenchPlacement(gameState);
             // Request input for bench placement
-            RequestInputQueue.put(new Event(EventType.WAIT_FOR_INPUT, {
+            RequestInputBus.publish(new Event(EventType.WAIT_FOR_INPUT, {
                 inputType: InputType.PLACE_BENCH,
                 player: gameState.getCurrentPlayer(),
                 phase: gameState.phase,
@@ -244,7 +243,7 @@ function handleSetupPlacement(gameState, handIndex, player) {
             // Switch to other player for active placement
             gameState.currentPlayer = 1 - gameState.currentPlayer;
             // Request input from other player
-            RequestInputQueue.put(new Event(EventType.WAIT_FOR_INPUT, {
+            RequestInputBus.publish(new Event(EventType.WAIT_FOR_INPUT, {
                 inputType: InputType.PLACE_ACTIVE,
                 player: gameState.getCurrentPlayer(),
                 phase: gameState.phase,
@@ -259,7 +258,7 @@ function handleSetupPlacement(gameState, handIndex, player) {
         player.hand.splice(handIndex, 1);
 
         // Emit UI event for card movement
-        UIoutputQueue.put(new Event(EventType.CARD_MOVE, {
+        UIoutputBus.publish(new Event(EventType.CARD_MOVE, {
             card: card,
             player: player,
             sourceZone: 'hand',
@@ -273,7 +272,7 @@ function handleSetupPlacement(gameState, handIndex, player) {
         if (!otherPlayer.setupComplete) {
             gameState.currentPlayer = otherPlayer === gameState.players[0] ? 0 : 1;
             // Request input from other player
-            RequestInputQueue.put(new Event(EventType.WAIT_FOR_INPUT, {
+            RequestInputBus.publish(new Event(EventType.WAIT_FOR_INPUT, {
                 inputType: InputType.PLACE_BENCH,
                 player: otherPlayer,
                 phase: gameState.phase,
@@ -281,7 +280,7 @@ function handleSetupPlacement(gameState, handIndex, player) {
             }));
         } else {
             // Other player is done, request input from current player again
-            RequestInputQueue.put(new Event(EventType.WAIT_FOR_INPUT, {
+            RequestInputBus.publish(new Event(EventType.WAIT_FOR_INPUT, {
                 inputType: InputType.PLACE_BENCH,
                 player: player,
                 phase: gameState.phase,
@@ -306,7 +305,7 @@ function handlePlaceBasic(gameState, handIndex) {
     currentPlayer.hand.splice(handIndex, 1);
 
     // Emit UI event for card movement
-    UIoutputQueue.put(new Event(EventType.CARD_MOVE, {
+    UIoutputBus.publish(new Event(EventType.CARD_MOVE, {
         card: card,
         player: currentPlayer,
         sourceZone: 'hand',
@@ -337,7 +336,7 @@ export function handleMove(gameState, move) {
     );
 
     if (!isLegal) {
-        UIoutputQueue.put(new Event(EventType.INVALID_MOVE, {
+        UIoutputBus.publish(new Event(EventType.INVALID_MOVE, {
             move: move,
             reason: "Move is not legal in current game state"
         }));
@@ -362,7 +361,7 @@ export function handleMove(gameState, move) {
             if (gameState.phase === Phase.SETUP_PLACE_BENCH) {
                 player.setupComplete = true;
                 // Emit event for passing bench placement
-                UIoutputQueue.put(new Event(EventType.PHASE_CHANGE, {
+                UIoutputBus.publish(new Event(EventType.PHASE_CHANGE, {
                     phase: "SETUP_COMPLETE",
                     player: player
                 }));
@@ -375,7 +374,7 @@ export function handleMove(gameState, move) {
                     const otherPlayer = player === gameState.players[0] ? gameState.players[1] : gameState.players[0];
                     if (!otherPlayer.setupComplete) {
                         gameState.currentPlayer = otherPlayer === gameState.players[0] ? 0 : 1;
-                        RequestInputQueue.put(new Event(EventType.WAIT_FOR_INPUT, {
+                        RequestInputBus.publish(new Event(EventType.WAIT_FOR_INPUT, {
                             inputType: InputType.PLACE_BENCH,
                             player: otherPlayer,
                             phase: gameState.phase,
@@ -410,7 +409,7 @@ export function handleMove(gameState, move) {
             break;
 
         case MoveType.CONCEDE:
-            UIoutputQueue.put(new Event(EventType.GAME_END, {
+            UIoutputBus.publish(new Event(EventType.GAME_END, {
                 winner: gameState.getOpponentPlayer(),
                 reason: "concede"
             }));
