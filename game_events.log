@@ -45,3 +45,50 @@
 2025-01-17T23:12:54.277Z - Event: phase_change (SETUP_COMPLETE)
 2025-01-17T23:12:54.277Z - Event: phase_change (DRAW)
 2025-01-17T23:12:54.278Z - Event: turn_start
+2025-01-18T02:00:52.429Z - Event: phase_change (INITIAL_COIN_FLIP)
+2025-01-18T02:00:52.433Z - Event: phase_change (SETUP_PLACE_ACTIVE)
+2025-01-18T02:00:52.434Z - Event: shuffle
+2025-01-18T02:00:52.435Z - Event: draw_card
+2025-01-18T02:00:52.436Z - Event: card_reveal
+2025-01-18T02:00:52.435Z - Event: card_move
+2025-01-18T02:00:52.432Z - Event: flip_coins
+2025-01-18T02:00:52.437Z - Event: card_move
+2025-01-18T02:00:52.436Z - Event: draw_card
+2025-01-18T02:00:52.437Z - Event: card_reveal
+2025-01-18T02:00:52.438Z - Event: draw_card
+2025-01-18T02:00:52.438Z - Event: card_move
+2025-01-18T02:00:52.438Z - Event: card_reveal
+2025-01-18T02:00:52.439Z - Event: draw_card
+2025-01-18T02:00:52.439Z - Event: card_reveal
+2025-01-18T02:00:52.439Z - Event: card_move
+2025-01-18T02:00:52.440Z - Event: draw_card
+2025-01-18T02:00:52.440Z - Event: card_move
+2025-01-18T02:00:52.441Z - Event: card_reveal
+2025-01-18T02:00:52.441Z - Event: shuffle
+2025-01-18T02:00:52.442Z - Event: draw_card
+2025-01-18T02:00:52.442Z - Event: card_move
+2025-01-18T02:00:52.443Z - Event: card_reveal
+2025-01-18T02:00:52.443Z - Event: draw_card
+2025-01-18T02:00:52.443Z - Event: card_move
+2025-01-18T02:00:52.443Z - Event: card_reveal
+2025-01-18T02:00:52.444Z - Event: draw_card
+2025-01-18T02:00:52.444Z - Event: card_move
+2025-01-18T02:00:52.444Z - Event: card_reveal
+2025-01-18T02:00:52.445Z - Event: draw_card
+2025-01-18T02:00:52.445Z - Event: card_move
+2025-01-18T02:00:52.445Z - Event: card_reveal
+2025-01-18T02:00:52.446Z - Event: card_move
+2025-01-18T02:00:52.445Z - Event: draw_card
+2025-01-18T02:00:52.446Z - Event: card_reveal
+2025-01-18T02:00:52.446Z - Event: phase_change (SETUP_PLACE_ACTIVE)
+2025-01-18T02:00:52.447Z - Event: card_move
+2025-01-18T02:00:52.448Z - Event: card_move
+2025-01-18T02:00:52.448Z - Event: phase_change (SETUP_PLACE_BENCH)
+2025-01-18T02:00:52.448Z - Event: card_move
+2025-01-18T02:00:52.449Z - Event: card_move
+2025-01-18T02:00:52.449Z - Event: card_move
+2025-01-18T02:00:52.450Z - Event: card_move
+2025-01-18T02:00:52.450Z - Event: phase_change (SETUP_COMPLETE)
+2025-01-18T02:00:52.451Z - Event: phase_change (SETUP_COMPLETE)
+2025-01-18T02:00:52.451Z - Event: phase_change (DRAW)
+2025-01-18T02:00:52.451Z - Event: turn_start
