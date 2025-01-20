@@ -1,7 +1,6 @@
 import { GameEventType, Type, Phase, ZoneName, BENCH_ZONES, Stage, energyZoneLocation } from './enums.js';
 import { GameEvent } from './event_models.js';
 import { GameState, PlayerState } from './models.js';
-import { flipCoins } from './gameLoop.js';
 import { checkStateBasedActions } from './check_statebased_actions.js';
 
 /**

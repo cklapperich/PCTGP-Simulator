@@ -1,5 +1,8 @@
-import { SelectReason, Phase, Zone, BENCH_ZONES } from './enums.js';
-import { PlayerInput, InputData, Card } from './models.js';
+import { SelectReason, Phase, ZoneName, Stage } from './enums.js';
+import { Card } from './models.js';
+import { PlayerInput, InputData } from './input_event_models.js';
+
+const BENCH_ZONES = [ZoneName.BENCH_0, ZoneName.BENCH_1, ZoneName.BENCH_2];
 
 /**
  * Gets all legal bench placement inputs for placing a basic Pokemon from hand
@@ -9,22 +12,21 @@ import { PlayerInput, InputData, Card } from './models.js';
  * @param {number} playerIndex - Index of player attempting placement
  * @returns {PlayerInput[]} Array of legal inputs for placing the card
  */
-function getLegalBenchPlacements(card, handIndex, player) {
+function getLegalBenchPlacements(card, handIndex, player, playerIndex) {
     const inputs = [];
-    if (!(card instanceof Card) || card.stage !== 'basic') {
+    if (!(card instanceof Card) || card.stage !== Stage.BASIC) {
         return inputs;
     }
 
     // Check each bench zone for emptiness
-    BENCH_ZONES.forEach(zone => {
-        // Convert zone name (e.g. "bench_0") to index for bench object lookup
-        const benchIndex = parseInt(zone.split('_')[1]);
-        if (!player.bench[benchIndex]) {
+    BENCH_ZONES.forEach(zoneName => {
+        const zone = player.getZone(zoneName);
+        if (!zone.getPokemon()) {
             inputs.push(new PlayerInput({
                 data: new InputData({
                     selectedIndex: handIndex,
-                    sourceZone: Zone.HAND,
-                    targetZone: zone
+                    sourceZone: ZoneName.HAND,
+                    targetZone: zoneName
                 }),
                 reason: SelectReason.SETUP_BENCH,
                 playerIndex: playerIndex
@@ -38,7 +40,7 @@ function getLegalBenchPlacements(card, handIndex, player) {
 /**
  * Gets all legal inputs in the current game state
  * @param {GameState} gameState - Current game state
- * @returns {Object} Dictionary of {playerId: PlayerInput[]} mapping players to their legal inputs
+ * @returns {PlayerInput[]} Array of legal inputs
  */
 export function getLegalInputs(gameState) {
     const inputs = [];
@@ -62,13 +64,14 @@ export function getLegalInputs(gameState) {
             // During setup active placement, BOTH players can choose any basic Pokemon from hand
             [0, 1].forEach(playerIndex => {
                 const player = gameState.players[playerIndex];
-                player.hand.forEach((card, index) => {
-                    if (card instanceof Card && card.stage === 'basic') {
+                const handZone = player.getZone(ZoneName.HAND);
+                handZone.cards.forEach((card, index) => {
+                    if (card instanceof Card && card.stage === Stage.BASIC) {
                         inputs.push(new PlayerInput({
                             data: new InputData({
                                 selectedIndex: index,
-                                sourceZone: Zone.HAND,
-                                targetZone: Zone.ACTIVE
+                                sourceZone: ZoneName.HAND,
+                                targetZone: ZoneName.ACTIVE
                             }),
                             reason: SelectReason.SETUP_ACTIVE,
                             playerIndex: playerIndex
@@ -82,8 +85,9 @@ export function getLegalInputs(gameState) {
             // During setup bench placement, BOTH players can choose basic Pokemon from hand (up to 3)
             [0, 1].forEach(playerIndex => {
                 const player = gameState.players[playerIndex];
-                player.hand.forEach((card, index) => {
-                    if (card instanceof Card && card.stage === 'basic') {
+                const handZone = player.getZone(ZoneName.HAND);
+                handZone.cards.forEach((card, index) => {
+                    if (card instanceof Card && card.stage === Stage.BASIC) {
                         inputs.push(...getLegalBenchPlacements(card, index, player, playerIndex));
                     }
                 });
@@ -98,11 +102,12 @@ export function getLegalInputs(gameState) {
 
         case Phase.MAIN:
             // Normal gameplay - current player can select any card from hand
-            currentPlayer.hand.forEach((card, index) => {
+            const handZone = currentPlayer.getZone(ZoneName.HAND);
+            handZone.cards.forEach((card, index) => {
                 inputs.push(new PlayerInput({
                     data: new InputData({
                         selectedIndex: index,
-                        sourceZone: Zone.HAND
+                        sourceZone: ZoneName.HAND
                     }),
                     reason: SelectReason.PLAY_POKEMON,
                     playerIndex: currentPlayerIndex
@@ -110,12 +115,14 @@ export function getLegalInputs(gameState) {
             });
 
             // Can select active Pokemon for evolution or energy attachment
-            if (currentPlayer.active) {
+            const activeZone = currentPlayer.getZone(ZoneName.ACTIVE);
+            const activePokemon = activeZone.getPokemon();
+            if (activePokemon) {
                 // Evolution input
-                if (currentPlayer.active.can_evolve) {
+                if (activePokemon.can_evolve) {
                     inputs.push(new PlayerInput({
                         data: new InputData({
-                            sourceZone: Zone.ACTIVE
+                            sourceZone: ZoneName.ACTIVE
                         }),
                         reason: SelectReason.EVOLVE_POKEMON,
                         playerIndex: currentPlayerIndex
@@ -125,15 +132,15 @@ export function getLegalInputs(gameState) {
                 if (currentPlayer.canAttachEnergy && gameState.turn > 1 && currentPlayer.currentEnergyZone) {
                     inputs.push(new PlayerInput({
                         data: new InputData({
-                            sourceZone: Zone.ACTIVE
+                            sourceZone: ZoneName.ACTIVE
                         }),
                         reason: SelectReason.ATTACH_ENERGY,
                         playerIndex: currentPlayerIndex
                     }));
                 }
                 // Attack inputs
-                currentPlayer.active.attacks.forEach((attack, index) => {
-                    if (attack.canUse(currentPlayer.active, gameState.effectRegistry)) {
+                activePokemon.attacks.forEach((attack, index) => {
+                    if (attack.canUse(activePokemon, gameState.effectRegistry)) {
                         inputs.push(new PlayerInput({
                             data: new InputData({
                                 attackIndex: index,
@@ -147,15 +154,16 @@ export function getLegalInputs(gameState) {
             }
 
             // Can select bench Pokemon for evolution or energy attachment
-            Object.entries(currentPlayer.bench).forEach(([benchIndex, pokemon]) => {
+            BENCH_ZONES.forEach((zoneName, benchIndex) => {
+                const benchZone = currentPlayer.getZone(zoneName);
+                const pokemon = benchZone.getPokemon();
                 if (pokemon) {
-                    const zone = `bench_${benchIndex}`;
                     // Evolution input
                     if (pokemon.can_evolve) {
                         inputs.push(new PlayerInput({
                             data: new InputData({
-                                selectedIndex: parseInt(benchIndex),
-                                sourceZone: zone
+                                selectedIndex: benchIndex,
+                                sourceZone: zoneName
                             }),
                             reason: SelectReason.EVOLVE_POKEMON,
                             playerIndex: currentPlayerIndex
@@ -165,8 +173,8 @@ export function getLegalInputs(gameState) {
                     if (currentPlayer.canAttachEnergy && gameState.turn > 1 && currentPlayer.currentEnergyZone) {
                         inputs.push(new PlayerInput({
                             data: new InputData({
-                                selectedIndex: parseInt(benchIndex),
-                                sourceZone: zone
+                                selectedIndex: benchIndex,
+                                sourceZone: zoneName
                             }),
                             reason: SelectReason.ATTACH_ENERGY,
                             playerIndex: currentPlayerIndex
@@ -176,8 +184,12 @@ export function getLegalInputs(gameState) {
             });
 
             // Can retreat if bench has Pokemon and enough energy
-            if (Object.keys(currentPlayer.bench).length > 0 && 
-                currentPlayer.active?.canRetreat(gameState.effectRegistry)) {
+            const hasBenchedPokemon = BENCH_ZONES.some(zoneName => {
+                const zone = currentPlayer.getZone(zoneName);
+                return zone.getPokemon() !== null;
+            });
+            
+            if (hasBenchedPokemon && activePokemon?.canRetreat(gameState.effectRegistry)) {
                 inputs.push(new PlayerInput({
                     data: new InputData(),
                     reason: SelectReason.REPLACE_ACTIVE,

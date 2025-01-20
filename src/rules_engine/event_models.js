@@ -1,10 +1,48 @@
-import { GameEventType, Zone, SelectReason } from './enums.js';
+
+import { GameEventType, ZoneName} from './enums.js';
+
+export const GameEventType = Object.freeze({
+    // UI Update Events - these tell the UI exactly what changed visually
+    CARD_MOVE: "card_move",     // Card moved from one zone to another (hand->bench, bench->active, etc)
+    CARD_REVEAL: "card_reveal", // Card was revealed (e.g. from deck to hand)
+    CARD_HIDE: "card_hide",     // Card was hidden (e.g. shuffled into deck)
+    
+    // Game State Events
+    SHUFFLE: "shuffle",
+    DRAW_CARD: "draw_card",
+    ATTACH_ENERGY: "attach_energy",
+    ATTACK: "attack",
+    FLIP_COINS: "flip_coins",
+    PHASE_CHANGE: "phase_change",
+    GAME_END: "game_end",
+    TURN_START: "turn_start",
+    TURN_END: "turn_end",
+    TURN_ORDER: "SETUP_COIN_FLIP", // communicate turn order
+    // Pokemon State Events
+    KNOCKOUT: "knockout",
+    EVOLVE: "evolve",
+    RETREAT: "retreat",
+    DAMAGE: "damage",
+    HEAL: "heal",
+    STATUS_APPLY: "status_apply",
+    STATUS_REMOVE: "status_remove",
+
+    // Effect Events
+    EFFECT_START: "effect_start",
+    EFFECT_END: "effect_end",
+    ABILITY_ACTIVATE: "ability_activate",
+    
+    // Energy Zone Events
+    ENERGY_ZONE_UPDATE: "energy_zone_update",
+
+});
+
 
 /**
  * Data structure containing all possible fields for any game event.
  * Fields are optional and their usage depends on the event type.
  */
-export class EventData {
+export class GameEventData {
     constructor({
         // Card movement fields
         card,                // The card being moved/played/attached
@@ -64,7 +102,7 @@ export class GameEvent {
         data = {}
     }) {
         this.type = type;
-        this.data = new EventData(data);
+        this.data = new GameEventData(data);
     }
 
     /**

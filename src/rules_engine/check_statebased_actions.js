@@ -1,5 +1,5 @@
-import { Phase, ZoneName, GameEventType,BENCH_ZONES } from './enums.js';
-import { GameEvent } from './event_models.js';
+import { Phase, ZoneName, BENCH_ZONES } from './enums.js';
+import { GameEvent, GameEventType, GameEventData } from './event_models.js';
 import { InputRequestEvent, PlayerInput,  SelectReason, InputData } from './input_event_models.js';
 
 /**
