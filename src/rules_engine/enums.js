@@ -69,19 +69,3 @@ export const Stage = Object.freeze({
     NONE: "none"
 });
 
-export const InputType = Object.freeze({
-    // Selection inputs - WHAT you're selecting from
-    SELECT_HAND: "select_hand",           // Select card(s) from hand
-    SELECT_BENCH: "select_bench",         // Select Pokemon from bench
-    SELECT_ACTIVE: "select_active",       // Select active Pokemon
-    SEARCH_DECK: "search_deck",           // Search deck for card(s)
-    SEARCH_DISCARD: "search_discard",     // Search discard for card(s)
-    
-    // Game action inputs
-    ATTACK: "attack",                     // Choose an attack to use
-    ACTIVATE_ABILITY: "activate_ability", // Choose an ability to activate
-    RETREAT: "retreat",                   // Choose to retreat
-    PASS_TURN: "pass_turn",              // Choose to pass turn
-    START_BATTLE: "start_battle",         // Choose to start battle
-    CONCEDE: "concede"                    // Choose to concede
-});

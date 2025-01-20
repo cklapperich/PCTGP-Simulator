@@ -1,179 +1,138 @@
-// to start a game engine you need 2 players, and an event handler. 
-// it should be an object. the object should have a run_until_next that yields the next input events
+import { checkStateBasedActions } from "./check_statebased_actions";
+import { GameEvent, GameEventType, GameEventData } from "./event_models";
+import { InputRequestEvent, InputType, SelectReason } from "./input_event_models";
+import { drawCard, shuffle_deck, drawInitialHand, playPokemonCard } from "./game_actions";
+import { Phase, ZoneName } from "./enums";
+import { getLegalInputs } from "./get_legal_inputs";
+
+/**
+ * Creates a game engine generator that manages game flow and state transitions
+ * @param {GameState} gameState - The current game state
+ * @param {EventHandler} eventHandler - Handler for game events
+ */
 export function* createGameEngine(gameState, eventHandler) {
-
-    [0,1].forEach(playerIndex => {
-        playerdeck = state.players[playerIndex].deck
-        deck.cards.foreach(card => {card.owner = playerIndex})
-    });
-
-    [0,1].forEach(playerIndex => {
-        shuffle_deck(state, playerIndex, eventHandler)
+    // Shuffle decks
+    [0, 1].forEach(playerIndex => {
+        shuffle_deck(gameState, playerIndex, eventHandler);
     });
 
     // Initial setup phase
+    gameState.phase = Phase.SETUP;
     eventHandler.push(new GameEvent({
         type: GameEventType.PHASE_CHANGE,
-        data: { phase: Phase.DEAL_CARDS }
+        data: new GameEventData({ phase: gameState.phase })
     }));
     
-    // Deal cards - for each player call drawCard from game_actions 5 times
-    [0,1].forEach(playerIndex => {
-        for (let i = 0; i < 5; i++) {
-            drawCard(state, playerIndex, eventHandler);
-        }
+    // Deal initial hands
+    [0, 1].forEach(playerIndex => {
+        drawInitialHand(gameState, playerIndex, eventHandler);
     });
 
-    // Determine turn order with coin flip
+    // Determine turn order
+    gameState.phase = Phase.TURN_ORDER;
     eventHandler.push(new GameEvent({
         type: GameEventType.PHASE_CHANGE,
-        data: { phase: Phase.TURN_ORDER }
+        data: new GameEventData({ phase: gameState.phase })
     }));
     
     // Flip coin to determine first player
     const coinFlip = Math.random() < 0.5;
-    state.currentPlayer = coinFlip ? 0 : 1;
+    gameState.currentPlayer = coinFlip ? 0 : 1;
     
     // Notify about coin flip and turn order
     eventHandler.push(new GameEvent({
         type: GameEventType.FLIP_COINS,
-        data: {
-            flips: [coinFlip],
-            result: coinFlip ? "heads" : "tails"
-        }
+        data: new GameEventData({
+            flips: [coinFlip]
+        })
     }));
     eventHandler.push(new GameEvent({
         type: GameEventType.TURN_ORDER,
-        data: { firstPlayer: state.currentPlayer }
+        data: new GameEventData({ playerIndex: gameState.currentPlayer })
     }));
 
     // Active Pokemon Setup Phase
-    state.phase = Phase.SETUP_PLACE_ACTIVE;
+    gameState.phase = Phase.SETUP_PLACE_ACTIVE;
     eventHandler.push(new GameEvent({
         type: GameEventType.PHASE_CHANGE,
-        data: { phase: state.phase }
+        data: new GameEventData({ phase: gameState.phase })
     }));
     
     // Wait for both players to place their active Pokemon
     const activePokemonPlaced = new Set();
     while (activePokemonPlaced.size < 2) {
         const input = yield new InputRequestEvent({
-            legalMoves: getLegalMoves(state),
+            legalMoves: getLegalInputs(gameState),
             reason: SelectReason.SETUP_ACTIVE
         });
 
-        if (!activePokemonPlaced.has(input.playerIndex)) {
-            const player = state.players[input.playerIndex];
-
-            const card = player.hand[input.data.selectedIndex];
-            try {
-                if (playPokemonCard(gameState, playerIndex, handIndex, zone, eventHandler)) {
-                    activePokemonPlaced.add(input.playerIndex);
-                    eventHandler.push(new GameEvent({
-                        type: GameEventType.CARD_MOVE,
-                        data: {
-                            card: card,
-                            sourceZone: Zone.HAND,
-                            targetZone: Zone.ACTIVE,
-                            playerIndex: input.playerIndex
-                        }
-                    }));
-                }
-            } catch (error) {
-                console.error("Error placing active Pokemon:", error);
-            }
-        }
+        playPokemonCard(gameState, input.playerIndex, input.data.handIndex, ZoneName.ACTIVE, eventHandler);
+        activePokemonPlaced.add(input.playerIndex);
     }
-
+    
     // Bench Setup Phase
-    state.phase = Phase.SETUP_PLACE_BENCH;
+    gameState.phase = Phase.SETUP_PLACE_BENCH;
     eventHandler.push(new GameEvent({
         type: GameEventType.PHASE_CHANGE,
-        data: { phase: state.phase }
+        data: new GameEventData({ phase: gameState.phase })
     }));
 
     // Wait for both players to complete bench setup
     const benchSetupComplete = new Set();
     while (benchSetupComplete.size < 2) {
         const input = yield new InputRequestEvent({
-            legalMoves: getLegalMoves(state),
+            legalMoves: getLegalInputs(gameState),
             reason: SelectReason.SETUP_BENCH
         });
 
-
-        const player = state.players[input.playerIndex];
-
         if (input.type === InputType.START_BATTLE) {
             benchSetupComplete.add(input.playerIndex);
-            player.setupComplete = true;
-        } else if (!benchSetupComplete.has(input.playerIndex) && 
-                   input.data.selectedIndex !== undefined && 
-                   input.data.selectedIndex < player.hand.length) {
-            // Allow placing Pokemon on bench until player indicates they're done
-            const card = player.hand[input.data.selectedIndex];
-            try {
-                if (playPokemonCard(gameState, playerIndex, handIndex, zone, eventHandler)) {
-                    eventHandler.push(new GameEvent({
-                        type: GameEventType.CARD_MOVE,
-                        data: {
-                            card: card,
-                            sourceZone: Zone.HAND,
-                            targetZone: Zone.BENCH_0, // First available bench slot
-                            playerIndex: input.playerIndex
-                        }
-                    }));
-                }
-            } catch (error) {
-                console.error("Error placing bench Pokemon:", error);
-            }
+            gameState.players[input.playerIndex].setupComplete = true;
+        } else if (input.type === InputType.CARD_MOVE) {
+            playPokemonCard(gameState, input.playerIndex, input.data.handIndex, input.data.targetZone, eventHandler);
         }
     }
 
     // Transition to main phase
-    state.phase = Phase.MAIN;
+    gameState.phase = Phase.MAIN;
     eventHandler.push(new GameEvent({
         type: GameEventType.PHASE_CHANGE,
-        data: { phase: state.phase }
+        data: new GameEventData({ phase: gameState.phase })
     }));
 
     // Main game loop
-    while (!state.gameOver) {
+    while (!gameState.gameOver) {
         eventHandler.push(new GameEvent({
             type: GameEventType.TURN_START,
-            data: { player: state.currentPlayer }
+            data: new GameEventData({ playerIndex: gameState.currentPlayer })
         }));
 
         // Main phase - keep accepting moves until player passes or game ends
-        while (state.phase === Phase.MAIN) {
+        while (gameState.phase === Phase.MAIN) {
             const input = yield new InputRequestEvent({
-                legalMoves: getLegalMoves(state),
+                legalMoves: getLegalInputs(gameState),
                 reason: SelectReason.NOT_SPECIFIED
             });
 
-            try {
-                // For now only handle passing turn, other inputs will be implemented later
-                if (input.type === InputType.PASS_TURN) {
-                    state.phase = Phase.BETWEEN_TURNS;
-                    eventHandler.push(new GameEvent({
-                        type: GameEventType.PHASE_CHANGE,
-                        data: { phase: state.phase }
-                    }));
-                }
-            } catch (error) {
-                console.error("Error processing turn input:", error);
-                // Revert to main phase if error occurs during phase transition
-                state.phase = Phase.MAIN;
+            // For now only handle passing turn, other inputs will be implemented later
+            if (input.type === InputType.PASS_TURN) {
+                gameState.phase = Phase.BETWEEN_TURNS;
+                eventHandler.push(new GameEvent({
+                    type: GameEventType.PHASE_CHANGE,
+                    data: new GameEventData({ phase: gameState.phase })
+                }));
             }
+            
+            checkStateBasedActions(gameState, eventHandler);
         }
 
         // Switch players
-        state.currentPlayer = 1 - state.currentPlayer;
+        gameState.currentPlayer = 1 - gameState.currentPlayer;
     }
 
     // Game over
     eventHandler.push(new GameEvent({
         type: GameEventType.GAME_END,
-        data: { winner: state.winner }
+        data: new GameEventData({ winner: gameState.winner })
     }));
-    return state;
 }

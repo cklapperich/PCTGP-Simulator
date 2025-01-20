@@ -4,11 +4,22 @@ import { Type, Rarity, Phase, SelectReason, ZoneName, Stage} from './enums.js';
  * Represents the current state of the game
  */
 export class GameState {
-    constructor() {
+    constructor(player1, player2) {
         this.phase = Phase.DEAL_CARDS;
-        this.players = {};
+        this.players = {
+            0: player1,
+            1: player2
+        }; // mandatory. a dict of {0:player,1:player2}
         this.turn = 0;
         this.currentPlayer = -1; //starts at -1 before a player is chosen
+
+        // Initialize card ownership for both players
+        player1.deck.cards.forEach(card => {
+            card.owner = 0;
+        });
+        player2.deck.cards.forEach(card => {
+            card.owner = 1;
+        });
     }
 
     getCurrentPlayer() {
@@ -228,9 +239,6 @@ export class Card {
         this.waitingForPlayer = null;
     }
 
-    clone() {
-        return structuredClone(this);
-    }
 }
 
 /**

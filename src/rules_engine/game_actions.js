@@ -1,6 +1,6 @@
 import { GameEventType, Type, Phase, ZoneName, BENCH_ZONES, Stage, energyZoneLocation } from './enums.js';
 import { GameEvent } from './event_models.js';
-import { GameState, PlayerState } from './models.js';
+import { GameState} from './models.js';
 import { checkStateBasedActions } from './check_statebased_actions.js';
 
 /**
@@ -11,6 +11,7 @@ import { checkStateBasedActions } from './check_statebased_actions.js';
  * @param {number} player_index - Index of player drawing cards
  * @param {eventHandler} eventHandler - Bus to emit events on
  * @returns {Array<Card>} The drawn cards
+ * decks are assumed to be valid and have at least 1 basic
  */
 export function drawInitialHand(state, player_index, eventHandler) {
     const player = state.players[player_index];
@@ -23,7 +24,7 @@ export function drawInitialHand(state, player_index, eventHandler) {
         }
         return indices;
     }, []);
-    
+
     // Select random basic Pokemon
     const randomBasicIndex = basicPokemonIndices[Math.floor(Math.random() * basicPokemonIndices.length)];
     const basicPokemon = deck.cards[randomBasicIndex];
@@ -33,11 +34,14 @@ export function drawInitialHand(state, player_index, eventHandler) {
     player.addToHand(basicPokemon);
 
     // Emit event for the basic Pokemon draw
-    eventHandler.put(GameEvent.createCardMove({
-        card: basicPokemon,
-        sourceZone: ZoneName.DECK,
-        targetZone: ZoneName.HAND,
-        playerIndex: player_index
+    eventHandler.put(new GameEvent({
+        type: GameEventType.CARD_MOVE,
+        data: {
+            card: basicPokemon,
+            sourceZone: ZoneName.DECK,
+            targetZone: ZoneName.HAND,
+            playerIndex: player_index
+        }
     }));
 
     // Draw 4 more cards
@@ -55,13 +59,16 @@ export function drawCard(state, player_index, eventHandler) {
     
     // Draw card using PlayerState zone methods
     const card = player.drawCard();
-
+    
     // Emit game state event
-    eventHandler.put(GameEvent.createCardMove({
-        card: card,
-        sourceZone: ZoneName.DECK,
-        targetZone: ZoneName.HAND,
-        playerIndex: player_index
+    eventHandler.put(new GameEvent({
+        type: GameEventType.CARD_MOVE,
+        data: {
+            card: card,
+            sourceZone: ZoneName.DECK,
+            targetZone: ZoneName.HAND,
+            playerIndex: player_index
+        }
     }));
     return card;
 }
@@ -102,11 +109,14 @@ export function playPokemonCard(gameState, playerIndex, handIndex, targetZoneNam
     player.addCardToZone(card, targetZoneName);
 
     // Emit game state event
-    eventHandler.put(GameEvent.createCardMove({
-        card: card,
-        sourceZone: ZoneName.HAND,
-        targetZone: targetZoneName,
-        playerIndex: playerIndex
+    eventHandler.put(new GameEvent({
+        type: GameEventType.CARD_MOVE,
+        data: {
+            card: card,
+            sourceZone: ZoneName.HAND,
+            targetZone: targetZoneName,
+            playerIndex: playerIndex
+        }
     }));
 }
 
@@ -119,12 +129,9 @@ export function playPokemonCard(gameState, playerIndex, handIndex, targetZoneNam
  */
 export function attachEnergyFromEnergyZone(state, playerIndex, targetZoneName, eventHandler) {
     const player = state.players[playerIndex];
-
-    // Get target zone and energy type
-    const targetZone = player.getZone(targetZoneName);
     const energyType = player.currentEnergyZone;
 
-    if (!energyType || !player.canAttachEnergy) {
+    if (!energyType || !player.canAttachEnergy || energyType === Type.NONE) {
         return false; // No energy type selected or player cannot attach energy
     }
     player.currentEnergyZone = Type.NONE;
@@ -238,9 +245,12 @@ export function endTurn(gameState, eventHandler) {
     const nextPlayerIndex = 1 - gameState.currentPlayer;
 
     // Emit turn end event
-    eventHandler.put(GameEvent.createTurnEnd({
-        playerIndex: gameState.currentPlayer,
-        turn: gameState.turn
+    eventHandler.put(new GameEvent({
+        type: GameEventType.TURN_END,
+        data: {
+            playerIndex: gameState.currentPlayer,
+            turn: gameState.turn
+        }
     }));
 
     // TODO: BETWEEN TURNS (mostly just handling poison?)
@@ -250,9 +260,12 @@ export function endTurn(gameState, eventHandler) {
     gameState.turn++;
 
     // Emit turn start event
-    eventHandler.put(GameEvent.createTurnStart({
-        playerIndex: nextPlayerIndex,
-        turn: gameState.turn
+    eventHandler.put(new GameEvent({
+        type: GameEventType.TURN_START,
+        data: {
+            playerIndex: nextPlayerIndex,
+            turn: gameState.turn
+        }
     }));
 
     // Reset turn-based flags and update energy zones
@@ -280,13 +293,17 @@ export function endTurn(gameState, eventHandler) {
 export function startFirstTurn(playerIndex, gameState, eventHandler) {
     gameState.currentPlayer = playerIndex;
     gameState.turn++;
+    
     // Emit turn start event for the first turn
-    eventHandler.put(GameEvent.createTurnStart({
-        playerIndex: playerIndex,
-        turn: gameState.turn
+    eventHandler.put(new GameEvent({
+        type: GameEventType.TURN_START,
+        data: {
+            playerIndex: playerIndex,
+            turn: gameState.turn
+        }
     }));
-    // dont update energy zones first turn
-
-    player = gameState.getCurrentPlayer();
-    player.canSupporter = true;
+    
+    // Don't update energy zones first turn
+    const currentPlayer = gameState.getCurrentPlayer();
+    currentPlayer.canSupporter = true;
 }

@@ -8,7 +8,7 @@ export const GameEventType = Object.freeze({
     CARD_HIDE: "card_hide",     // Card was hidden (e.g. shuffled into deck)
     
     // Game State Events
-    SHUFFLE: "shuffle",
+    SHUFFLE_DECK: "shuffle",
     DRAW_CARD: "draw_card",
     ATTACH_ENERGY: "attach_energy",
     ATTACK: "attack",
@@ -28,13 +28,12 @@ export const GameEventType = Object.freeze({
     STATUS_REMOVE: "status_remove",
 
     // Effect Events
-    EFFECT_START: "effect_start",
-    EFFECT_END: "effect_end",
+    EFFECT_ADD: "effect_add",
+    EFFECT_REMOVE: "effect_removed",
     ABILITY_ACTIVATE: "ability_activate",
     
     // Energy Zone Events
     ENERGY_ZONE_UPDATE: "energy_zone_update",
-
 });
 
 
@@ -45,29 +44,29 @@ export const GameEventType = Object.freeze({
 export class GameEventData {
     constructor({
         // Card movement fields
-        card,                // The card being moved/played/attached
-        sourceZone,         // Zone the card is moving from
-        targetZone,         // Zone the card is moving to
-        playerIndex,        // Index of player performing action
+        card=null,                // The card being moved/played/attached
+        sourceZone=null,         // Zone the card is moving from
+        targetZone=null,         // Zone the card is moving to
+        playerIndex=null,         // Index of player performing action
         
         // Battle fields
-        attackingPokemon,   // Pokemon using attack
-        defendingPokemon,   // Pokemon being attacked
-        attackIndex,        // Index of chosen attack
-        damage,             // Amount of damage dealt
+        attackingPokemon=null,   // Pokemon using attack
+        defendingPokemon=null,   // Pokemon being attacked
+        attackIndex=null,        // Index of chosen attack
+        damage=null,             // Amount of damage dealt
         
         // Effect fields
-        source,             // Card/effect causing this event
-        effectType,         // Type of effect being applied
+        source=null,             // Card/effect causing this event
+        effectType=null,         // Type of effect being applied
         
         // Game state fields
-        phase,              // New game phase
-        turn,              // Current turn number
-        winner,            // Winner of game
+        phase=null,              // New game phase
+        turn=null,              // Current turn number
+        winner=null,            // Winner of game
         
         // Misc fields
-        amount,            // Generic number (damage, cards drawn, etc)
-        flips,            // Results of coin flips
+        amount=null,            // Generic number (damage, cards drawn, etc)
+        flips=null,            // Results of coin flips
         
         // Additional fields can be added as needed
     } = {}) {

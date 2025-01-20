@@ -1,6 +1,6 @@
-import { SelectReason, Phase, ZoneName, Stage } from './enums.js';
+import { Phase, ZoneName, Stage } from './enums.js';
 import { Card } from './models.js';
-import { PlayerInput, InputData } from './input_event_models.js';
+import { PlayerInput, InputData, InputType } from './input_event_models.js';
 
 const BENCH_ZONES = [ZoneName.BENCH_0, ZoneName.BENCH_1, ZoneName.BENCH_2];
 
@@ -28,8 +28,8 @@ function getLegalBenchPlacements(card, handIndex, player, playerIndex) {
                     sourceZone: ZoneName.HAND,
                     targetZone: zoneName
                 }),
-                reason: SelectReason.SETUP_BENCH,
-                playerIndex: playerIndex
+                playerIndex: playerIndex,
+                inputType: InputType.SELECT_HAND
             }));
         }
     });
@@ -48,16 +48,13 @@ export function getLegalInputs(gameState) {
     const currentPlayerIndex = gameState.currentPlayer;
 
     // Concede is always a legal input for both players
-    inputs.push(new PlayerInput({
-        data: new InputData(),
-        reason: SelectReason.NOT_SPECIFIED,
-        playerIndex: 0
-    }));
-    inputs.push(new PlayerInput({
-        data: new InputData(),
-        reason: SelectReason.NOT_SPECIFIED,
-        playerIndex: 1
-    }));
+    [0, 1].forEach(playerIndex => {
+        inputs.push(new PlayerInput({
+            data: new InputData(),
+            playerIndex: playerIndex,
+            inputType: InputType.CONCEDE
+        }));
+    });
 
     switch (gameState.phase) {
         case Phase.SETUP_PLACE_ACTIVE:
@@ -73,8 +70,8 @@ export function getLegalInputs(gameState) {
                                 sourceZone: ZoneName.HAND,
                                 targetZone: ZoneName.ACTIVE
                             }),
-                            reason: SelectReason.SETUP_ACTIVE,
-                            playerIndex: playerIndex
+                            playerIndex: playerIndex,
+                            inputType: InputType.SELECT_HAND
                         }));
                     }
                 });
@@ -94,8 +91,8 @@ export function getLegalInputs(gameState) {
                 // Each player can pass to end bench placement early
                 inputs.push(new PlayerInput({
                     data: new InputData(),
-                    reason: SelectReason.NOT_SPECIFIED,
-                    playerIndex: playerIndex
+                    playerIndex: playerIndex,
+                    inputType: InputType.PASS_TURN
                 }));
             });
             break;
@@ -109,8 +106,8 @@ export function getLegalInputs(gameState) {
                         selectedIndex: index,
                         sourceZone: ZoneName.HAND
                     }),
-                    reason: SelectReason.PLAY_POKEMON,
-                    playerIndex: currentPlayerIndex
+                    playerIndex: currentPlayerIndex,
+                    inputType: InputType.SELECT_HAND
                 }));
             });
 
@@ -124,8 +121,8 @@ export function getLegalInputs(gameState) {
                         data: new InputData({
                             sourceZone: ZoneName.ACTIVE
                         }),
-                        reason: SelectReason.EVOLVE_POKEMON,
-                        playerIndex: currentPlayerIndex
+                        playerIndex: currentPlayerIndex,
+                        inputType: InputType.SELECT_ACTIVE
                     }));
                 }
                 // Energy attachment input
@@ -134,8 +131,8 @@ export function getLegalInputs(gameState) {
                         data: new InputData({
                             sourceZone: ZoneName.ACTIVE
                         }),
-                        reason: SelectReason.ATTACH_ENERGY,
-                        playerIndex: currentPlayerIndex
+                        playerIndex: currentPlayerIndex,
+                        inputType: InputType.SELECT_ACTIVE
                     }));
                 }
                 // Attack inputs
@@ -146,8 +143,8 @@ export function getLegalInputs(gameState) {
                                 attackIndex: index,
                                 attackInfo: attack
                             }),
-                            reason: SelectReason.ATTACK_TARGET,
-                            playerIndex: currentPlayerIndex
+                            playerIndex: currentPlayerIndex,
+                            inputType: InputType.ATTACK
                         }));
                     }
                 });
@@ -165,8 +162,8 @@ export function getLegalInputs(gameState) {
                                 selectedIndex: benchIndex,
                                 sourceZone: zoneName
                             }),
-                            reason: SelectReason.EVOLVE_POKEMON,
-                            playerIndex: currentPlayerIndex
+                            playerIndex: currentPlayerIndex,
+                            inputType: InputType.SELECT_BENCH
                         }));
                     }
                     // Energy attachment input
@@ -176,8 +173,8 @@ export function getLegalInputs(gameState) {
                                 selectedIndex: benchIndex,
                                 sourceZone: zoneName
                             }),
-                            reason: SelectReason.ATTACH_ENERGY,
-                            playerIndex: currentPlayerIndex
+                            playerIndex: currentPlayerIndex,
+                            inputType: InputType.SELECT_BENCH
                         }));
                     }
                 }
@@ -192,16 +189,16 @@ export function getLegalInputs(gameState) {
             if (hasBenchedPokemon && activePokemon?.canRetreat(gameState.effectRegistry)) {
                 inputs.push(new PlayerInput({
                     data: new InputData(),
-                    reason: SelectReason.REPLACE_ACTIVE,
-                    playerIndex: currentPlayerIndex
+                    playerIndex: currentPlayerIndex,
+                    inputType: InputType.RETREAT
                 }));
             }
 
             // Can pass turn during normal gameplay
             inputs.push(new PlayerInput({
                 data: new InputData(),
-                reason: SelectReason.NOT_SPECIFIED,
-                playerIndex: currentPlayerIndex
+                playerIndex: currentPlayerIndex,
+                inputType: InputType.PASS_TURN
             }));
             break;
     }

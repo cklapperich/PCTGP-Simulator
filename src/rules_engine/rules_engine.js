@@ -1,9 +1,10 @@
+import { getLegalInputs } from "./get_legal_inputs";
 export class TurnHistory {
-    constructor(state, lastinput, gameevents, legal_moves) {
+    constructor(state, lastinput, gameevents, legal_inputs) {
         this.state = state || null;
         this.lastinput = lastinput || null;
         this.gameevents = gameevents || [];
-        this.legal_moves = legal_moves || [];
+        this.legal_inputs = legal_inputs || [];
     }
 }
 
@@ -23,22 +24,14 @@ export class RulesEngine {
             initialstate,
             null,
             [],
-            getLegalMoves(initialstate)
+            getLegalInputs(initialstate)
         ));
 
         this.generator = createGameEngineGenerator(this.state, eventHandler);
-
-        const statecopy = JSON.parse(JSON.stringify(this.state));
-        this.state_history.push(new TurnHistory(
-            statecopy,
-            null,
-            [],
-            getLegalMoves(statecopy)
-        ));
     }
 
-    getLegalMoves() {
-        return getLegalMoves(this.state);
+    getLegalInputs() {
+        return getLegalInputs(this.state);
     }
     
     runUntilNext(input) {
@@ -51,7 +44,7 @@ export class RulesEngine {
             newstate,
             input,
             [...this.currentTurnEvents],
-            getLegalMoves(newstate)
+            response.legal_inputs
         ));
         
         return response;
