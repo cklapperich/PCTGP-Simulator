@@ -1,6 +1,7 @@
 {
     "name": "Bulbasaur",
     "id": "A1-001",
+    "stage": "basic",
     "set": "A1",
     "type": "grass",
     "HP": 70,

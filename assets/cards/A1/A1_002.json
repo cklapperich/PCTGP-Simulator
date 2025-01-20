@@ -1,6 +1,7 @@
 {
     "name": "Ivysaur",
     "id": "A1-002",
+    "stage": "stage_1",
     "set": "A1-M",
     "type": "grass",
     "HP": 90,
