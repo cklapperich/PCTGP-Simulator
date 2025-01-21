@@ -1,4 +1,4 @@
-import { Type, Rarity, Phase, SelectReason, ZoneName, Stage} from './enums.js';
+import { Type, Rarity, Phase, ZoneName, Stage } from './enums.js';
 
 /**
  * Represents the current state of the game
@@ -11,7 +11,7 @@ export class GameState {
             1: player2
         }; // mandatory. a dict of {0:player,1:player2}
         this.turn = 0;
-        this.currentPlayer = -1; //starts at -1 before a player is chosen
+        this.currentPlayerIndex = -1; //starts at -1 before a player is chosen
 
         // Initialize card ownership for both players
         player1.deck.cards.forEach(card => {
@@ -23,11 +23,11 @@ export class GameState {
     }
 
     getCurrentPlayer() {
-        return this.players[this.currentPlayer];
+        return this.players[this.currentPlayerIndex];
     }
 
     getOpponentPlayer() {
-        return this.players[1 - this.currentPlayer];
+        return this.players[1 - this.currentPlayerIndex];
     }
 }
 
@@ -37,45 +37,6 @@ export class Attack {
         this.effect = effect;
         this.cost = cost;
         this.damage = damage;
-    }
-
-    /**
-     * Check if there's enough energy to use this attack
-     * @param {Card} pokemon - Pokemon trying to use the attack
-     * @param {EffectRegistry} effectRegistry - Registry of active effects
-     * @returns {boolean} Whether attack can be used
-     */
-    canUse(pokemon, effectRegistry) {
-        const energyCount = new Map();
-        
-        // Count required energy by type
-        this.cost.forEach(type => {
-            energyCount.set(type, (energyCount.get(type) || 0) + 1);
-        });
-
-        // Get available energy including effects
-        const availableEnergy = effectRegistry.calculateAvailableEnergy(
-            pokemon, 
-            pokemon.attachedEnergy
-        );
-
-        // Check if we have enough of each type
-        for (const [type, required] of energyCount) {
-            const available = availableEnergy.get(type) || 0;
-            if (available < required) {
-                // Special case: Colorless can be paid with any type
-                if (type === Type.COLORLESS) {
-                    // Sum all available energy
-                    const totalEnergy = Array.from(availableEnergy.values())
-                        .reduce((sum, count) => sum + count, 0);
-                    if (totalEnergy < required) return false;
-                } else {
-                    return false;
-                }
-            }
-        }
-
-        return true;
     }
 }
 
@@ -90,7 +51,7 @@ export class Deck {
     } = {}) {
         this.name = name;
         this.cards = [...cards]; // Array of Card objects
-        this.energyTypes = new Set(energyTypes); // Set of energy types (Type enum) this deck can use
+        this.energyTypes = [...energyTypes]; // Array of energy types (Type enum)
     }
 
     shuffle() {
@@ -112,26 +73,26 @@ export class Deck {
     }
 
     getEnergyTypes() {
-        return Array.from(this.energyTypes);
+        return [...this.energyTypes];
     }
 }
 
 /**
  * Represents a game zone that can contain cards and energy
  */
-class Zone {
+export class Zone {
     constructor() {
         this.cards = [];  // Stack of cards in the zone
-        this.attachedEnergy = new Map(); // Type -> count
-        this.attachedTools = new Set(); // Set of tool cards
+        this.attachedEnergy = {};  // Type -> count
+        this.attachedTools = [];  // Array of tool cards
         this.damage = 0; // Track damage on the zone instead of the card
     }
 
     clear() {
         const clearedCards = [...this.cards];
         this.cards = [];
-        this.attachedEnergy.clear();
-        this.attachedTools.clear();
+        this.attachedEnergy = {};
+        this.attachedTools = [];
         this.damage = 0;
         return clearedCards;
     }
@@ -156,19 +117,16 @@ class Zone {
 
     // Add energy of specific type to this zone
     addEnergy(energyType) {
-        this.attachedEnergy.set(
-            energyType,
-            (this.attachedEnergy.get(energyType) || 0) + 1
-        );
+        this.attachedEnergy[energyType] = (this.attachedEnergy[energyType] || 0) + 1;
     }
 
     // Remove energy of specific type from this zone
     removeEnergy(energyType) {
-        const current = this.attachedEnergy.get(energyType) || 0;
+        const current = this.attachedEnergy[energyType] || 0;
         if (current > 0) {
-            this.attachedEnergy.set(energyType, current - 1);
-            if (this.attachedEnergy.get(energyType) === 0) {
-                this.attachedEnergy.delete(energyType);
+            this.attachedEnergy[energyType] = current - 1;
+            if (this.attachedEnergy[energyType] === 0) {
+                delete this.attachedEnergy[energyType];
             }
             return true;
         }
@@ -177,11 +135,7 @@ class Zone {
 
     // Get total count of attached energy
     getTotalEnergy() {
-        let total = 0;
-        for (const count of this.attachedEnergy.values()) {
-            total += count;
-        }
-        return total;
+        return Object.values(this.attachedEnergy).reduce((sum, count) => sum + count, 0);
     }
 
     // Damage related methods
@@ -238,7 +192,6 @@ export class Card {
         this.reference_card = null;
         this.waitingForPlayer = null;
     }
-
 }
 
 /**
@@ -255,13 +208,13 @@ export class PlayerState {
         this.deck = deck;
         
         // Initialize all zones
-        this.zones = new Map();
-        this.zones.set(ZoneName.ACTIVE, new Zone());
-        this.zones.set(ZoneName.BENCH_0, new Zone());
-        this.zones.set(ZoneName.BENCH_1, new Zone());
-        this.zones.set(ZoneName.BENCH_2, new Zone());
-        this.zones.set(ZoneName.DISCARD, new Zone());
-        this.zones.set(ZoneName.HAND, new Zone());
+        this.zones = {};
+        this.zones[ZoneName.ACTIVE] = new Zone();
+        this.zones[ZoneName.BENCH_0] = new Zone();
+        this.zones[ZoneName.BENCH_1] = new Zone();
+        this.zones[ZoneName.BENCH_2] = new Zone();
+        this.zones[ZoneName.DISCARD] = new Zone();
+        this.zones[ZoneName.HAND] = new Zone();
         
         // Energy system
         this.currentEnergyZone = null;
@@ -276,7 +229,7 @@ export class PlayerState {
 
     // Get a zone by name
     getZone(zoneName) {
-        const zone = this.zones.get(zoneName);
+        const zone = this.zones[zoneName];
         if (!zone) {
             throw new Error(`Invalid zone name: ${zoneName}`);
         }

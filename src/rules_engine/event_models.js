@@ -1,5 +1,5 @@
 
-import { GameEventType, ZoneName} from './enums.js';
+import { ZoneName } from './enums.js';
 
 export const GameEventType = Object.freeze({
     // UI Update Events - these tell the UI exactly what changed visually

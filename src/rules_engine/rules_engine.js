@@ -1,4 +1,7 @@
-import { getLegalInputs } from "./get_legal_inputs";
+import { getLegalInputs } from "./get_legal_inputs.js";
+import { GameState } from "./models.js";
+import { rulesEngineGenerator } from "./rules_engine_generator.js";
+
 export class TurnHistory {
     constructor(state, lastinput, gameevents, legal_inputs) {
         this.state = state || null;
@@ -19,15 +22,14 @@ export class RulesEngine {
             this.currentTurnEvents.push(event);
         });
 
-        const initialstate = JSON.parse(JSON.stringify(this.state));
         this.state_history.push(new TurnHistory(
-            initialstate,
+            this.state,
             null,
             [],
-            getLegalInputs(initialstate)
+            getLegalInputs(this.state)
         ));
 
-        this.generator = createGameEngineGenerator(this.state, eventHandler);
+        this.generator = rulesEngineGenerator(this.state, this.eventHandler);
     }
 
     getLegalInputs() {
@@ -38,16 +40,18 @@ export class RulesEngine {
         this.currentTurnEvents = [];
         
         const response = this.generator.next(input).value;
-        const newstate = JSON.parse(JSON.stringify(this.state));
         
         this.state_history.push(new TurnHistory(
-            newstate,
+            this.state,
             input,
             [...this.currentTurnEvents],
-            response.legal_inputs
+            response.legalInputs
         ));
         
-        return response;
+        return {
+            state: this.state,
+            legalInputs: response.legalInputs || []
+        };
     }
 
     cleanup() {

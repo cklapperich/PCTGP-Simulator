@@ -37,18 +37,20 @@ export const SelectReason = Object.freeze({
 export class InputRequestEvent {
     constructor({
         reason=SelectReason.NOT_SPECIFIED,
-        legalMoves = []
+        legalInputs = []
     }={}) {
-        this.legalMoves = legalMoves; // a list of legal moves, each legal move should be of type PlayerInput
+        this.legalInputs = legalInputs; // a list of legal inputs, each legal move should be of type PlayerInput
         this.reason = reason;
     }
 }
 
 export class PlayerInput {
     constructor({
+        inputType=undefined,
         data = new InputData(), // Input data from the player
         playerIndex = undefined // Index of the player this input belongs to
     } = {}) {
+        this.inputType = inputType;
         this.data = data;
         this.playerIndex = playerIndex;
     }

@@ -1,27 +1,21 @@
-import { checkStateBasedActions } from "./check_statebased_actions";
-import { GameEvent, GameEventType, GameEventData } from "./event_models";
-import { InputRequestEvent, InputType, SelectReason } from "./input_event_models";
-import { drawCard, shuffle_deck, drawInitialHand, playPokemonCard } from "./game_actions";
-import { Phase, ZoneName } from "./enums";
-import { getLegalInputs } from "./get_legal_inputs";
+import { checkStateBasedActions } from "./check_statebased_actions.js";
+import { GameEvent, GameEventType, GameEventData } from "./event_models.js";
+import { InputRequestEvent, InputType, SelectReason } from "./input_event_models.js";
+import { drawCard, shuffleDeck, drawInitialHand, playPokemonCard } from "./game_actions.js";
+import { Phase, ZoneName } from "./enums.js";
+import { getLegalInputs } from "./get_legal_inputs.js";
 
 /**
  * Creates a game engine generator that manages game flow and state transitions
  * @param {GameState} gameState - The current game state
  * @param {EventHandler} eventHandler - Handler for game events
  */
-export function* createGameEngine(gameState, eventHandler) {
-    // Shuffle decks
+export function* rulesEngineGenerator(gameState, eventHandler) {
+    // GameState starts in DEAL_CARDS phase
+    // First shuffle decks
     [0, 1].forEach(playerIndex => {
-        shuffle_deck(gameState, playerIndex, eventHandler);
+        shuffleDeck(gameState, playerIndex, eventHandler);
     });
-
-    // Initial setup phase
-    gameState.phase = Phase.SETUP;
-    eventHandler.push(new GameEvent({
-        type: GameEventType.PHASE_CHANGE,
-        data: new GameEventData({ phase: gameState.phase })
-    }));
     
     // Deal initial hands
     [0, 1].forEach(playerIndex => {
@@ -37,7 +31,7 @@ export function* createGameEngine(gameState, eventHandler) {
     
     // Flip coin to determine first player
     const coinFlip = Math.random() < 0.5;
-    gameState.currentPlayer = coinFlip ? 0 : 1;
+    gameState.currentPlayerIndex = coinFlip ? 0 : 1;
     
     // Notify about coin flip and turn order
     eventHandler.push(new GameEvent({
@@ -48,7 +42,7 @@ export function* createGameEngine(gameState, eventHandler) {
     }));
     eventHandler.push(new GameEvent({
         type: GameEventType.TURN_ORDER,
-        data: new GameEventData({ playerIndex: gameState.currentPlayer })
+        data: new GameEventData({ playerIndex: gameState.currentPlayerIndex })
     }));
 
     // Active Pokemon Setup Phase
@@ -61,13 +55,16 @@ export function* createGameEngine(gameState, eventHandler) {
     // Wait for both players to place their active Pokemon
     const activePokemonPlaced = new Set();
     while (activePokemonPlaced.size < 2) {
-        const input = yield new InputRequestEvent({
-            legalMoves: getLegalInputs(gameState),
-            reason: SelectReason.SETUP_ACTIVE
-        });
+        const legalInputs = getLegalInputs(gameState);
+        const input = yield {
+            state: gameState,
+            legalInputs: legalInputs
+        };
 
-        playPokemonCard(gameState, input.playerIndex, input.data.handIndex, ZoneName.ACTIVE, eventHandler);
-        activePokemonPlaced.add(input.playerIndex);
+        if (input.inputType === InputType.CARD_MOVE) {
+            playPokemonCard(gameState, input.playerIndex, input.data.handIndex, input.data.targetZone, eventHandler);
+            activePokemonPlaced.add(input.playerIndex);
+        }
     }
     
     // Bench Setup Phase
@@ -80,15 +77,16 @@ export function* createGameEngine(gameState, eventHandler) {
     // Wait for both players to complete bench setup
     const benchSetupComplete = new Set();
     while (benchSetupComplete.size < 2) {
-        const input = yield new InputRequestEvent({
-            legalMoves: getLegalInputs(gameState),
-            reason: SelectReason.SETUP_BENCH
-        });
+        const legalInputs = getLegalInputs(gameState);
+        const input = yield {
+            state: gameState,
+            legalInputs: legalInputs
+        };
 
-        if (input.type === InputType.START_BATTLE) {
+        if (input.inputType === InputType.START_BATTLE) {
             benchSetupComplete.add(input.playerIndex);
             gameState.players[input.playerIndex].setupComplete = true;
-        } else if (input.type === InputType.CARD_MOVE) {
+        } else if (input.inputType === InputType.CARD_MOVE) {
             playPokemonCard(gameState, input.playerIndex, input.data.handIndex, input.data.targetZone, eventHandler);
         }
     }
@@ -104,18 +102,19 @@ export function* createGameEngine(gameState, eventHandler) {
     while (!gameState.gameOver) {
         eventHandler.push(new GameEvent({
             type: GameEventType.TURN_START,
-            data: new GameEventData({ playerIndex: gameState.currentPlayer })
+            data: new GameEventData({ playerIndex: gameState.currentPlayerIndex })
         }));
 
-        // Main phase - keep accepting moves until player passes or game ends
+        // Main phase - keep accepting inputs until player passes or game ends
         while (gameState.phase === Phase.MAIN) {
-            const input = yield new InputRequestEvent({
-                legalMoves: getLegalInputs(gameState),
-                reason: SelectReason.NOT_SPECIFIED
-            });
+            const legalInputs = getLegalInputs(gameState);
+            const input = yield {
+                state: gameState,
+                legalInputs: legalInputs
+            };
 
             // For now only handle passing turn, other inputs will be implemented later
-            if (input.type === InputType.PASS_TURN) {
+            if (input.inputType === InputType.PASS_TURN) {
                 gameState.phase = Phase.BETWEEN_TURNS;
                 eventHandler.push(new GameEvent({
                     type: GameEventType.PHASE_CHANGE,
@@ -127,7 +126,7 @@ export function* createGameEngine(gameState, eventHandler) {
         }
 
         // Switch players
-        gameState.currentPlayer = 1 - gameState.currentPlayer;
+        gameState.currentPlayerIndex = 1 - gameState.currentPlayerIndex;
     }
 
     // Game over

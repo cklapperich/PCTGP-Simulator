@@ -24,12 +24,12 @@ function getLegalBenchPlacements(card, handIndex, player, playerIndex) {
         if (!zone.getPokemon()) {
             inputs.push(new PlayerInput({
                 data: new InputData({
-                    selectedIndex: handIndex,
+                    handIndex: handIndex,
                     sourceZone: ZoneName.HAND,
                     targetZone: zoneName
                 }),
                 playerIndex: playerIndex,
-                inputType: InputType.SELECT_HAND
+                inputType: InputType.CARD_MOVE
             }));
         }
     });
@@ -44,8 +44,8 @@ function getLegalBenchPlacements(card, handIndex, player, playerIndex) {
  */
 export function getLegalInputs(gameState) {
     const inputs = [];
-    const currentPlayer = gameState.getCurrentPlayer();
-    const currentPlayerIndex = gameState.currentPlayer;
+    const currentPlayerIndex = gameState.currentPlayerIndex;
+    const currentPlayer = gameState.players[currentPlayerIndex];
 
     // Concede is always a legal input for both players
     [0, 1].forEach(playerIndex => {
@@ -66,12 +66,12 @@ export function getLegalInputs(gameState) {
                     if (card instanceof Card && card.stage === Stage.BASIC) {
                         inputs.push(new PlayerInput({
                             data: new InputData({
-                                selectedIndex: index,
+                                handIndex: index,
                                 sourceZone: ZoneName.HAND,
                                 targetZone: ZoneName.ACTIVE
                             }),
                             playerIndex: playerIndex,
-                            inputType: InputType.SELECT_HAND
+                            inputType: InputType.CARD_MOVE
                         }));
                     }
                 });
@@ -92,7 +92,7 @@ export function getLegalInputs(gameState) {
                 inputs.push(new PlayerInput({
                     data: new InputData(),
                     playerIndex: playerIndex,
-                    inputType: InputType.PASS_TURN
+                    inputType: InputType.START_BATTLE
                 }));
             });
             break;
@@ -103,7 +103,7 @@ export function getLegalInputs(gameState) {
             handZone.cards.forEach((card, index) => {
                 inputs.push(new PlayerInput({
                     data: new InputData({
-                        selectedIndex: index,
+                        handIndex: index,
                         sourceZone: ZoneName.HAND
                     }),
                     playerIndex: currentPlayerIndex,
@@ -135,19 +135,6 @@ export function getLegalInputs(gameState) {
                         inputType: InputType.SELECT_ACTIVE
                     }));
                 }
-                // Attack inputs
-                activePokemon.attacks.forEach((attack, index) => {
-                    if (attack.canUse(activePokemon, gameState.effectRegistry)) {
-                        inputs.push(new PlayerInput({
-                            data: new InputData({
-                                attackIndex: index,
-                                attackInfo: attack
-                            }),
-                            playerIndex: currentPlayerIndex,
-                            inputType: InputType.ATTACK
-                        }));
-                    }
-                });
             }
 
             // Can select bench Pokemon for evolution or energy attachment
@@ -159,7 +146,7 @@ export function getLegalInputs(gameState) {
                     if (pokemon.can_evolve) {
                         inputs.push(new PlayerInput({
                             data: new InputData({
-                                selectedIndex: benchIndex,
+                                handIndex: benchIndex,
                                 sourceZone: zoneName
                             }),
                             playerIndex: currentPlayerIndex,
@@ -170,7 +157,7 @@ export function getLegalInputs(gameState) {
                     if (currentPlayer.canAttachEnergy && gameState.turn > 1 && currentPlayer.currentEnergyZone) {
                         inputs.push(new PlayerInput({
                             data: new InputData({
-                                selectedIndex: benchIndex,
+                                handIndex: benchIndex,
                                 sourceZone: zoneName
                             }),
                             playerIndex: currentPlayerIndex,
@@ -179,20 +166,6 @@ export function getLegalInputs(gameState) {
                     }
                 }
             });
-
-            // Can retreat if bench has Pokemon and enough energy
-            const hasBenchedPokemon = BENCH_ZONES.some(zoneName => {
-                const zone = currentPlayer.getZone(zoneName);
-                return zone.getPokemon() !== null;
-            });
-            
-            if (hasBenchedPokemon && activePokemon?.canRetreat(gameState.effectRegistry)) {
-                inputs.push(new PlayerInput({
-                    data: new InputData(),
-                    playerIndex: currentPlayerIndex,
-                    inputType: InputType.RETREAT
-                }));
-            }
 
             // Can pass turn during normal gameplay
             inputs.push(new PlayerInput({

@@ -1,3 +1,5 @@
+import { GameEvent } from './event_models.js';
+
 export class EventHandler {
     subscribe(callback) {
         throw new Error('Must implement subscribe');
@@ -8,7 +10,7 @@ export class EventHandler {
     }
 }
 
-class QueueEventHandler extends EventHandler {
+export class QueueEventHandler extends EventHandler {
     constructor() {
         super();
         this.events = [];
