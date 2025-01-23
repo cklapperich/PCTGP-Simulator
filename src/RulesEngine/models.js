@@ -157,9 +157,16 @@ export class Zone {
     }
 }
 
-/**
- * Represents a Pokemon card
- */
+export class WeaknessResistance{
+    constructor({
+        type, 
+        value, 
+    }) {
+        this.type = type;
+        this.value = value;
+    }
+}
+
 export class Card {
     static nextId = 1;
 
@@ -174,7 +181,8 @@ export class Card {
         ability = null,
         stage = Stage.NONE,
         evolvesFrom = null,
-        can_evolve = true
+        weakness=type.NONE,
+        resistance=type.NONE,
     }) {
         this.id = Card.nextId++;
         this.name = name;
@@ -189,10 +197,11 @@ export class Card {
         this.evolvesFrom = evolvesFrom;
         this.can_evolve = can_evolve;
         this.owner = null;
-        this.reference_card = null;
-        this.waitingForPlayer = null;
+        this.weakness = weakness;
+        this.resistance = resistance;
     }
 }
+
 
 /**
  * Represents a player's state in the game

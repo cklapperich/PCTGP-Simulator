@@ -17,5 +17,9 @@
     "simulator"
   ],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "ldtk": "^0.8.7",
+    "phaser": "^3.87.0"
+  }
 }

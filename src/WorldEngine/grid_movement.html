@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Grid Movement with Collision</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: #333;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser.min.js"></script>
+</head>
+<body>
+    <div id="game"></div>
+    <script type="module">
+        const TILE_SIZE = 32;
+        const GRID_SIZE = 16;
+        const MOVEMENT_SPEED = 2;
+
+        class GridMovementScene extends Phaser.Scene {
+            constructor() {
+                super({ key: 'GridMovementScene' });
+                this.player = null;
+                this.targetX = null;
+                this.targetY = null;
+                this.isMoving = false;
+                this.currentDirection = 'right';
+                this.collisionLayer = null;
+            }
+
+            preload() {
+                // Load collision map
+                this.load.image('tiles', '../assets/levels/origin_zone/simplified/Level_0/Floor_walls.png');
+                this.load.tilemapCSV('collision', '../assets/levels/origin_zone/simplified/Level_0/Collision.csv');
+            }
+
+            create() {
+                // Create collision map
+                const map = this.make.tilemap({ 
+                    key: 'collision', 
+                    tileWidth: TILE_SIZE, 
+                    tileHeight: TILE_SIZE 
+                });
+                const tileset = map.addTilesetImage('tiles');
+                this.collisionLayer = map.createLayer(0, tileset, 0, 0);
+                
+                // Set collision for all non-zero tiles
+                this.collisionLayer.setCollisionByProperty({ index: 1 });
+
+                // Create player (arrow emoji)
+                this.player = this.add.text(TILE_SIZE, TILE_SIZE, '➡️', {
+                    fontSize: '32px'
+                });
+                this.player.setOrigin(0.5);
+
+                // Setup input handling
+                this.cursors = this.input.keyboard.createCursorKeys();
+                
+                // Initialize camera
+                this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
+                this.cameras.main.startFollow(this.player, true);
+            }
+
+            isValidMove(x, y) {
+                // Convert pixel coordinates to tile coordinates
+                const tileX = Math.floor(x / TILE_SIZE);
+                const tileY = Math.floor(y / TILE_SIZE);
+                
+                // Check if the tile at (tileX, tileY) is collidable
+                const tile = this.collisionLayer.getTileAt(tileX, tileY);
+                return !tile || tile.index === 0;
+            }
+
+            updatePlayerDirection(direction) {
+                if (this.currentDirection !== direction) {
+                    this.currentDirection = direction;
+                    switch (direction) {
+                        case 'up':
+                            this.player.setText('⬆️');
+                            break;
+                        case 'down':
+                            this.player.setText('⬇️');
+                            break;
+                        case 'left':
+                            this.player.setText('⬅️');
+                            break;
+                        case 'right':
+                            this.player.setText('➡️');
+                            break;
+                    }
+                }
+            }
+
+            update() {
+                if (!this.isMoving) {
+                    let newTargetX = this.player.x;
+                    let newTargetY = this.player.y;
+                    let direction = this.currentDirection;
+
+                    if (this.cursors.left.isDown) {
+                        newTargetX = this.player.x - TILE_SIZE;
+                        direction = 'left';
+                    } else if (this.cursors.right.isDown) {
+                        newTargetX = this.player.x + TILE_SIZE;
+                        direction = 'right';
+                    } else if (this.cursors.up.isDown) {
+                        newTargetY = this.player.y - TILE_SIZE;
+                        direction = 'up';
+                    } else if (this.cursors.down.isDown) {
+                        newTargetY = this.player.y + TILE_SIZE;
+                        direction = 'down';
+                    }
+
+                    // Update direction even if not moving
+                    if (this.cursors.left.isDown || this.cursors.right.isDown || 
+                        this.cursors.up.isDown || this.cursors.down.isDown) {
+                        this.updatePlayerDirection(direction);
+                    }
+
+                    // Start movement if it's a valid move
+                    if ((newTargetX !== this.player.x || newTargetY !== this.player.y) && 
+                        this.isValidMove(newTargetX, newTargetY)) {
+                        this.targetX = newTargetX;
+                        this.targetY = newTargetY;
+                        this.isMoving = true;
+                    }
+                } else {
+                    // Handle movement animation
+                    let dx = 0;
+                    let dy = 0;
+
+                    if (this.player.x !== this.targetX) {
+                        dx = this.targetX > this.player.x ? MOVEMENT_SPEED : -MOVEMENT_SPEED;
+                        if (Math.abs(this.targetX - this.player.x) < MOVEMENT_SPEED) {
+                            this.player.x = this.targetX;
+                        } else {
+                            this.player.x += dx;
+                        }
+                    }
+
+                    if (this.player.y !== this.targetY) {
+                        dy = this.targetY > this.player.y ? MOVEMENT_SPEED : -MOVEMENT_SPEED;
+                        if (Math.abs(this.targetY - this.player.y) < MOVEMENT_SPEED) {
+                            this.player.y = this.targetY;
+                        } else {
+                            this.player.y += dy;
+                        }
+                    }
+
+                    // Check if movement is complete
+                    if (this.player.x === this.targetX && this.player.y === this.targetY) {
+                        this.isMoving = false;
+                    }
+                }
+            }
+        }
+
+        const config = {
+            type: Phaser.AUTO,
+            width: GRID_SIZE * TILE_SIZE,
+            height: GRID_SIZE * TILE_SIZE,
+            scene: GridMovementScene,
+            pixelArt: true,
+            physics: {
+                default: 'arcade',
+                arcade: {
+                    debug: true
+                }
+            }
+        };
+
+        new Phaser.Game(config);
+    </script>
+</body>
+</html>
