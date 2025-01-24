@@ -1,37 +1,21 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Pokemon TCG Pack Opener</title>
-    <link rel="stylesheet" href="src/styles.css">
-    <link rel="stylesheet" href="src/states/battleSelect/battleSelect.css">
-    <link rel="stylesheet" href="src/states/battle/battle.css">
-    <link rel="stylesheet" href="src/states/battle/playmat.css">
+    <title>Pokemon TCG Simulator</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: #333;
+        }
+    </style>
 </head>
 <body>
-    <div class="grid-background"></div>
-    <div id="game-container">
-        <!-- Battle Select Screen -->
-        <div id="battle-select-screen" class="state-screen">
-            <h1>Select Your Opponent</h1>
-            <div class="trainer-portraits">
-                <!-- Trainer cards dynamically inserted here -->
-            </div>
-        </div>
-
-        <!-- Pack Opener Screen -->
-        <div id="pack-opener-screen" class="state-screen">
-            <h1>Pokemon TCG Pack Opener</h1>
-            <div class="pack-opener">
-                <canvas id="packCanvas" width="400" height="600"></canvas>
-                <div class="controls">
-                    <button id="resetPack">Reset Pack</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Battle Screen -->
-        <div id="battle-screen" class="state-screen"></div>
-    </div>
-    <script src="src/game.js" type="module"></script>
+    <div id="game"></div>
+    <script type="module" src="/src/game.js"></script>
 </body>
 </html>

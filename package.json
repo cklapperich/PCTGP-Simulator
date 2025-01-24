@@ -3,9 +3,10 @@
   "version": "1.0.0",
   "description": "Pokemon Trading Card Game Simulator",
   "type": "module",
-  "main": "index.js",
   "scripts": {
-    "start": "node game/src/index.js",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
     "test": "node src/tests/pack_pull_test.js && node src/tests/rules_engine_test.js",
     "test:pack": "node src/tests/pack_pull_test.js",
     "test:rules": "node src/tests/rules_engine_test.js"
@@ -21,5 +22,9 @@
   "dependencies": {
     "ldtk": "^0.8.7",
     "phaser": "^3.87.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.10",
+    "vite": "^6.0.11"
   }
 }

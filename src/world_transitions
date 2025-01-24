@@ -1,0 +1,100 @@
+export class WorldScene extends Phaser.Scene {
+    constructor() {
+        super({ key: 'WorldScene' });
+        const gameStateInstance = new GameState();
+        this.gameState = gameStateInstance;
+    }
+
+    init(data) {
+        this.worldFile = data.world || '/assets/worlds/world1/world1.world';
+        this.startX = data.startX || 0;
+        this.startY = data.startY || 0;
+    }
+
+    preload() {
+        // Load the world file
+        this.load.json('worldData', this.worldFile);
+    }
+
+    async create() {
+        const worldData = this.cache.json.get('worldData');
+        const worldBasePath = this.worldFile.substring(0, this.worldFile.lastIndexOf('/') + 1);
+        
+        // Just load the first map from the world file
+        const firstMap = worldData.maps[0];
+        const mapPath = worldBasePath + firstMap.fileName;
+        const mapKey = firstMap.fileName.replace('.tmx', '');
+        
+        // Load the TMX file
+        this.load.tilemapTiledJSON(mapKey, mapPath);
+        await new Promise(resolve => {
+            this.load.once('complete', resolve);
+            this.load.start();
+        });
+
+        // Get map data and collect tileset information
+        const mapData = this.cache.json.get(mapKey);
+        
+        // Load all tileset images for this map
+        mapData.tilesets.forEach(tileset => {
+            const tilesetPath = this.getTilesetPath(tileset.image, worldBasePath);
+            this.load.image(tileset.name, tilesetPath);
+        });
+        
+        // Wait for tileset images to load
+        await new Promise(resolve => {
+            this.load.once('complete', resolve);
+            this.load.start();
+        });
+
+        // Create the map
+        const map = this.make.tilemap({ key: mapKey });
+        
+        // Add all tilesets to the map
+        const loadedTilesets = {};
+        map.tilesets.forEach(tileset => {
+            loadedTilesets[tileset.name] = map.addTilesetImage(
+                tileset.name, 
+                tileset.name
+            );
+        });
+
+        // Create all layers
+        map.layers.forEach(layer => {
+            const layerData = map.createLayer(
+                layer.name,
+                Object.values(loadedTilesets),
+                firstMap.x,
+                firstMap.y
+            );
+            
+            // Set collision if needed
+            if (layer.properties?.some(p => p.name === 'collision' && p.value === true)) {
+                layerData.setCollisionByProperty({ collides: true });
+            }
+        });
+
+        // Set camera bounds to just this map
+        this.cameras.main.setBounds(
+            firstMap.x,
+            firstMap.y,
+            map.widthInPixels,
+            map.heightInPixels
+        );
+
+        // Set physics bounds
+        this.physics.world.setBounds(
+            firstMap.x,
+            firstMap.y,
+            map.widthInPixels,
+            map.heightInPixels
+        );
+    }
+
+    getTilesetPath(tilesetPath, worldBasePath) {
+        if (tilesetPath.startsWith('../')) {
+            return '/assets/' + tilesetPath.replace('../', '');
+        }
+        return worldBasePath + tilesetPath;
+    }
+}

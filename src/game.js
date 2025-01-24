@@ -1,8 +1,13 @@
-import GameState from './WorldEngine/GameState.js'
-import {WorldScene} from './WorldEngine/WorldScene.js'
+import Phaser from 'phaser'
+import GameState from '@world/GameState.js'
+import { WorldScene } from '@world/WorldEngineSimple.js'
+import { World } from 'ldtk'
 
 // Create game state instance
 const gameState = new GameState();
+
+// Load world data
+const worldData = await World.loadRaw('/worlds.ldtk');
 
 const config = {
     type: Phaser.AUTO,
@@ -24,4 +29,7 @@ const config = {
 };
 
 const game = new Phaser.Game(config);
-game.scene.start('WorldScene', { gameState });
+game.scene.start('WorldScene', { 
+    gameState,
+    world: worldData
+});
