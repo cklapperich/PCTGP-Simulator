@@ -3,26 +3,15 @@ import { GameEvent, GameEventType } from './event_models.js';
 import { GameState, Card, Zone } from './models.js';
 import { checkStateBasedActions } from './check_statebased_actions.js';
 import { EffectType } from './effect_manager';
-
-interface DamageContext {
-    damage: number;
-    target: Zone;
-    damageType: string;
-    source?: any;
-}
-
-interface DamageOptions {
-    applyWeakness?: boolean;
-    ignoreTargetEffects?: boolean;
-}
+import { GameEventDataProps } from './types.js';
 
 export function applyDamageCalculation(
     gameState: GameState,
-    context: DamageContext,
+    context: GameEventDataProps,
     eventHandler: GameEvent[],
-    options: DamageOptions = { applyWeakness: true, ignoreTargetEffects: false }
+    options = { applyWeakness: true, ignoreTargetEffects: false }
 ): number {
-    let finalDamage = context.damage;
+    let finalDamage = context.damage || 0
 
     // Apply weakness if applicable
     if (options.applyWeakness && context.target.getPokemon()?.weakness === context.damageType) {
@@ -58,7 +47,7 @@ export function applyDamageCalculation(
 
 export function applyDamageCounters(
     gameState: GameState,
-    context: DamageContext,
+    context: GameEventDataProps,
     eventHandler: GameEvent[],
     amount: number
 ): number {
@@ -82,7 +71,7 @@ export function applyDamageCounters(
             target: zone,
             amount: actualDamage,
             source: context.source,
-            type: context.damageType
+            damageType: context.damageType || Type.COLORLESS // Default to COLORLESS if no type specified
         }));
     }
 
@@ -253,7 +242,7 @@ export function attachEnergyFromEnergyZone(
 export function attachEnergy(
     gameState: GameState,
     playerIndex: number,
-    energyType: string,
+    energyType: Type,
     targetZoneName: ZoneName,
     eventHandler: GameEvent[]
 ): boolean {

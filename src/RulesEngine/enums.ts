@@ -12,7 +12,12 @@ export enum Phase {
     // end
     GAME_END = "GAME_END"
 }
-
+export enum CardType {
+    POKEMON = 'POKEMON',
+    TRAINER = 'ITEM',
+    SUPPORTER = 'SUPPORTER',
+    TOOL= 'TOOL'
+}  
 export enum EnergyZoneLocation {
     CURRENT = "current",
     NEXT = "next"

@@ -1,4 +1,4 @@
-import { ZoneName } from './enums';
+import { ZoneName, Type } from './enums';
 import type { GameEventProps, GameEventDataProps } from './types';
 
 export enum GameEventType {
@@ -49,7 +49,7 @@ export class GameEventData {
     sourceCard: any | null;         // Card/Pokemon/effect causing this event
     targetCard: any | null;         // Card/Pokemon being targeted
     attackIndex: number | null;     // Index of chosen attack
-    type: string | null;            // Type for damage/energy/etc
+    damageType: Type | null;            // Type for damage/energy/etc
     effectType: string | null;      // Type of effect being applied
     phase: string | null;           // New game phase
     turn: number | null;            // Current turn number
@@ -65,7 +65,7 @@ export class GameEventData {
         source = null,
         target = null,
         attackIndex = null,
-        type = null,
+        damageType = null,
         effectType = null,
         phase = null,
         turn = null,
@@ -81,7 +81,7 @@ export class GameEventData {
         this.sourceCard = source;
         this.targetCard = target;
         this.attackIndex = attackIndex;
-        this.type = type;
+        this.damageType = damageType;
         
         this.effectType = effectType;
         
@@ -135,17 +135,17 @@ export class GameEvent {
         target,
         attackIndex,
         damage,
-        type
+        damageType
     }: {
         source: any;
         target: any;
         attackIndex: number;
         damage: number;
-        type: string;
+        damageType: Type;
     }): GameEvent {
         return new GameEvent({
             type: GameEventType.ATTACK,
-            data: {source, target, attackIndex, damage, type}
+            data: {source, target, attackIndex, damage, damageType}
         });
     }
 
@@ -153,23 +153,21 @@ export class GameEvent {
         target,
         amount,
         source,
-        type
+        damageType
     }: {
         target: any;
         amount: number;
         source: any;
-        type: string;
+        damageType: Type;
     }): GameEvent {
-        return new GameEvent({
-            type: GameEventType.DAMAGE,
-            data: {target, amount, source, type}
-        });
-    }
-
-    static createPhaseChange(phase: string): GameEvent {
-        return new GameEvent({
-            type: GameEventType.PHASE_CHANGE,
-            data: {phase}
-        });
+            return new GameEvent({
+                type: GameEventType.DAMAGE,
+                data: {
+                    target,
+                    amount,
+                    source,
+                    damageType: damageType as Type // ensure type safety
+                }
+            });
     }
 }

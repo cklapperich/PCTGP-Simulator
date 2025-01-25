@@ -1,42 +1,41 @@
 // Shared type definitions
 
-export interface WeaknessResistanceProps {
-    type: string;
-    value: number;
-}
+import { Type, CardType,Stage, Rarity } from "./enums";
 
 export interface CardProps {
     name: string;
-    HP: number;
-    type: string;
+    cardType: CardType;
+    set: string;
+    
+    HP?: number;
+    type?: Type;
     attacks?: Attack[];
     retreat?: number;
-    rarity?: string;
-    set?: string;
+    rarity?: Rarity;
     ability?: any; // TODO: Define ability type
-    stage?: string;
+    stage?: Stage;
     evolvesFrom?: string | null;
-    weakness?: string;
-    resistance?: string;
+    weakness?: Type;
+    resistance?: Type;
 }
 
 export interface Attack {
     name: string;
-    effect: any; // TODO: Define effect type
-    cost: any; // TODO: Define cost type
+    effect: any;
+    cost: [Type]; 
     damage: number;
 }
 
 export interface DeckProps {
     name?: string;
-    cards?: any[]; // TODO: Define card type
-    energyTypes?: Set<string>;
+    cards?: any[]; 
+    energyTypes?: Set<Type>;  // Updated to use Type enum
 }
 
 export interface PlayerStateProps {
     name?: string;
     isAI?: boolean;
-    deck?: any; // TODO: Define deck type
+    deck?: any;
 }
 
 export interface GameEventDataProps {
@@ -48,14 +47,15 @@ export interface GameEventDataProps {
     target?: any;
     attackIndex?: number | null;
     damage?: number | null;
-    type?: string | null;
+    damageType?: Type | null;
     effectType?: string | null;
     phase?: string | null;
     turn?: number | null;
     winner?: number | null;
     amount?: number | null;
     flips?: boolean[] | null;
-    zoneType?: string | null;  // Added for energy zone updates
+    zoneType?: string | null;  // For energy zone updates
+    type?: Type | null;        // For energy type in events
 }
 
 export interface GameEventProps {

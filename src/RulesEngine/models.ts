@@ -1,10 +1,9 @@
-import { Type, Rarity, Phase, ZoneName, Stage } from './enums';
+import { Type, Rarity, Phase, ZoneName, Stage,CardType} from './enums';
 import type { 
     Attack, 
     CardProps, 
     DeckProps, 
-    PlayerStateProps, 
-    WeaknessResistanceProps 
+    PlayerStateProps,
 } from './types';
 import { EffectManager } from './effect_manager.js';
 
@@ -46,22 +45,13 @@ export class GameState {
     }
 }
 
-export class WeaknessResistance {
-    type: string;
-    value: number;
-
-    constructor({ type, value }: WeaknessResistanceProps) {
-        this.type = type;
-        this.value = value;
-    }
-}
-
 export class Card {
     static nextId: number = 1;
     id: number;
     name: string;
     HP: number;
-    type: string;
+    type: Type;
+    cardType: CardType;
     attacks: Attack[];
     retreat: number;
     rarity: string;
@@ -71,13 +61,13 @@ export class Card {
     evolvesFrom: string | null;
     can_evolve: boolean;
     owner: number | null;
-    weakness: string;
-    resistance: string;
-
+    weakness: Type;
+    resistance: Type;
     constructor({
         name,
-        HP,
-        type,
+        cardType = CardType.POKEMON,
+        HP=0,
+        type=Type.NONE,
         attacks = [],
         retreat = 0,
         rarity = Rarity.DIAMOND_1,
@@ -87,10 +77,12 @@ export class Card {
         evolvesFrom = null,
         weakness = Type.NONE,
         resistance = Type.NONE,
+  
     }: CardProps) {
         this.id = Card.nextId++;
         this.name = name;
         this.HP = HP;
+        this.cardType = cardType;
         this.type = type;
         this.attacks = attacks;
         this.retreat = retreat;
@@ -99,10 +91,17 @@ export class Card {
         this.ability = ability;
         this.stage = stage;
         this.evolvesFrom = evolvesFrom;
-        this.can_evolve = false; // TODO: This wasn't initialized in the original
+        this.can_evolve = false;
         this.owner = null;
         this.weakness = weakness;
         this.resistance = resistance;
+    }
+    
+    is_trainer(): boolean {
+        return this.cardType === CardType.TRAINER || this.cardType === CardType.SUPPORTER || this.cardType === CardType.TOOL;
+    }
+    is_pokemon() : boolean {
+        return this.cardType === CardType.POKEMON;
     }
 }
 
@@ -112,12 +111,12 @@ export class Card {
 export class Deck {
     name: string;
     cards: Card[];
-    energyTypes: string[];
+    energyTypes: Type[];
 
     constructor({
         name = "Default Deck",
         cards = [],
-        energyTypes = new Set()
+        energyTypes = new Set<Type>()
     }: DeckProps = {}) {
         this.name = name;
         this.cards = [...cards];
@@ -142,7 +141,7 @@ export class Deck {
         return this.cards.pop()!;
     }
 
-    getEnergyTypes(): string[] {
+    getEnergyTypes(): Type[] {
         return [...this.energyTypes];
     }
 }
@@ -152,7 +151,7 @@ export class Deck {
  */
 export class Zone {
     cards: Card[];
-    attachedEnergy: { [key: string]: number };
+    attachedEnergy: { [key in Type]?: number };
     attachedTools: Card[];
     damage: number;
 
@@ -187,11 +186,11 @@ export class Zone {
         return this.cards.pop()!;
     }
 
-    addEnergy(energyType: string): void {
+    addEnergy(energyType: Type): void {
         this.attachedEnergy[energyType] = (this.attachedEnergy[energyType] || 0) + 1;
     }
 
-    removeEnergy(energyType: string): boolean {
+    removeEnergy(energyType: Type): boolean {
         const current = this.attachedEnergy[energyType] || 0;
         if (current > 0) {
             this.attachedEnergy[energyType] = current - 1;
@@ -233,8 +232,8 @@ export class PlayerState {
     isAI: boolean;
     deck: Deck;
     zones: { [key in ZoneName]: Zone };
-    currentEnergyZone: string | null;  // Changed from Zone to string since it stores energy type
-    nextEnergyZone: string | null;     // Changed from Zone to string since it stores energy type
+    currentEnergyZone: Type | null;  // Changed from string to Type
+    nextEnergyZone: Type | null;     // Changed from string to Type
     canAttachEnergy: boolean;
     canSupporter: boolean;
     setupComplete: boolean;
@@ -289,11 +288,11 @@ export class PlayerState {
         return this.getZone(zoneName).removeTopCard();
     }
 
-    addEnergyToZone(energyType: string, zoneName: ZoneName): void {
+    addEnergyToZone(energyType: Type, zoneName: ZoneName): void {
         this.getZone(zoneName).addEnergy(energyType);
     }
 
-    removeEnergyFromZone(energyType: string, zoneName: ZoneName): boolean {
+    removeEnergyFromZone(energyType: Type, zoneName: ZoneName): boolean {
         return this.getZone(zoneName).removeEnergy(energyType);
     }
 
