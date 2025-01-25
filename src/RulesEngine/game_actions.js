@@ -1,7 +1,44 @@
 import { Type, Phase, ZoneName, BENCH_ZONES, Stage, energyZoneLocation } from './enums.js';
 import { GameEvent, GameEventType } from './event_models.js';
-import { GameState} from './models.js';
+import { GameState } from './models.js';
 import { checkStateBasedActions } from './check_statebased_actions.js';
+
+/* psuedocode of how to handle druddigon/poliwrath damage reaction
+// In damage calculation
+function applyDamageCalculation(state, damage_type, target_pokemon, damage, eventHandler) {
+    // ... normal damage calculation ...
+    
+    const reactionEffects = state.effectManager
+        .getActiveEffects(EffectType.DAMAGE_REACTION)
+        .filter(effect => effect.target === target_pokemon);
+        
+    for (const effect of reactionEffects) {
+        effect.modifier(damage, state);
+    }
+}
+*/
+/**
+ * Apply damage with full calculations
+ */
+
+export function applyDamageCalculation(state, damage_type, target_pokemon, damage, eventHandler, damage,
+    applyweakness=true,ignore_target_effects=false) {
+        if (target_pokemon.weakness==damage_type && applyweakness==true) {
+            if (!immunity){
+                damage=damage+=20
+            }
+        }
+        if (!ignore_target_effects){
+            damage_modified = effect_manager.getDamageModifications(state, damage, damage_type, soure_pokemon, target_pokemon)
+            damage+=damage_modified
+        }
+    applyDamageCounters(damage, source, target_pokemon);
+}
+
+export function applyDamageCounters(state, damage, source, target_pokemon) {
+    effect_manager.
+    target_pokemon.damage += damage;
+}
 
 /**
  * Draw initial hand of 5 cards, ensuring at least one basic Pokemon by:

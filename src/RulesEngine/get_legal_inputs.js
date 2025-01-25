@@ -167,6 +167,16 @@ export function getLegalInputs(gameState) {
                 }
             });
 
+            // Can Retreat if energy
+            if (activePokemon && activePokemon.can_retreat() && activePokemon.getRetreatCost() > activePokemon.getAttachedEnergy().length) {
+                inputs.push(new PlayerInput({
+                    inputType: InputType.RETREAT,
+                    playerIndex: currentPlayerIndex,
+                    data: new InputData({
+                        sourceZone: ZoneName.ACTIVE
+                    })
+                }));
+            }
             // Can pass turn during normal gameplay
             inputs.push(new PlayerInput({
                 data: new InputData(),

@@ -7,7 +7,7 @@
 const DEFAULT_PACK_ODDS = {
   // Positions 1-3 are 100% common (diamond_2)
   common: {
-    diamond_2: 100
+    diamond_1: 100
   },
   
   // Position 4 odds

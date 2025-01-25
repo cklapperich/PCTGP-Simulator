@@ -16,8 +16,8 @@
             "cost": ["grass", "colorless","colorless"],
             "text": "",
             "effect": {
-                "type": "basic",
-                "base_damage": 60
+                "type": "SIMPLE_DAMAGE",
+                "amount": 20
             }
         }
     ]
