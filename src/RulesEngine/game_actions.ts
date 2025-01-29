@@ -1,61 +1,120 @@
-import { Type, Phase, ZoneName, BENCH_ZONES, Stage, energyZoneLocation } from './enums.js';
+import { Type, Phase, ZoneName, BENCH_ZONES, Stage, EnergyZoneLocation } from './enums.js';
 import { GameEvent, GameEventType } from './event_models.js';
-import { GameState } from './models.js';
+import { GameState, Card, Zone } from './models.js';
 import { checkStateBasedActions } from './check_statebased_actions.js';
+import { EffectType } from './effect_manager';
+import { GameEventDataProps } from './types.js';
 
-/* psuedocode of how to handle druddigon/poliwrath damage reaction
-// In damage calculation
-function applyDamageCalculation(state, damage_type, target_pokemon, damage, eventHandler) {
-    // ... normal damage calculation ...
-    
-    const reactionEffects = state.effectManager
-        .getActiveEffects(EffectType.DAMAGE_REACTION)
-        .filter(effect => effect.target === target_pokemon);
-        
-    for (const effect of reactionEffects) {
-        effect.modifier(damage, state);
+export function applyDamageCalculation(
+    gameState: GameState,
+    context: GameEventDataProps,
+    eventHandler: GameEvent[],
+    options = { applyWeakness: true, ignoreTargetEffects: false }
+): number {
+    let finalDamage = context.damage || 0
+
+    // Apply weakness if applicable
+    if (options.applyWeakness && context.target.getPokemon()?.weakness === context.damageType) {
+        const immunityEffects = gameState.effectManager.getActiveEffects(gameState, EffectType.IMMUNITY, context);
+        if (immunityEffects.length === 0) {
+            finalDamage += 20;
+        }
     }
-}
-*/
-/**
- * Apply damage with full calculations
- */
 
-export function applyDamageCalculation(state, damage_type, target_pokemon, damage, eventHandler, damage,
-    applyweakness=true,ignore_target_effects=false) {
-        if (target_pokemon.weakness==damage_type && applyweakness==true) {
-            if (!immunity){
-                damage=damage+=20
+    // Get damage modifications from effects if not ignored
+    if (!options.ignoreTargetEffects) {
+        // Apply damage modification effects
+        const damageEffects = gameState.effectManager.getActiveEffects(gameState, EffectType.DAMAGE_MODIFICATION, context);
+        for (const effect of damageEffects) {
+            if (effect.modifier) {
+                finalDamage = effect.modifier(finalDamage, gameState, context);
             }
         }
-        if (!ignore_target_effects){
-            damage_modified = effect_manager.getDamageModifications(state, damage, damage_type, soure_pokemon, target_pokemon)
-            damage+=damage_modified
+
+        // Apply damage reaction effects
+        const reactionEffects = gameState.effectManager.getActiveEffects(gameState, EffectType.DAMAGE_REACTION, context);
+        for (const effect of reactionEffects) {
+            if (effect.modifier) {
+                finalDamage = effect.modifier(finalDamage, gameState, context);
+            }
         }
-    applyDamageCounters(damage, source, target_pokemon);
+    }
+
+    // Apply the final damage
+    const actualDamage = applyDamageCounters(gameState, context, eventHandler, finalDamage);
+    return actualDamage;
 }
 
-export function applyDamageCounters(state, damage, source, target_pokemon) {
-    effect_manager.
-    target_pokemon.damage += damage;
+export function applyDamageCounters(
+    gameState: GameState,
+    context: GameEventDataProps,
+    eventHandler: GameEvent[],
+    amount: number
+): number {
+    const zone = context.target;
+    const oldDamage = zone.damage || 0;
+    
+    // Get max HP of card in zone
+    const card = zone.getPokemon();
+    if (!card) return 0;
+    
+    // Calculate new damage, bounded by 0 and maxHP
+    const newDamage = Math.max(0, Math.min(oldDamage + amount, card.HP));
+    const actualDamage = newDamage - oldDamage;
+    
+    // Update zone's damage
+    zone.damage = newDamage;
+
+    // Emit damage event with actual amount applied
+    if (actualDamage !== 0) {
+        eventHandler.push(GameEvent.createDamage({
+            target: zone,
+            amount: actualDamage,
+            source: context.source,
+            damageType: context.damageType || Type.COLORLESS // Default to COLORLESS if no type specified
+        }));
+    }
+
+    return actualDamage;
 }
 
-/**
- * Draw initial hand of 5 cards, ensuring at least one basic Pokemon by:
- * 1. Finding a random basic Pokemon in deck and adding it to hand
- * 2. Drawing 4 more random cards
- * @param {GameState} state - Current game state
- * @param {number} player_index - Index of player drawing cards
- * @param {eventHandler} eventHandler - Bus to emit events on
- * @returns {Array<Card>} The drawn cards
- * decks are assumed to be valid and have at least 1 basic
- */
-export function drawInitialHand(state, player_index, eventHandler) {
-    const player = state.players[player_index];
+export function applyEffect(
+    gameState: GameState,
+    effect: any,
+    context: any,
+    eventHandler: GameEvent[]
+): boolean {
+    // Check if effect can be applied with context
+    if (!gameState.effectManager.canApplyEffect(gameState, effect, context)) {
+        return false;
+    }
+
+    // Add the effect
+    gameState.effectManager.addEffect(effect, context);
+
+    // Emit effect added event
+    eventHandler.push(new GameEvent({
+        type: GameEventType.EFFECT_ADD,
+        data: {
+            source: context.source,
+            target: context.target,
+            effectType: effect.type
+        }
+    }));
+
+    return true;
+}
+
+export function drawInitialHand(
+    gameState: GameState,
+    player_index: number,
+    eventHandler: GameEvent[]
+): Card[] {
+    const player = gameState.players[player_index];
     const deck = player.deck;
     
     // Find all basic Pokemon in deck and select one randomly
-    const basicPokemonIndices = deck.cards.reduce((indices, card, index) => {
+    const basicPokemonIndices = deck.cards.reduce((indices: number[], card: Card, index: number) => {
         if (card.stage === Stage.BASIC) {
             indices.push(index);
         }
@@ -84,15 +143,19 @@ export function drawInitialHand(state, player_index, eventHandler) {
     // Draw 4 more cards
     const drawnCards = [basicPokemon];
     for (let i = 0; i < 4; i++) {
-        const card = drawCard(state, player_index, eventHandler);
+        const card = drawCard(gameState, player_index, eventHandler);
         drawnCards.push(card);
     }
 
     return drawnCards;
 }
 
-export function drawCard(state, player_index, eventHandler) {
-    const player = state.players[player_index];
+export function drawCard(
+    gameState: GameState,
+    player_index: number,
+    eventHandler: GameEvent[]
+): Card {
+    const player = gameState.players[player_index];
     
     // Draw card using PlayerState zone methods
     const card = player.drawCard();
@@ -110,8 +173,12 @@ export function drawCard(state, player_index, eventHandler) {
     return card;
 }
 
-export function shuffleDeck(state, player_index, eventHandler) {
-    const player = state.players[player_index];
+export function shuffleDeck(
+    gameState: GameState,
+    player_index: number,
+    eventHandler: GameEvent[]
+): void {
+    const player = gameState.players[player_index];
     player.shuffleDeck();
     
     // Emit game state event
@@ -124,15 +191,13 @@ export function shuffleDeck(state, player_index, eventHandler) {
     }));
 }
 
-/**
- * Play a Pokemon card from hand to a specific zone
- * @param {GameState} gameState - Current game state
- * @param {number} playerIndex - Index of the player playing the card
- * @param {number} handIndex - Index of the card in the player's hand
- * @param {string} zone - Zone to play the card to (from Zone enum)
- * @param {eventHandler} eventHandler - Bus to emit events on
- */
-export function playPokemonCard(gameState, playerIndex, handIndex, targetZoneName, eventHandler) {
+export function playPokemonCard(
+    gameState: GameState,
+    playerIndex: number,
+    handIndex: number,
+    targetZoneName: ZoneName,
+    eventHandler: GameEvent[]
+): void {
     const player = gameState.players[playerIndex];
     
     // Get card from hand zone
@@ -157,47 +222,49 @@ export function playPokemonCard(gameState, playerIndex, handIndex, targetZoneNam
     }));
 }
 
-/**
- * Attach energy from energy zone to a Pokemon
- * @param {GameState} state - Current game state
- * @param {number} playerIndex - Index of the player attaching energy
- * @param {string} targetZoneName - Zone to attach energy to (from ZoneName enum)
- * @param {eventHandler} eventHandler - Bus to emit events on
- */
-export function attachEnergyFromEnergyZone(state, playerIndex, targetZoneName, eventHandler) {
-    const player = state.players[playerIndex];
+export function attachEnergyFromEnergyZone(
+    gameState: GameState,
+    playerIndex: number,
+    targetZoneName: ZoneName,
+    eventHandler: GameEvent[]
+): boolean {
+    const player = gameState.players[playerIndex];
     const energyType = player.currentEnergyZone;
 
-    if (!energyType || !player.canAttachEnergy || energyType === Type.NONE) {
-        return false; // No energy type selected or player cannot attach energy
+    if (!energyType || energyType === Type.NONE) {
+        return false;
     }
     player.currentEnergyZone = Type.NONE;
     player.canAttachEnergy = false;
-    return attachEnergy(state, playerIndex, energyType, targetZoneName, eventHandler);
+    return attachEnergy(gameState, playerIndex, energyType, targetZoneName, eventHandler);
 }
 
-export function attachEnergy(state, playerIndex, energyType, targetZoneName, eventHandler) {
-    const player = state.players[playerIndex];
-    player.attachEnergyToZone(energyType, targetZoneName);
+export function attachEnergy(
+    gameState: GameState,
+    playerIndex: number,
+    energyType: Type,
+    targetZoneName: ZoneName,
+    eventHandler: GameEvent[]
+): boolean {
+    const player = gameState.players[playerIndex];
+    player.addEnergyToZone(energyType, targetZoneName);
 
     // Emit game state event
     eventHandler.push(new GameEvent({
         type: GameEventType.ATTACH_ENERGY,
         data: {
             playerIndex: playerIndex,
-            energyType: energyType,
+            type: energyType,
             targetZone: targetZoneName
         }
     }));
     return true;
 }
 
-/**
- * Initialize both players' energy zones during setup
- * @param {GameState} gameState - Current game state
- * @param {eventHandler} eventHandler - Bus to emit events on
- */
-export function initializeEnergyZones(gameState, eventHandler) {
+export function initializeEnergyZones(
+    gameState: GameState,
+    eventHandler: GameEvent[]
+): void {
     [0, 1].forEach(playerIndex => {
         const player = gameState.players[playerIndex];
         const energyTypes = player.deck.getEnergyTypes();
@@ -205,12 +272,12 @@ export function initializeEnergyZones(gameState, eventHandler) {
 
         // Set current energy to NONE
         player.currentEnergyZone = Type.NONE;
-    eventHandler.push(new GameEvent({
+        eventHandler.push(new GameEvent({
             type: GameEventType.ENERGY_ZONE_UPDATE,
             data: {
                 playerIndex: playerIndex,
-                zoneType: energyZoneLocation.CURRENT,
-                energyType: Type.NONE
+                type: Type.NONE,
+                zoneType: EnergyZoneLocation.CURRENT
             }
         }));
 
@@ -218,24 +285,22 @@ export function initializeEnergyZones(gameState, eventHandler) {
         const randomIndex = Math.floor(Math.random() * energyTypes.length);
         const newNextEnergy = energyTypes[randomIndex];
         player.nextEnergyZone = newNextEnergy;
-    eventHandler.push(new GameEvent({
+        eventHandler.push(new GameEvent({
             type: GameEventType.ENERGY_ZONE_UPDATE,
             data: {
                 playerIndex: playerIndex,
-                zoneType: energyZoneLocation.NEXT,
-                energyType: newNextEnergy
+                type: newNextEnergy,
+                zoneType: EnergyZoneLocation.NEXT
             }
         }));
     });
 }
 
-/**
- * Update a player's energy zones
- * @param {GameState} gameState - Current game state
- * @param {number} playerIndex - Index of player whose energy zones to update
- * @param {eventHandler} eventHandler - Bus to emit events on
- */
-function updateEnergyZones(gameState, playerIndex, eventHandler) {
+function updateEnergyZones(
+    gameState: GameState,
+    playerIndex: number,
+    eventHandler: GameEvent[]
+): void {
     const player = gameState.players[playerIndex];
     const energyTypes = player.deck.getEnergyTypes();
     if (energyTypes.length === 0) return;
@@ -250,8 +315,8 @@ function updateEnergyZones(gameState, playerIndex, eventHandler) {
         type: GameEventType.ENERGY_ZONE_UPDATE,
         data: {
             playerIndex: playerIndex,
-            zoneType: energyZoneLocation.CURRENT,
-            energyType: newCurrentEnergy
+            type: newCurrentEnergy,
+            zoneType: EnergyZoneLocation.CURRENT
         }
     }));
 
@@ -265,18 +330,16 @@ function updateEnergyZones(gameState, playerIndex, eventHandler) {
         type: GameEventType.ENERGY_ZONE_UPDATE,
         data: {
             playerIndex: playerIndex,
-            zoneType: energyZoneLocation.NEXT,
-            energyType: newNextEnergy
+            type: newNextEnergy,
+            zoneType: EnergyZoneLocation.NEXT
         }
     }));
 }
 
-/**
- * End the current turn and start the next one
- * @param {GameState} gameState - Current game state
- * @param {eventHandler} eventHandler - Bus to emit events on
- */
-export function endTurn(gameState, eventHandler) {
+export function endTurn(
+    gameState: GameState,
+    eventHandler: GameEvent[]
+): void {
     const nextPlayerIndex = 1 - gameState.currentPlayerIndex;
     const currentPlayer = gameState.players[gameState.currentPlayerIndex];
     const nextPlayer = gameState.players[nextPlayerIndex];
@@ -323,11 +386,18 @@ export function endTurn(gameState, eventHandler) {
         }
     });
 
-    // Check state-based actions after turn change
+    // count down duration on status effects
+    gameState.effectManager.tickdown(gameState);
+
+    // end of turn stuff
     checkStateBasedActions(gameState, eventHandler);
 }
 
-export function startFirstTurn(playerIndex, gameState, eventHandler) {
+export function startFirstTurn(
+    playerIndex: number,
+    gameState: GameState,
+    eventHandler: GameEvent[]
+): void {
     gameState.currentPlayerIndex = playerIndex;
     gameState.turn++;
     
