@@ -1,6 +1,7 @@
 // Shared type definitions
 
-import { Type, CardType,Stage, Rarity } from "./enums";
+import { Type, CardType, Stage, Rarity, ZoneName } from "./enums";
+import { PlayerState, Zone } from "./models";
 
 export interface CardProps {
     name: string;
@@ -38,6 +39,23 @@ export interface PlayerStateProps {
     deck?: any;
 }
 
+// Context object for effect writers
+export interface GameContext {
+    // Core data
+    sourcePlayerIndex: number;
+    targetPlayerIndex: number;
+    sourceZoneName: ZoneName;
+    targetZoneName: ZoneName;
+    sourceCard?: any;  // TODO: Type this properly
+    targetCard?: any;  // TODO: Type this properly
+    
+    // Optional attack/ability data
+    damage?: number;
+    damageType?: Type;
+    attackIndex?: number;
+}
+
+// Event data - separate from GameContext
 export interface GameEventDataProps {
     card?: any;
     sourceZone?: string | null;

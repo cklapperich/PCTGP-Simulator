@@ -1,3 +1,29 @@
+export const DURATION = {
+    PERMANENT: 999,
+    UNTIL_END_OF_TURN: 0,
+    UNTIL_END_OF_NEXT_TURN: 1
+} as const;
+
+export enum EffectTiming {
+    // Queries return values
+    QUERY_DAMAGE = 'QUERY_DAMAGE',
+    QUERY_RETREAT_COST = 'QUERY_RETREAT_COST',
+    QUERY_CAN_PLAY_CARD = 'QUERY_CAN_PLAY_CARD',
+    
+    // Actions perform game state changes
+    ON_DAMAGE = 'ON_DAMAGE',
+    ON_TURN_END = 'ON_TURN_END'
+}
+
+export enum EffectSourceType {
+    ATTACK = 'ATTACK',
+    ABILITY = 'ABILITY',
+    ITEM = 'ITEM',
+    TOOL = 'TOOL',
+    SUPPORTER = 'SUPPORTER',
+    TRAINER = 'TRAINER'
+}
+
 export enum Phase {
     // INITIAL setup
     DEAL_CARDS = "DEAL_CARDS",

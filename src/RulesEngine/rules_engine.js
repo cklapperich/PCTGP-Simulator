@@ -1,7 +1,7 @@
 import { getLegalInputs } from "./get_legal_inputs.js";
 import { GameState } from "./models.js";
 import { rulesEngineGenerator } from "./rules_engine_generator.js";
-
+// TODO: copy the gamestate so we can have an actual state history
 export class TurnHistory {
     constructor(state, lastinput, gameevents, legal_inputs) {
         this.state = state || null;
@@ -38,9 +38,9 @@ export class RulesEngine {
     
     runUntilNext(input) {
         this.currentTurnEvents = [];
-        
+        this.state.last_input = input;
         const response = this.generator.next(input).value;
-        
+
         this.state_history.push(new TurnHistory(
             this.state,
             input,

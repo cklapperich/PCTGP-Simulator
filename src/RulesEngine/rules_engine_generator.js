@@ -121,7 +121,24 @@ export function* rulesEngineGenerator(gameState, eventHandler) {
                     data: new GameEventData({ phase: gameState.phase })
                 }));
             }
-            
+            else if (input.inputType === InputType.ATTACK) {
+                // get legal inputs has already determined this is a valid attack!
+                attack_index = input.attack_index
+                target_index = input.target_index
+                activepoke = gameState.players[gameState.currentPlayerIndex].getPokemonInZone(ZoneName.ACTIVE)
+                attack = activepoke.attacks[attack_index]
+                for (const effect of attack.effects) {
+                    const effect_result = applyEffect(gameState, effect, gameState.currentPlayerIndex, target_index, eventHandler);
+                }
+                //check statebased actions
+                checkStateBasedActions(gameState, eventHandler);
+                // switch phases
+                gameState.phase = Phase.BETWEEN_TURNS;
+                eventHandler.push(new GameEvent({
+                    type: GameEventType.PHASE_CHANGE,
+                    data: new GameEventData({ phase: gameState.phase })
+                }));
+            }
             checkStateBasedActions(gameState, eventHandler);
         }
 

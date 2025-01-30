@@ -6,7 +6,7 @@ import type {
     PlayerStateProps,
 } from './types';
 import { EffectManager } from './effect_manager.js';
-
+import {PlayerInput} from './input_event_models.js'
 /**
  * Represents the current state of the game
  */
@@ -16,7 +16,8 @@ export class GameState {
     turn: number;
     currentPlayerIndex: number;
     effectManager: EffectManager;
-
+    lastinput: PlayerInput;
+    activeEffects: any[]; // TODO: Define effect type? could use effect_manager.ts definition, except, circular import problem!
     constructor(player1: PlayerState, player2: PlayerState) {
         this.phase = Phase.DEAL_CARDS;
         this.players = {
@@ -26,6 +27,7 @@ export class GameState {
         this.turn = 0;
         this.currentPlayerIndex = -1;
         this.effectManager = new EffectManager();
+        this.lastinput=null;
 
         // Initialize card ownership for both players
         player1.deck.cards.forEach(card => {
@@ -154,12 +156,13 @@ export class Zone {
     attachedEnergy: { [key in Type]?: number };
     attachedTools: Card[];
     damage: number;
-
+    attackState: { [key: string]: any };
     constructor() {
         this.cards = [];
         this.attachedEnergy = {};
         this.attachedTools = [];
         this.damage = 0;
+        this.attackState = {};
     }
 
     clear(): Card[] {
@@ -168,6 +171,7 @@ export class Zone {
         this.attachedEnergy = {};
         this.attachedTools = [];
         this.damage = 0;
+        this.attackState = {} // TODO: MAKE SURE TO ALWAYS CLEAR ON ZONE CHANGES!
         return clearedCards;
     }
 
