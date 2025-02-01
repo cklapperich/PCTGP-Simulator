@@ -8,5 +8,6 @@
   "rarity": "2_star",
   "pack": "charizard",
   "text": "During this turn, attacks used by your Ninetales, Rapidash, or Magmar do +30 damage to your opponent's Active Pokémon.",
+  "resistance": null,
   "effect": {}
 }

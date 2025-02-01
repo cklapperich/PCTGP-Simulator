@@ -7,11 +7,11 @@
   "category": "pokemon",
   "stage": "stage 1",
   "evolvesFrom": "Old Amber",
-  "weakness": "lightning",
   "retreat": 1,
   "artist": "Naoyo Kimura",
   "rarity": "diamond_3",
   "pack": "mewtwo",
+  "resistance": null,
   "attacks": [
     {
       "name": "Primal Wingbeat",
@@ -25,5 +25,6 @@
         "amount": 0
       }
     }
-  ]
+  ],
+  "weakness": "lightning"
 }

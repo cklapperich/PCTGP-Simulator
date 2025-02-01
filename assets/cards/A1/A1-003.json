@@ -7,11 +7,11 @@
   "category": "pokemon",
   "stage": "stage 2",
   "evolvesFrom": "Ivysaur",
-  "weakness": "fire",
   "retreat": 3,
   "artist": "Ryota Murayama",
   "rarity": "diamond_3",
   "pack": "mewtwo",
+  "resistance": null,
   "attacks": [
     {
       "name": "Mega Drain 80",
@@ -27,5 +27,6 @@
         "amount": 80
       }
     }
-  ]
+  ],
+  "weakness": "fire"
 }

@@ -7,10 +7,10 @@
   "category": "pokemon",
   "stage": "stage 1",
   "evolvesFrom": "Helioptile",
-  "weakness": "fighting",
   "retreat": 1,
   "artist": "otumami",
   "rarity": "diamond_1",
+  "resistance": null,
   "attacks": [
     {
       "name": "Quick Attack 40+",
@@ -24,5 +24,6 @@
         "amount": 40
       }
     }
-  ]
+  ],
+  "weakness": "fighting"
 }

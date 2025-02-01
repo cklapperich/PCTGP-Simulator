@@ -7,11 +7,11 @@
   "category": "pokemon",
   "stage": "stage 1",
   "evolvesFrom": "Seel",
-  "weakness": "lightning",
   "retreat": 3,
   "artist": "Kanako Eo",
   "rarity": "diamond_2",
   "pack": "pikachu",
+  "resistance": null,
   "attacks": [
     {
       "name": "Surf 90",
@@ -26,5 +26,6 @@
         "amount": 90
       }
     }
-  ]
+  ],
+  "weakness": "lightning"
 }

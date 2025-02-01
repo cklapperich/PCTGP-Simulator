@@ -6,11 +6,11 @@
   "HP": 100,
   "category": "pokemon",
   "stage": "basic",
-  "weakness": "lightning",
   "retreat": 2,
   "artist": "Sekio",
   "rarity": "diamond_3",
   "pack": "charizard",
+  "resistance": null,
   "attacks": [
     {
       "name": "Hydro Pump 20+",
@@ -23,5 +23,6 @@
         "amount": 20
       }
     }
-  ]
+  ],
+  "weakness": "lightning"
 }

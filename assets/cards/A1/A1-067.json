@@ -7,11 +7,11 @@
   "category": "pokemon",
   "stage": "stage 1",
   "evolvesFrom": "Shellder",
-  "weakness": "lightning",
   "retreat": 3,
   "artist": "Saya Tsuruta",
   "rarity": "diamond_2",
   "pack": "mewtwo",
+  "resistance": null,
   "attacks": [
     {
       "name": "Surf 70",
@@ -26,5 +26,6 @@
         "amount": 70
       }
     }
-  ]
+  ],
+  "weakness": "lightning"
 }

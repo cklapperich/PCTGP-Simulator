@@ -6,11 +6,11 @@
   "HP": 150,
   "category": "pokemon",
   "stage": "basic",
-  "weakness": "fighting",
   "retreat": 4,
   "artist": "Naoki Saito",
   "rarity": "diamond_3",
   "pack": "pikachu",
+  "resistance": null,
   "attacks": [
     {
       "name": "Rollout 70",
@@ -26,5 +26,6 @@
         "amount": 70
       }
     }
-  ]
+  ],
+  "weakness": "fighting"
 }

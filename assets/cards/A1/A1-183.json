@@ -6,11 +6,11 @@
   "HP": 70,
   "category": "pokemon",
   "stage": "basic",
-  "weakness": "none",
   "retreat": 1,
   "artist": "Ayaka Yoshida",
   "rarity": "diamond_1",
   "pack": "mewtwo",
+  "resistance": null,
   "attacks": [
     {
       "name": "Ram 40",
@@ -24,5 +24,6 @@
         "amount": 40
       }
     }
-  ]
+  ],
+  "weakness": "none"
 }

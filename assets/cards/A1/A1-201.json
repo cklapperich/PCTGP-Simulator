@@ -6,11 +6,11 @@
   "HP": 90,
   "category": "pokemon",
   "stage": "basic",
-  "weakness": "fighting",
   "retreat": 3,
   "artist": "Kagemaru Himeno",
   "rarity": "diamond_2",
   "pack": "mewtwo",
+  "resistance": null,
   "attacks": [
     {
       "name": "Continuous Lick 60x",
@@ -25,5 +25,6 @@
         "amount": 60
       }
     }
-  ]
+  ],
+  "weakness": "fighting"
 }

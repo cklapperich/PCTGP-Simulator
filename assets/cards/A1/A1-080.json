@@ -7,11 +7,11 @@
   "category": "pokemon",
   "stage": "stage 1",
   "evolvesFrom": "Eevee",
-  "weakness": "lightning",
   "retreat": 2,
   "artist": "Kagemaru Himeno",
   "rarity": "diamond_3",
   "pack": "mewtwo",
+  "resistance": null,
   "attacks": [
     {
       "name": "Bubble Drain 60",
@@ -26,5 +26,6 @@
         "amount": 60
       }
     }
-  ]
+  ],
+  "weakness": "lightning"
 }

@@ -7,10 +7,10 @@
   "category": "pokemon",
   "stage": "stage 1",
   "evolvesFrom": "Rattata",
-  "weakness": "fighting",
   "retreat": 1,
   "artist": "Shigenori Negishi",
   "rarity": "diamond_1",
+  "resistance": null,
   "attacks": [
     {
       "name": "Bite 40",
@@ -23,5 +23,6 @@
         "amount": 40
       }
     }
-  ]
+  ],
+  "weakness": "fighting"
 }

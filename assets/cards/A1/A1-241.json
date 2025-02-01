@@ -7,11 +7,11 @@
   "category": "pokemon",
   "stage": "stage 2",
   "evolvesFrom": "Nidorino",
-  "weakness": "fighting",
   "retreat": 3,
   "artist": "nagimiso",
   "rarity": "1_star",
   "pack": "pikachu",
+  "resistance": null,
   "attacks": [
     {
       "name": "Poison Horn 90",
@@ -26,5 +26,6 @@
         "amount": 90
       }
     }
-  ]
+  ],
+  "weakness": "fighting"
 }

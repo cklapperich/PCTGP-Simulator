@@ -6,11 +6,11 @@
   "HP": 70,
   "category": "pokemon",
   "stage": "basic",
-  "weakness": "lightning",
   "retreat": 1,
   "artist": "OOYAMA",
   "rarity": "diamond_1",
   "pack": "charizard",
+  "resistance": null,
   "attacks": [
     {
       "name": "Rain Splash 30",
@@ -23,5 +23,6 @@
         "amount": 30
       }
     }
-  ]
+  ],
+  "weakness": "lightning"
 }

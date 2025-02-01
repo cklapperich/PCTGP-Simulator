@@ -6,11 +6,11 @@
   "HP": 80,
   "category": "pokemon",
   "stage": "basic",
-  "weakness": "grass",
   "retreat": 3,
   "artist": "Midori Harada",
   "rarity": "diamond_1",
   "pack": "mewtwo",
+  "resistance": null,
   "attacks": [
     {
       "name": "Tackle 60",
@@ -25,5 +25,6 @@
         "amount": 60
       }
     }
-  ]
+  ],
+  "weakness": "grass"
 }

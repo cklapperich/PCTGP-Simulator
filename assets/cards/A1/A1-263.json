@@ -7,11 +7,11 @@
   "category": "pokemon",
   "stage": "stage 2",
   "evolvesFrom": "Machoke",
-  "weakness": "psychic",
   "retreat": 3,
   "artist": "PLANETA Igarashi",
   "rarity": "2_star",
   "pack": "charizard",
+  "resistance": null,
   "attacks": [
     {
       "name": "Mega Punch 120",
@@ -27,5 +27,6 @@
       }
     }
   ],
-  "ex": true
+  "ex": true,
+  "weakness": "psychic"
 }

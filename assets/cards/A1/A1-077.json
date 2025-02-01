@@ -6,11 +6,11 @@
   "HP": 30,
   "category": "pokemon",
   "stage": "basic",
-  "weakness": "lightning",
   "retreat": 1,
   "artist": "Sekio",
   "rarity": "diamond_1",
   "pack": "pikachu",
+  "resistance": null,
   "attacks": [
     {
       "name": "Splash 10",
@@ -23,5 +23,6 @@
         "amount": 10
       }
     }
-  ]
+  ],
+  "weakness": "lightning"
 }

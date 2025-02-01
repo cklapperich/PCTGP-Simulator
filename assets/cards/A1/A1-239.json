@@ -6,11 +6,11 @@
   "HP": 60,
   "category": "pokemon",
   "stage": "basic",
-  "weakness": "grass",
   "retreat": 1,
   "artist": "Teeziro",
   "rarity": "1_star",
   "pack": "mewtwo",
+  "resistance": null,
   "attacks": [
     {
       "name": "Growl",
@@ -23,5 +23,6 @@
         "amount": 0
       }
     }
-  ]
+  ],
+  "weakness": "grass"
 }

@@ -6,11 +6,11 @@
   "HP": 70,
   "category": "pokemon",
   "stage": "basic",
-  "weakness": "fire",
   "retreat": 1,
   "artist": "Naoki Saito",
   "rarity": "diamond_1",
   "pack": "charizard",
+  "resistance": null,
   "attacks": [
     {
       "name": "Surprise Attack 40",
@@ -23,5 +23,6 @@
         "amount": 40
       }
     }
-  ]
+  ],
+  "weakness": "fire"
 }

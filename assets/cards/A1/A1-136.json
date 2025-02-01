@@ -7,10 +7,10 @@
   "category": "pokemon",
   "stage": "stage 1",
   "evolvesFrom": "Golett",
-  "weakness": "darkness",
   "retreat": 4,
   "artist": "match",
   "rarity": "diamond_2",
+  "resistance": null,
   "attacks": [
     {
       "name": "Double Lariat 100x",
@@ -26,5 +26,6 @@
         "amount": 100
       }
     }
-  ]
+  ],
+  "weakness": "darkness"
 }

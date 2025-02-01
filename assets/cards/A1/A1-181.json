@@ -6,11 +6,11 @@
   "HP": 60,
   "category": "pokemon",
   "stage": "basic",
-  "weakness": "fire",
   "retreat": 1,
   "artist": "Shin Nagasawa",
   "rarity": "diamond_1",
   "pack": "charizard",
+  "resistance": null,
   "attacks": [
     {
       "name": "Amass",
@@ -23,5 +23,6 @@
         "amount": 0
       }
     }
-  ]
+  ],
+  "weakness": "fire"
 }

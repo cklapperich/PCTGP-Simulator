@@ -48,12 +48,14 @@ async function loadPackData(packId) {
   }
 
   try {
-    const response = await fetch(`assets/packs/${packId}.json`);
+    // Add leading slash for absolute path
+    const response = await fetch(`/assets/packs/${packId}.json`);
     const packData = await response.json();
     // Cache the loaded data
     packDataCache.set(packId, packData);
     return packData;
   } catch (error) {
+    console.error(`Failed to load pack data for ${packId}:`, error);
     throw new Error(`Failed to load pack data for ${packId}: ${error.message}`);
   }
 }
@@ -82,7 +84,7 @@ function getRandomWithOdds(odds) {
  * Selects a random card from the specified rarity pool
  * @param {Object} packData - Pack data containing card pools
  * @param {string} rarity - Rarity to select from
- * @returns {string} Selected card ID, falls back to diamond_2 pool if empty
+ * @returns {Object} Selected card data including ID and rarity
  */
 function getRandomCard(packData, rarity) {
   const pool = packData[rarity];
@@ -90,31 +92,41 @@ function getRandomCard(packData, rarity) {
     // Fallback to diamond_2 if pool is empty
     return getRandomCard(packData, 'diamond_2');
   }
-  return pool[Math.floor(Math.random() * pool.length)];
+  const cardId = pool[Math.floor(Math.random() * pool.length)];
+  return {
+    id: cardId,
+    rarity: rarity,
+    position: null // Will be set by pullPack
+  };
 }
 
 /**
  * Simulates pulling cards from a pack
- * @param {string} packId - ID of the pack to pull from
- * @returns {Promise<string[]>} Array of card IDs pulled from the pack
+ * @param {Object} packData - Pack data containing card pools and configuration
+ * @returns {Promise<Array<Object>>} Array of card data objects containing id, rarity, and position
  */
-async function pullPack(packId) {
-  const packData = await loadPackData(packId);
+async function pullPack(packData) {
   const packOdds = packData.pack_odds === 'default' ? DEFAULT_PACK_ODDS : packData.pack_odds;
   const results = [];
 
   // First 3 cards - guaranteed common (diamond_2)
   for (let i = 0; i < 3; i++) {
-    results.push(getRandomCard(packData, 'diamond_2'));
+    const card = getRandomCard(packData, 'diamond_2');
+    card.position = i + 1;
+    results.push(card);
   }
 
   // 4th card
   const rarity4 = getRandomWithOdds(packOdds.position4);
-  results.push(getRandomCard(packData, rarity4));
+  const card4 = getRandomCard(packData, rarity4);
+  card4.position = 4;
+  results.push(card4);
 
   // 5th card
   const rarity5 = getRandomWithOdds(packOdds.position5);
-  results.push(getRandomCard(packData, rarity5));
+  const card5 = getRandomCard(packData, rarity5);
+  card5.position = 5;
+  results.push(card5);
 
   return results;
 }

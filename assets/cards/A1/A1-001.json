@@ -6,11 +6,11 @@
   "HP": 70,
   "category": "pokemon",
   "stage": "basic",
-  "weakness": "fire",
   "retreat": 1,
   "artist": "Narumi Sato",
   "rarity": "diamond_1",
   "pack": "mewtwo",
+  "resistance": null,
   "attacks": [
     {
       "name": "Vine Whip 40",
@@ -24,5 +24,6 @@
         "amount": 40
       }
     }
-  ]
+  ],
+  "weakness": "fire"
 }

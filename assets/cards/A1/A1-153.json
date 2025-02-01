@@ -7,11 +7,11 @@
   "category": "pokemon",
   "stage": "stage 1",
   "evolvesFrom": "Cubone",
-  "weakness": "grass",
   "retreat": 1,
   "artist": "PLANETA Mochizuki",
   "rarity": "diamond_4",
   "pack": "mewtwo",
+  "resistance": null,
   "attacks": [
     {
       "name": "Bonemerang 80x",
@@ -26,5 +26,6 @@
       }
     }
   ],
-  "ex": true
+  "ex": true,
+  "weakness": "grass"
 }

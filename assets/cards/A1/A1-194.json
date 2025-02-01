@@ -7,11 +7,11 @@
   "category": "pokemon",
   "stage": "stage 1",
   "evolvesFrom": "Jigglypuff",
-  "weakness": "fighting",
   "retreat": 2,
   "artist": "Atsuko Nishida",
   "rarity": "diamond_1",
   "pack": "pikachu",
+  "resistance": null,
   "attacks": [
     {
       "name": "Hyper Voice 60",
@@ -25,5 +25,6 @@
         "amount": 60
       }
     }
-  ]
+  ],
+  "weakness": "fighting"
 }

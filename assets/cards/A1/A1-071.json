@@ -7,11 +7,11 @@
   "category": "pokemon",
   "stage": "stage 1",
   "evolvesFrom": "Horsea",
-  "weakness": "lightning",
   "retreat": 1,
   "artist": "Sanosuke Sakuma",
   "rarity": "diamond_2",
   "pack": "pikachu",
+  "resistance": null,
   "attacks": [
     {
       "name": "Water Arrow",
@@ -26,5 +26,6 @@
         "amount": 0
       }
     }
-  ]
+  ],
+  "weakness": "lightning"
 }

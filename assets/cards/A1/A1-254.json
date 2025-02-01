@@ -7,11 +7,11 @@
   "category": "pokemon",
   "stage": "stage 1",
   "evolvesFrom": "Growlithe",
-  "weakness": "water",
   "retreat": 2,
   "artist": "PLANETA Saito",
   "rarity": "2_star",
   "pack": "pikachu",
+  "resistance": null,
   "attacks": [
     {
       "name": "Inferno Onrush 120",
@@ -27,5 +27,6 @@
       }
     }
   ],
-  "ex": true
+  "ex": true,
+  "weakness": "water"
 }

@@ -7,11 +7,11 @@
   "category": "pokemon",
   "stage": "stage 2",
   "evolvesFrom": "Metapod",
-  "weakness": "fire",
   "retreat": 1,
   "artist": "Shin Nagasawa",
   "rarity": "diamond_3",
   "pack": "pikachu",
+  "resistance": null,
   "attacks": [
     {
       "name": "Gust 60",
@@ -26,5 +26,6 @@
         "amount": 60
       }
     }
-  ]
+  ],
+  "weakness": "fire"
 }

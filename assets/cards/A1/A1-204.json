@@ -6,11 +6,11 @@
   "HP": 100,
   "category": "pokemon",
   "stage": "basic",
-  "weakness": "fighting",
   "retreat": 2,
   "artist": "kodama",
   "rarity": "diamond_2",
   "pack": "charizard",
+  "resistance": null,
   "attacks": [
     {
       "name": "Horn Attack 50",
@@ -24,5 +24,6 @@
         "amount": 50
       }
     }
-  ]
+  ],
+  "weakness": "fighting"
 }

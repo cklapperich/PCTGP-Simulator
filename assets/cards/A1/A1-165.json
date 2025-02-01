@@ -7,10 +7,10 @@
   "category": "pokemon",
   "stage": "stage 1",
   "evolvesFrom": "Ekans",
-  "weakness": "fighting",
   "retreat": 2,
   "artist": "Naoki Saito",
   "rarity": "diamond_2",
+  "resistance": null,
   "attacks": [
     {
       "name": "Corner 60",
@@ -24,5 +24,6 @@
         "amount": 60
       }
     }
-  ]
+  ],
+  "weakness": "fighting"
 }

@@ -7,11 +7,11 @@
   "category": "pokemon",
   "stage": "stage 1",
   "evolvesFrom": "Staryu",
-  "weakness": "lightning",
   "retreat": 0,
   "artist": "PLANETA Igarashi",
   "rarity": "diamond_4",
   "pack": "charizard",
+  "resistance": null,
   "attacks": [
     {
       "name": "Hydro Splash 90",
@@ -26,5 +26,6 @@
       }
     }
   ],
-  "ex": true
+  "ex": true,
+  "weakness": "lightning"
 }

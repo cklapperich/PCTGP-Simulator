@@ -8,5 +8,6 @@
   "rarity": "2_star",
   "pack": "charizard",
   "text": "Switch out your opponent's Active Pokémon to the Bench. (Your opponent chooses the new Active Pokémon.)",
+  "resistance": null,
   "effect": {}
 }

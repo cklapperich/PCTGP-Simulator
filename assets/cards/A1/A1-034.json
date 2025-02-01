@@ -7,11 +7,11 @@
   "category": "pokemon",
   "stage": "stage 1",
   "evolvesFrom": "Charmander",
-  "weakness": "water",
   "retreat": 2,
   "artist": "kantaro",
   "rarity": "diamond_2",
   "pack": "charizard",
+  "resistance": null,
   "attacks": [
     {
       "name": "Fire Claws 60",
@@ -26,5 +26,6 @@
         "amount": 60
       }
     }
-  ]
+  ],
+  "weakness": "water"
 }

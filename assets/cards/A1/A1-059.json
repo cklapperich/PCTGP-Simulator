@@ -6,11 +6,11 @@
   "HP": 60,
   "category": "pokemon",
   "stage": "basic",
-  "weakness": "lightning",
   "retreat": 1,
   "artist": "Shibuzoh.",
   "rarity": "diamond_1",
   "pack": "charizard",
+  "resistance": null,
   "attacks": [
     {
       "name": "Razor Fin 10",
@@ -23,5 +23,6 @@
         "amount": 10
       }
     }
-  ]
+  ],
+  "weakness": "lightning"
 }

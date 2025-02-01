@@ -7,11 +7,11 @@
   "category": "pokemon",
   "stage": "stage 1",
   "evolvesFrom": "Cubone",
-  "weakness": "grass",
   "retreat": 1,
   "artist": "Shin Nagasawa",
   "rarity": "diamond_2",
   "pack": "mewtwo",
+  "resistance": null,
   "attacks": [
     {
       "name": "Bone Beatdown 40",
@@ -24,5 +24,6 @@
         "amount": 40
       }
     }
-  ]
+  ],
+  "weakness": "grass"
 }

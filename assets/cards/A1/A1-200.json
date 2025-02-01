@@ -7,10 +7,10 @@
   "category": "pokemon",
   "stage": "stage 1",
   "evolvesFrom": "Doduo",
-  "weakness": "lightning",
   "retreat": 0,
   "artist": "Miki Tanaka",
   "rarity": "diamond_2",
+  "resistance": null,
   "attacks": [
     {
       "name": "Drill Peck 40",
@@ -23,5 +23,6 @@
         "amount": 40
       }
     }
-  ]
+  ],
+  "weakness": "lightning"
 }

@@ -7,11 +7,11 @@
   "category": "pokemon",
   "stage": "stage 2",
   "evolvesFrom": "Charmeleon",
-  "weakness": "water",
   "retreat": 2,
   "artist": "takuyoa",
   "rarity": "diamond_3",
   "pack": "charizard",
+  "resistance": null,
   "attacks": [
     {
       "name": "Fire Spin 150",
@@ -27,5 +27,6 @@
         "amount": 150
       }
     }
-  ]
+  ],
+  "weakness": "water"
 }

@@ -7,11 +7,11 @@
   "category": "pokemon",
   "stage": "stage 1",
   "evolvesFrom": "Jigglypuff",
-  "weakness": "fighting",
   "retreat": 2,
   "artist": "PLANETA Igarashi",
   "rarity": "diamond_4",
   "pack": "pikachu",
+  "resistance": null,
   "attacks": [
     {
       "name": "Sleepy Song 80",
@@ -27,5 +27,6 @@
       }
     }
   ],
-  "ex": true
+  "ex": true,
+  "weakness": "fighting"
 }

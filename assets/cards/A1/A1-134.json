@@ -7,10 +7,10 @@
   "category": "pokemon",
   "stage": "stage 1",
   "evolvesFrom": "Woobat",
-  "weakness": "darkness",
   "retreat": 1,
   "artist": "Masakazu Fukuda",
   "rarity": "diamond_1",
+  "resistance": null,
   "attacks": [
     {
       "name": "Heart Stamp 60",
@@ -24,5 +24,6 @@
         "amount": 60
       }
     }
-  ]
+  ],
+  "weakness": "darkness"
 }

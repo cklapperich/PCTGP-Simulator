@@ -7,11 +7,11 @@
   "category": "pokemon",
   "stage": "stage 2",
   "evolvesFrom": "Machoke",
-  "weakness": "psychic",
   "retreat": 3,
   "artist": "Hitoshi Ariga",
   "rarity": "diamond_3",
   "pack": "charizard",
+  "resistance": null,
   "attacks": [
     {
       "name": "Seismic Toss 100",
@@ -26,5 +26,6 @@
         "amount": 100
       }
     }
-  ]
+  ],
+  "weakness": "psychic"
 }

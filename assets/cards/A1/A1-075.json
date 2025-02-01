@@ -7,11 +7,11 @@
   "category": "pokemon",
   "stage": "stage 1",
   "evolvesFrom": "Staryu",
-  "weakness": "lightning",
   "retreat": 0,
   "artist": "Yukiko Baba",
   "rarity": "diamond_2",
   "pack": "charizard",
+  "resistance": null,
   "attacks": [
     {
       "name": "Wave Splash 40",
@@ -24,5 +24,6 @@
         "amount": 40
       }
     }
-  ]
+  ],
+  "weakness": "lightning"
 }

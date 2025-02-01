@@ -22,7 +22,8 @@
   "license": "ISC",
   "dependencies": {
     "ldtk": "^0.8.7",
-    "phaser": "^3.87.0"
+    "phaser": "^3.87.0",
+    "pixi.js": "^8.7.3"
   },
   "devDependencies": {
     "@types/node": "^22.10.10",

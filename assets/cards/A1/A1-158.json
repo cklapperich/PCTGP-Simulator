@@ -7,11 +7,11 @@
   "category": "pokemon",
   "stage": "stage 1",
   "evolvesFrom": "Dome Fossil",
-  "weakness": "grass",
   "retreat": 1,
   "artist": "sui",
   "rarity": "diamond_2",
   "pack": "charizard",
+  "resistance": null,
   "attacks": [
     {
       "name": "Shell Attack 40",
@@ -24,5 +24,6 @@
         "amount": 40
       }
     }
-  ]
+  ],
+  "weakness": "grass"
 }

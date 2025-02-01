@@ -6,10 +6,10 @@
   "HP": 70,
   "category": "pokemon",
   "stage": "basic",
-  "weakness": "fighting",
   "retreat": 1,
   "artist": "Yoriyuki Ikegami",
   "rarity": "diamond_1",
+  "resistance": null,
   "attacks": [
     {
       "name": "Tackle 30",
@@ -23,5 +23,6 @@
         "amount": 30
       }
     }
-  ]
+  ],
+  "weakness": "fighting"
 }

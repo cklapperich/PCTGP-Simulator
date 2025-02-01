@@ -6,11 +6,11 @@
   "HP": 60,
   "category": "pokemon",
   "stage": "basic",
-  "weakness": "darkness",
   "retreat": 1,
   "artist": "Aya Kusube",
   "rarity": "diamond_1",
   "pack": "charizard",
+  "resistance": null,
   "attacks": [
     {
       "name": "Teleport",
@@ -23,5 +23,6 @@
         "amount": 0
       }
     }
-  ]
+  ],
+  "weakness": "darkness"
 }

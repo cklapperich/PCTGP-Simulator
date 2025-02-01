@@ -6,11 +6,11 @@
   "HP": 80,
   "category": "pokemon",
   "stage": "basic",
-  "weakness": "psychic",
   "retreat": 1,
   "artist": "Yukiko Baba",
   "rarity": "diamond_1",
   "pack": "mewtwo",
+  "resistance": null,
   "attacks": [
     {
       "name": "Stretch Kick",
@@ -23,5 +23,6 @@
         "amount": 0
       }
     }
-  ]
+  ],
+  "weakness": "psychic"
 }

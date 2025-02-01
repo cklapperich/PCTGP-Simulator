@@ -7,10 +7,10 @@
   "category": "pokemon",
   "stage": "stage 1",
   "evolvesFrom": "Ponyta",
-  "weakness": "water",
   "retreat": 1,
   "artist": "Misa Tsutsui",
   "rarity": "diamond_2",
+  "resistance": null,
   "attacks": [
     {
       "name": "Fire Mane 40",
@@ -23,5 +23,6 @@
         "amount": 40
       }
     }
-  ]
+  ],
+  "weakness": "water"
 }

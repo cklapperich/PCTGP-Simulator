@@ -6,10 +6,10 @@
   "HP": 80,
   "category": "pokemon",
   "stage": "basic",
-  "weakness": "psychic",
   "retreat": 2,
   "artist": "Yuu Nishida",
   "rarity": "diamond_1",
+  "resistance": null,
   "attacks": [
     {
       "name": "Knuckle Punch 30",
@@ -23,5 +23,6 @@
         "amount": 30
       }
     }
-  ]
+  ],
+  "weakness": "psychic"
 }

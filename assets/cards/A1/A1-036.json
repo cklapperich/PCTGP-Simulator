@@ -7,11 +7,11 @@
   "category": "pokemon",
   "stage": "stage 2",
   "evolvesFrom": "Charmeleon",
-  "weakness": "water",
   "retreat": 2,
   "artist": "PLANETA Mochizuki",
   "rarity": "diamond_4",
   "pack": "charizard",
+  "resistance": null,
   "attacks": [
     {
       "name": "Slash 60",
@@ -41,5 +41,6 @@
       }
     }
   ],
-  "ex": true
+  "ex": true,
+  "weakness": "water"
 }

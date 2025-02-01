@@ -7,11 +7,11 @@
   "category": "pokemon",
   "stage": "stage 1",
   "evolvesFrom": "Nidoran♂",
-  "weakness": "fighting",
   "retreat": 2,
   "artist": "Kouki Saitou",
   "rarity": "diamond_2",
   "pack": "pikachu",
+  "resistance": null,
   "attacks": [
     {
       "name": "Horn Attack 40",
@@ -25,5 +25,6 @@
         "amount": 40
       }
     }
-  ]
+  ],
+  "weakness": "fighting"
 }

@@ -6,11 +6,11 @@
   "HP": 140,
   "category": "pokemon",
   "stage": "basic",
-  "weakness": "lightning",
   "retreat": 2,
   "artist": "PLANETA Saito",
   "rarity": "diamond_4",
   "pack": "mewtwo",
+  "resistance": null,
   "attacks": [
     {
       "name": "Ice Wing 40",
@@ -38,5 +38,6 @@
       }
     }
   ],
-  "ex": true
+  "ex": true,
+  "weakness": "lightning"
 }

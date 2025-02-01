@@ -6,10 +6,10 @@
   "HP": 120,
   "category": "pokemon",
   "stage": "basic",
-  "weakness": "fighting",
   "retreat": 1,
   "artist": "PLANETA CG Works",
   "rarity": "crown",
+  "resistance": null,
   "attacks": [
     {
       "name": "Circle Circuit 30x",
@@ -24,5 +24,6 @@
       }
     }
   ],
-  "ex": true
+  "ex": true,
+  "weakness": "fighting"
 }

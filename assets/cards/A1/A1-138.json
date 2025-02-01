@@ -7,10 +7,10 @@
   "category": "pokemon",
   "stage": "stage 1",
   "evolvesFrom": "Sandshrew",
-  "weakness": "grass",
   "retreat": 2,
   "artist": "Miki Tanaka",
   "rarity": "diamond_2",
+  "resistance": null,
   "attacks": [
     {
       "name": "Slash 70",
@@ -24,5 +24,6 @@
         "amount": 70
       }
     }
-  ]
+  ],
+  "weakness": "grass"
 }

@@ -7,10 +7,10 @@
   "category": "pokemon",
   "stage": "stage 1",
   "evolvesFrom": "Wooloo",
-  "weakness": "fighting",
   "retreat": 2,
   "artist": "saino misaki",
   "rarity": "diamond_1",
+  "resistance": null,
   "attacks": [
     {
       "name": "Rolling Tackle 80",
@@ -25,5 +25,6 @@
         "amount": 80
       }
     }
-  ]
+  ],
+  "weakness": "fighting"
 }

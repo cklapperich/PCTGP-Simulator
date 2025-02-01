@@ -6,11 +6,11 @@
   "HP": 60,
   "category": "pokemon",
   "stage": "basic",
-  "weakness": "water",
   "retreat": 1,
   "artist": "Kyoko Umemoto",
   "rarity": "diamond_1",
   "pack": "mewtwo",
+  "resistance": null,
   "attacks": [
     {
       "name": "Scratch 20",
@@ -23,5 +23,6 @@
         "amount": 20
       }
     }
-  ]
+  ],
+  "weakness": "water"
 }

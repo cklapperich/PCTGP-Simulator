@@ -6,11 +6,11 @@
   "HP": 100,
   "category": "pokemon",
   "stage": "basic",
-  "weakness": "lightning",
   "retreat": 1,
   "artist": "Hitoshi Ariga",
   "rarity": "diamond_3",
   "pack": "charizard",
+  "resistance": null,
   "attacks": [
     {
       "name": "Sky Attack 130",
@@ -25,5 +25,6 @@
         "amount": 130
       }
     }
-  ]
+  ],
+  "weakness": "lightning"
 }

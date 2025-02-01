@@ -6,11 +6,11 @@
   "HP": 80,
   "category": "pokemon",
   "stage": "basic",
-  "weakness": "darkness",
   "retreat": 1,
   "artist": "Oswaldo KATO",
   "rarity": "diamond_1",
   "pack": "mewtwo",
+  "resistance": null,
   "attacks": [
     {
       "name": "Psychic 30+",
@@ -24,5 +24,6 @@
         "amount": 30
       }
     }
-  ]
+  ],
+  "weakness": "darkness"
 }

@@ -6,11 +6,11 @@
   "HP": 100,
   "category": "pokemon",
   "stage": "basic",
-  "weakness": "fighting",
   "retreat": 3,
   "artist": "Ken Sugimori",
   "rarity": "diamond_3",
   "pack": "charizard",
+  "resistance": null,
   "attacks": [
     {
       "name": "Dizzy Punch 30x",
@@ -23,5 +23,6 @@
         "amount": 30
       }
     }
-  ]
+  ],
+  "weakness": "fighting"
 }

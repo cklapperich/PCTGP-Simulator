@@ -6,10 +6,10 @@
   "HP": 60,
   "category": "pokemon",
   "stage": "basic",
-  "weakness": "fighting",
   "retreat": 1,
   "artist": "Shin Nagasawa",
   "rarity": "diamond_1",
+  "resistance": null,
   "attacks": [
     {
       "name": "Zap Kick 20",
@@ -22,5 +22,6 @@
         "amount": 20
       }
     }
-  ]
+  ],
+  "weakness": "fighting"
 }

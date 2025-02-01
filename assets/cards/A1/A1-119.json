@@ -7,10 +7,10 @@
   "category": "pokemon",
   "stage": "stage 1",
   "evolvesFrom": "Slowpoke",
-  "weakness": "darkness",
   "retreat": 3,
   "artist": "Kagemaru Himeno",
   "rarity": "diamond_2",
+  "resistance": null,
   "attacks": [
     {
       "name": "Super Psy Bolt 80",
@@ -25,5 +25,6 @@
         "amount": 80
       }
     }
-  ]
+  ],
+  "weakness": "darkness"
 }

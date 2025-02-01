@@ -7,11 +7,11 @@
   "category": "pokemon",
   "stage": "stage 2",
   "evolvesFrom": "Ivysaur",
-  "weakness": "fire",
   "retreat": 3,
   "artist": "PLANETA CG Works",
   "rarity": "2_star",
   "pack": "mewtwo",
+  "resistance": null,
   "attacks": [
     {
       "name": "Razor Leaf 60",
@@ -41,5 +41,6 @@
       }
     }
   ],
-  "ex": true
+  "ex": true,
+  "weakness": "fire"
 }

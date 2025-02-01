@@ -7,11 +7,11 @@
   "category": "pokemon",
   "stage": "stage 2",
   "evolvesFrom": "Poliwhirl",
-  "weakness": "lightning",
   "retreat": 2,
   "artist": "Akira Komayama",
   "rarity": "diamond_3",
   "pack": "charizard",
+  "resistance": null,
   "attacks": [
     {
       "name": "Mega Punch 80",
@@ -26,5 +26,6 @@
         "amount": 80
       }
     }
-  ]
+  ],
+  "weakness": "lightning"
 }

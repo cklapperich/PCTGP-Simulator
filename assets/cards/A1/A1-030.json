@@ -7,10 +7,10 @@
   "category": "pokemon",
   "stage": "stage 1",
   "evolvesFrom": "Petilil",
-  "weakness": "fire",
   "retreat": 1,
   "artist": "You Iribi",
   "rarity": "diamond_2",
+  "resistance": null,
   "attacks": [
     {
       "name": "Leaf Supply 50",
@@ -24,5 +24,6 @@
         "amount": 50
       }
     }
-  ]
+  ],
+  "weakness": "fire"
 }

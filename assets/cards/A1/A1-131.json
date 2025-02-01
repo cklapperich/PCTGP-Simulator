@@ -7,11 +7,11 @@
   "category": "pokemon",
   "stage": "stage 1",
   "evolvesFrom": "Ralts",
-  "weakness": "darkness",
   "retreat": 1,
   "artist": "sowsow",
   "rarity": "diamond_2",
   "pack": "mewtwo",
+  "resistance": null,
   "attacks": [
     {
       "name": "Smack 30",
@@ -25,5 +25,6 @@
         "amount": 30
       }
     }
-  ]
+  ],
+  "weakness": "darkness"
 }

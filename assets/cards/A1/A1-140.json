@@ -7,11 +7,11 @@
   "category": "pokemon",
   "stage": "stage 1",
   "evolvesFrom": "Diglett",
-  "weakness": "grass",
   "retreat": 1,
   "artist": "Akira Komayama",
   "rarity": "diamond_2",
   "pack": "pikachu",
+  "resistance": null,
   "attacks": [
     {
       "name": "Dig 40",
@@ -24,5 +24,6 @@
         "amount": 40
       }
     }
-  ]
+  ],
+  "weakness": "grass"
 }

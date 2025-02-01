@@ -7,11 +7,11 @@
   "category": "pokemon",
   "stage": "stage 1",
   "evolvesFrom": "Magikarp",
-  "weakness": "lightning",
   "retreat": 4,
   "artist": "Mitsuhiro Arita",
   "rarity": "diamond_3",
   "pack": "pikachu",
+  "resistance": null,
   "attacks": [
     {
       "name": "Hyper Beam 100",
@@ -27,5 +27,6 @@
         "amount": 100
       }
     }
-  ]
+  ],
+  "weakness": "lightning"
 }

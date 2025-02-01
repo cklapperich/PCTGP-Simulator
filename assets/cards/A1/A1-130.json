@@ -6,11 +6,11 @@
   "HP": 60,
   "category": "pokemon",
   "stage": "basic",
-  "weakness": "darkness",
   "retreat": 1,
   "artist": "Yuka Morii",
   "rarity": "diamond_1",
   "pack": "mewtwo",
+  "resistance": null,
   "attacks": [
     {
       "name": "Ram 10",
@@ -23,5 +23,6 @@
         "amount": 10
       }
     }
-  ]
+  ],
+  "weakness": "darkness"
 }

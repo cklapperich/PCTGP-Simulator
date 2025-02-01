@@ -7,11 +7,11 @@
   "category": "pokemon",
   "stage": "stage 1",
   "evolvesFrom": "Eevee",
-  "weakness": "fighting",
   "retreat": 1,
   "artist": "Kouki Saitou",
   "rarity": "diamond_3",
   "pack": "pikachu",
+  "resistance": null,
   "attacks": [
     {
       "name": "Pin Missile 40x",
@@ -25,5 +25,6 @@
         "amount": 40
       }
     }
-  ]
+  ],
+  "weakness": "fighting"
 }

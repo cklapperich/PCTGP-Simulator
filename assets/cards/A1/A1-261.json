@@ -7,11 +7,11 @@
   "category": "pokemon",
   "stage": "stage 2",
   "evolvesFrom": "Haunter",
-  "weakness": "darkness",
   "retreat": 2,
   "artist": "PLANETA CG Works",
   "rarity": "2_star",
   "pack": "mewtwo",
+  "resistance": null,
   "attacks": [
     {
       "name": "Spooky Shot 100",
@@ -27,5 +27,6 @@
       }
     }
   ],
-  "ex": true
+  "ex": true,
+  "weakness": "darkness"
 }

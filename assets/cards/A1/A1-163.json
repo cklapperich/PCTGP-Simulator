@@ -7,10 +7,10 @@
   "category": "pokemon",
   "stage": "stage 1",
   "evolvesFrom": "Clobbopus",
-  "weakness": "psychic",
   "retreat": 3,
   "artist": "kurumitsu",
   "rarity": "diamond_2",
+  "resistance": null,
   "attacks": [
     {
       "name": "Knock Back 70",
@@ -25,5 +25,6 @@
         "amount": 70
       }
     }
-  ]
+  ],
+  "weakness": "psychic"
 }

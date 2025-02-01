@@ -7,11 +7,11 @@
   "category": "pokemon",
   "stage": "stage 1",
   "evolvesFrom": "Vulpix",
-  "weakness": "water",
   "retreat": 1,
   "artist": "You Iribi",
   "rarity": "diamond_2",
   "pack": "charizard",
+  "resistance": null,
   "attacks": [
     {
       "name": "Flamethrower 90",
@@ -25,5 +25,6 @@
         "amount": 90
       }
     }
-  ]
+  ],
+  "weakness": "water"
 }

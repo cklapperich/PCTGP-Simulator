@@ -7,11 +7,11 @@
   "category": "pokemon",
   "stage": "stage 1",
   "evolvesFrom": "Mankey",
-  "weakness": "psychic",
   "retreat": 1,
   "artist": "Kagemaru Himeno",
   "rarity": "diamond_2",
   "pack": "charizard",
+  "resistance": null,
   "attacks": [
     {
       "name": "Fight Back 40+",
@@ -25,5 +25,6 @@
         "amount": 40
       }
     }
-  ]
+  ],
+  "weakness": "psychic"
 }

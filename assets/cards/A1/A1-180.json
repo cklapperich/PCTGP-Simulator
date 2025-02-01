@@ -7,10 +7,10 @@
   "category": "pokemon",
   "stage": "stage 1",
   "evolvesFrom": "Pawniard",
-  "weakness": "fire",
   "retreat": 1,
   "artist": "Anesaki Dynamic",
   "rarity": "diamond_2",
+  "resistance": null,
   "attacks": [
     {
       "name": "Metal Claw 70",
@@ -24,5 +24,6 @@
         "amount": 70
       }
     }
-  ]
+  ],
+  "weakness": "fire"
 }

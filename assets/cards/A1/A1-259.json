@@ -6,11 +6,11 @@
   "HP": 120,
   "category": "pokemon",
   "stage": "basic",
-  "weakness": "fighting",
   "retreat": 1,
   "artist": "PLANETA CG Works",
   "rarity": "2_star",
   "pack": "pikachu",
+  "resistance": null,
   "attacks": [
     {
       "name": "Circle Circuit 30x",
@@ -25,5 +25,6 @@
       }
     }
   ],
-  "ex": true
+  "ex": true,
+  "weakness": "fighting"
 }

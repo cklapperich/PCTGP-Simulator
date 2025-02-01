@@ -7,11 +7,11 @@
   "category": "pokemon",
   "stage": "stage 1",
   "evolvesFrom": "Bulbasaur",
-  "weakness": "fire",
   "retreat": 2,
   "artist": "Kurata So",
   "rarity": "diamond_2",
   "pack": "mewtwo",
+  "resistance": null,
   "attacks": [
     {
       "name": "Razor Leaf 60",
@@ -26,5 +26,6 @@
         "amount": 60
       }
     }
-  ]
+  ],
+  "weakness": "fire"
 }

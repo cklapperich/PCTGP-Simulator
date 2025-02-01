@@ -7,11 +7,11 @@
   "category": "pokemon",
   "stage": "stage 2",
   "evolvesFrom": "Wartortle",
-  "weakness": "lightning",
   "retreat": 3,
   "artist": "PLANETA CG Works",
   "rarity": "2_star",
   "pack": "pikachu",
+  "resistance": null,
   "attacks": [
     {
       "name": "Surf 40",
@@ -39,5 +39,6 @@
       }
     }
   ],
-  "ex": true
+  "ex": true,
+  "weakness": "lightning"
 }

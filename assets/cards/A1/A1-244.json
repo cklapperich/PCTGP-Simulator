@@ -7,11 +7,11 @@
   "category": "pokemon",
   "stage": "stage 2",
   "evolvesFrom": "Dragonair",
-  "weakness": "none",
   "retreat": 3,
   "artist": "Gemi",
   "rarity": "1_star",
   "pack": "mewtwo",
+  "resistance": null,
   "attacks": [
     {
       "name": "Draco Meteor",
@@ -27,5 +27,6 @@
         "amount": 0
       }
     }
-  ]
+  ],
+  "weakness": "none"
 }

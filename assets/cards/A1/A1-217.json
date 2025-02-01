@@ -8,5 +8,6 @@
   "rarity": "diamond_1",
   "pack": "charizard",
   "text": "Play this card as if it were a 40-HP Basic [C] Pokémon.At any time during your turn, you may discard this card from play.This card can't retreat.",
+  "resistance": null,
   "effect": {}
 }

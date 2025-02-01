@@ -6,11 +6,11 @@
   "HP": 140,
   "category": "pokemon",
   "stage": "basic",
-  "weakness": "lightning",
   "retreat": 2,
   "artist": "PLANETA Tsuji",
   "rarity": "diamond_4",
   "pack": "charizard",
+  "resistance": null,
   "attacks": [
     {
       "name": "Inferno Dance",
@@ -37,5 +37,6 @@
       }
     }
   ],
-  "ex": true
+  "ex": true,
+  "weakness": "lightning"
 }

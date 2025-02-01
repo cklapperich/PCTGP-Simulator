@@ -6,10 +6,10 @@
   "HP": 90,
   "category": "pokemon",
   "stage": "basic",
-  "weakness": "darkness",
   "retreat": 3,
   "artist": "Kyoko Umemoto",
   "rarity": "diamond_1",
+  "resistance": null,
   "attacks": [
     {
       "name": "Mega Punch 50",
@@ -24,5 +24,6 @@
         "amount": 50
       }
     }
-  ]
+  ],
+  "weakness": "darkness"
 }

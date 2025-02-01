@@ -7,11 +7,11 @@
   "category": "pokemon",
   "stage": "stage 2",
   "evolvesFrom": "Wartortle",
-  "weakness": "lightning",
   "retreat": 3,
   "artist": "Nurikabe",
   "rarity": "diamond_3",
   "pack": "pikachu",
+  "resistance": null,
   "attacks": [
     {
       "name": "Hydro Pump 80+",
@@ -26,5 +26,6 @@
         "amount": 80
       }
     }
-  ]
+  ],
+  "weakness": "lightning"
 }

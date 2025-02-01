@@ -6,11 +6,11 @@
   "HP": 60,
   "category": "pokemon",
   "stage": "basic",
-  "weakness": "lightning",
   "retreat": 1,
   "artist": "Taira Akitsu",
   "rarity": "1_star",
   "pack": "pikachu",
+  "resistance": null,
   "attacks": [
     {
       "name": "Water Gun 20",
@@ -23,5 +23,6 @@
         "amount": 20
       }
     }
-  ]
+  ],
+  "weakness": "lightning"
 }

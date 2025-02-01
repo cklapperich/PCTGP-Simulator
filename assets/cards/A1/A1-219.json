@@ -8,5 +8,6 @@
   "rarity": "diamond_2",
   "pack": "charizard",
   "text": "Heal 50 damage from 1 of your [G] Pokémon.",
+  "resistance": null,
   "effect": {}
 }

@@ -6,11 +6,11 @@
   "HP": 130,
   "category": "pokemon",
   "stage": "basic",
-  "weakness": "lightning",
   "retreat": 1,
   "artist": "PLANETA Saito",
   "rarity": "2_star",
   "pack": "pikachu",
+  "resistance": null,
   "attacks": [
     {
       "name": "Peck 20",
@@ -37,5 +37,6 @@
       }
     }
   ],
-  "ex": true
+  "ex": true,
+  "weakness": "lightning"
 }

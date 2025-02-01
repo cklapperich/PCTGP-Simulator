@@ -6,10 +6,10 @@
   "HP": 70,
   "category": "pokemon",
   "stage": "basic",
-  "weakness": "darkness",
   "retreat": 2,
   "artist": "Miki Tanaka",
   "rarity": "diamond_1",
+  "resistance": null,
   "attacks": [
     {
       "name": "Tail Whap 30",
@@ -23,5 +23,6 @@
         "amount": 30
       }
     }
-  ]
+  ],
+  "weakness": "darkness"
 }

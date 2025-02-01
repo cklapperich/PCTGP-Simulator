@@ -6,11 +6,11 @@
   "HP": 50,
   "category": "pokemon",
   "stage": "basic",
-  "weakness": "lightning",
   "retreat": 1,
   "artist": "Yumi",
   "rarity": "diamond_1",
   "pack": "charizard",
+  "resistance": null,
   "attacks": [
     {
       "name": "Flap 30",
@@ -24,5 +24,6 @@
         "amount": 30
       }
     }
-  ]
+  ],
+  "weakness": "lightning"
 }

@@ -6,11 +6,11 @@
   "HP": 50,
   "category": "pokemon",
   "stage": "basic",
-  "weakness": "fire",
   "retreat": 1,
   "artist": "kawayoo",
   "rarity": "diamond_1",
   "pack": "charizard",
+  "resistance": null,
   "attacks": [
     {
       "name": "Seed Bomb 20",
@@ -23,5 +23,6 @@
         "amount": 20
       }
     }
-  ]
+  ],
+  "weakness": "fire"
 }

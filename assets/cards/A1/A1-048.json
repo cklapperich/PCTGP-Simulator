@@ -6,10 +6,10 @@
   "HP": 80,
   "category": "pokemon",
   "stage": "basic",
-  "weakness": "water",
   "retreat": 1,
   "artist": "Suwama Chiaki",
   "rarity": "diamond_1",
+  "resistance": null,
   "attacks": [
     {
       "name": "Combustion 30",
@@ -22,5 +22,6 @@
         "amount": 30
       }
     }
-  ]
+  ],
+  "weakness": "water"
 }

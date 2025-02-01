@@ -7,11 +7,11 @@
   "category": "pokemon",
   "stage": "stage 1",
   "evolvesFrom": "Exeggcute",
-  "weakness": "fire",
   "retreat": 3,
   "artist": "PLANETA CG Works",
   "rarity": "2_star",
   "pack": "charizard",
+  "resistance": null,
   "attacks": [
     {
       "name": "Tropical Swing 40+",
@@ -25,5 +25,6 @@
       }
     }
   ],
-  "ex": true
+  "ex": true,
+  "weakness": "fire"
 }

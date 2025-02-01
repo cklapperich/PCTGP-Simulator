@@ -6,11 +6,11 @@
   "HP": 50,
   "category": "pokemon",
   "stage": "basic",
-  "weakness": "grass",
   "retreat": 1,
   "artist": "Shinya Komatsu",
   "rarity": "1_star",
   "pack": "pikachu",
+  "resistance": null,
   "attacks": [
     {
       "name": "Mud-Slap 20",
@@ -23,5 +23,6 @@
         "amount": 20
       }
     }
-  ]
+  ],
+  "weakness": "grass"
 }

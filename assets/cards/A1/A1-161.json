@@ -7,11 +7,11 @@
   "category": "pokemon",
   "stage": "stage 1",
   "evolvesFrom": "Mienfoo",
-  "weakness": "psychic",
   "retreat": 1,
   "artist": "Atsuko Nishida",
   "rarity": "diamond_2",
   "pack": "pikachu",
+  "resistance": null,
   "attacks": [
     {
       "name": "Spiral Kick 40",
@@ -24,5 +24,6 @@
         "amount": 40
       }
     }
-  ]
+  ],
+  "weakness": "psychic"
 }

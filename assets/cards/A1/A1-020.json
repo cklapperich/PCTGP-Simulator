@@ -7,11 +7,11 @@
   "category": "pokemon",
   "stage": "stage 2",
   "evolvesFrom": "Weepinbell",
-  "weakness": "fire",
   "retreat": 2,
   "artist": "Sumiyoshi Kizuki",
   "rarity": "diamond_3",
   "pack": "charizard",
+  "resistance": null,
   "attacks": [
     {
       "name": "Vine Whip 60",
@@ -25,5 +25,6 @@
         "amount": 60
       }
     }
-  ]
+  ],
+  "weakness": "fire"
 }

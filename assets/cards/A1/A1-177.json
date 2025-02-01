@@ -7,11 +7,11 @@
   "category": "pokemon",
   "stage": "stage 1",
   "evolvesFrom": "Koffing",
-  "weakness": "fighting",
   "retreat": 3,
   "artist": "OOYAMA",
   "rarity": "diamond_3",
   "pack": "mewtwo",
+  "resistance": null,
   "attacks": [
     {
       "name": "Tackle 30",
@@ -24,5 +24,6 @@
         "amount": 30
       }
     }
-  ]
+  ],
+  "weakness": "fighting"
 }

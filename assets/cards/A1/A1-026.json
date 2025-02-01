@@ -6,10 +6,10 @@
   "HP": 90,
   "category": "pokemon",
   "stage": "basic",
-  "weakness": "fire",
   "retreat": 2,
   "artist": "Eri Yamaki",
   "rarity": "diamond_2",
+  "resistance": null,
   "attacks": [
     {
       "name": "Double Horn 50x",
@@ -23,5 +23,6 @@
         "amount": 50
       }
     }
-  ]
+  ],
+  "weakness": "fire"
 }

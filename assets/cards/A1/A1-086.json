@@ -7,11 +7,11 @@
   "category": "pokemon",
   "stage": "stage 1",
   "evolvesFrom": "Ducklett",
-  "weakness": "lightning",
   "retreat": 1,
   "artist": "sui",
   "rarity": "diamond_2",
   "pack": "charizard",
+  "resistance": null,
   "attacks": [
     {
       "name": "Wing Attack 70",
@@ -26,5 +26,6 @@
         "amount": 70
       }
     }
-  ]
+  ],
+  "weakness": "lightning"
 }

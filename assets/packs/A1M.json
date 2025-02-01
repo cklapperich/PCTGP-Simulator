@@ -1,7 +1,8 @@
 {   
-    "set_id":"A1M",
-    "packname":"Genetic Apex (Mewtwo)",
-    "packart":null,
+    "set_id":"A1",
+    "full_pack_name":"Genetic Apex (Mewtwo)",
+    "pack_name":"mewtwo",
+    "asset_name":"A1M",
     "pack_odds":"default",
     "diamond_1":[
         "A1-001",

@@ -6,10 +6,10 @@
   "HP": 50,
   "category": "pokemon",
   "stage": "basic",
-  "weakness": "fire",
   "retreat": 1,
   "artist": "Kanako Eo",
   "rarity": "diamond_1",
+  "resistance": null,
   "attacks": [
     {
       "name": "Attach 10",
@@ -22,5 +22,6 @@
         "amount": 10
       }
     }
-  ]
+  ],
+  "weakness": "fire"
 }

@@ -6,11 +6,11 @@
   "HP": 60,
   "category": "pokemon",
   "stage": "basic",
-  "weakness": "fighting",
   "retreat": 1,
   "artist": "Miki Tanaka",
   "rarity": "diamond_1",
   "pack": "pikachu",
+  "resistance": null,
   "attacks": [
     {
       "name": "Call for Family",
@@ -23,5 +23,6 @@
         "amount": 0
       }
     }
-  ]
+  ],
+  "weakness": "fighting"
 }

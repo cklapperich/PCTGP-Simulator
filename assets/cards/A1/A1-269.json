@@ -8,5 +8,6 @@
   "rarity": "2_star",
   "pack": "mewtwo",
   "text": "Put your Muk or Weezing in the Active Spot into your hand.",
+  "resistance": null,
   "effect": {}
 }

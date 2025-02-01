@@ -6,11 +6,11 @@
   "HP": 80,
   "category": "pokemon",
   "stage": "basic",
-  "weakness": "darkness",
   "retreat": 1,
   "artist": "Kagemaru Himeno",
   "rarity": "diamond_2",
   "pack": "mewtwo",
+  "resistance": null,
   "attacks": [
     {
       "name": "Barrier Attack 30",
@@ -24,5 +24,6 @@
         "amount": 30
       }
     }
-  ]
+  ],
+  "weakness": "darkness"
 }

@@ -214,7 +214,7 @@ async function downloadImage(imageUrl, setId, number) {
         await fs.mkdir(imagePath, { recursive: true });
         const paddedNumber = number.toString().padStart(3, '0');
         await fs.writeFile(
-            path.join(imagePath, `${paddedNumber}.png`),
+            path.join(imagePath, `${setId}-${paddedNumber}.png`),
             response.data
         );
     } catch (error) {

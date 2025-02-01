@@ -6,11 +6,11 @@
   "HP": 70,
   "category": "pokemon",
   "stage": "basic",
-  "weakness": "grass",
   "retreat": 2,
   "artist": "Kouki Saitou",
   "rarity": "diamond_1",
   "pack": "pikachu",
+  "resistance": null,
   "attacks": [
     {
       "name": "Tackle 20",
@@ -23,5 +23,6 @@
         "amount": 20
       }
     }
-  ]
+  ],
+  "weakness": "grass"
 }

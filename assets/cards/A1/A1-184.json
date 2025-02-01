@@ -7,11 +7,11 @@
   "category": "pokemon",
   "stage": "stage 1",
   "evolvesFrom": "Dratini",
-  "weakness": "none",
   "retreat": 1,
   "artist": "kirisAki",
   "rarity": "diamond_2",
   "pack": "mewtwo",
+  "resistance": null,
   "attacks": [
     {
       "name": "Tail Smack 80",
@@ -26,5 +26,6 @@
         "amount": 80
       }
     }
-  ]
+  ],
+  "weakness": "none"
 }

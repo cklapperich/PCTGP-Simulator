@@ -7,10 +7,10 @@
   "category": "pokemon",
   "stage": "stage 1",
   "evolvesFrom": "Cottonee",
-  "weakness": "fire",
   "retreat": 1,
   "artist": "Atsuko Nishida",
   "rarity": "diamond_2",
+  "resistance": null,
   "attacks": [
     {
       "name": "Rolling Tackle 40",
@@ -23,5 +23,6 @@
         "amount": 40
       }
     }
-  ]
+  ],
+  "weakness": "fire"
 }

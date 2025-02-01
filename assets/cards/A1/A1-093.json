@@ -7,10 +7,10 @@
   "category": "pokemon",
   "stage": "stage 1",
   "evolvesFrom": "Snom",
-  "weakness": "metal",
   "retreat": 1,
   "artist": "aoki",
   "rarity": "diamond_2",
+  "resistance": null,
   "attacks": [
     {
       "name": "Powder Snow 40",
@@ -24,5 +24,6 @@
         "amount": 40
       }
     }
-  ]
+  ],
+  "weakness": "metal"
 }

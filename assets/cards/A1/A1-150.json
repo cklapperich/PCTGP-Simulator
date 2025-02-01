@@ -6,11 +6,11 @@
   "HP": 110,
   "category": "pokemon",
   "stage": "basic",
-  "weakness": "grass",
   "retreat": 4,
   "artist": "otumami",
   "rarity": "diamond_2",
   "pack": "pikachu",
+  "resistance": null,
   "attacks": [
     {
       "name": "Land Crush 70",
@@ -25,5 +25,6 @@
         "amount": 70
       }
     }
-  ]
+  ],
+  "weakness": "grass"
 }

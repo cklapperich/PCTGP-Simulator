@@ -7,11 +7,11 @@
   "category": "pokemon",
   "stage": "stage 2",
   "evolvesFrom": "Kadabra",
-  "weakness": "darkness",
   "retreat": 2,
   "artist": "AKIRA EGAWA",
   "rarity": "1_star",
   "pack": "charizard",
+  "resistance": null,
   "attacks": [
     {
       "name": "Psychic 60+",
@@ -26,5 +26,6 @@
         "amount": 60
       }
     }
-  ]
+  ],
+  "weakness": "darkness"
 }

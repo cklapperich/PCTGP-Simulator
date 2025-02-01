@@ -7,11 +7,11 @@
   "category": "pokemon",
   "stage": "stage 2",
   "evolvesFrom": "Omanyte",
-  "weakness": "lightning",
   "retreat": 2,
   "artist": "kirisAki",
   "rarity": "diamond_3",
   "pack": "pikachu",
+  "resistance": null,
   "attacks": [
     {
       "name": "Ancient Whirlpool 70",
@@ -26,5 +26,6 @@
         "amount": 70
       }
     }
-  ]
+  ],
+  "weakness": "lightning"
 }

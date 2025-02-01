@@ -6,11 +6,11 @@
   "HP": 50,
   "category": "pokemon",
   "stage": "basic",
-  "weakness": "water",
   "retreat": 1,
   "artist": "Toshinao Aoki",
   "rarity": "diamond_1",
   "pack": "charizard",
+  "resistance": null,
   "attacks": [
     {
       "name": "Tail Whip",
@@ -23,5 +23,6 @@
         "amount": 0
       }
     }
-  ]
+  ],
+  "weakness": "water"
 }

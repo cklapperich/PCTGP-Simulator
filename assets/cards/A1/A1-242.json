@@ -7,11 +7,11 @@
   "category": "pokemon",
   "stage": "stage 1",
   "evolvesFrom": "Zubat",
-  "weakness": "fighting",
   "retreat": 1,
   "artist": "Tomokazu Komiya",
   "rarity": "1_star",
   "pack": "mewtwo",
+  "resistance": null,
   "attacks": [
     {
       "name": "Wing Attack 40",
@@ -24,5 +24,6 @@
         "amount": 40
       }
     }
-  ]
+  ],
+  "weakness": "fighting"
 }

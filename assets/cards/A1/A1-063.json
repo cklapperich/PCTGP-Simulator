@@ -7,11 +7,11 @@
   "category": "pokemon",
   "stage": "stage 1",
   "evolvesFrom": "Tentacool",
-  "weakness": "lightning",
   "retreat": 2,
   "artist": "kodama",
   "rarity": "diamond_2",
   "pack": "mewtwo",
+  "resistance": null,
   "attacks": [
     {
       "name": "Poison Tentacles 50",
@@ -25,5 +25,6 @@
         "amount": 50
       }
     }
-  ]
+  ],
+  "weakness": "lightning"
 }

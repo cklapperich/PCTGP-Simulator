@@ -6,11 +6,11 @@
   "HP": 60,
   "category": "pokemon",
   "stage": "basic",
-  "weakness": "water",
   "retreat": 1,
   "artist": "GIDORA",
   "rarity": "1_star",
   "pack": "charizard",
+  "resistance": null,
   "attacks": [
     {
       "name": "Ember 30",
@@ -23,5 +23,6 @@
         "amount": 30
       }
     }
-  ]
+  ],
+  "weakness": "water"
 }

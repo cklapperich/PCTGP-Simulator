@@ -6,11 +6,11 @@
   "HP": 70,
   "category": "pokemon",
   "stage": "basic",
-  "weakness": "fighting",
   "retreat": 1,
   "artist": "Jerky",
   "rarity": "1_star",
   "pack": "mewtwo",
+  "resistance": null,
   "attacks": [
     {
       "name": "Copy Anything",
@@ -23,5 +23,6 @@
         "amount": 0
       }
     }
-  ]
+  ],
+  "weakness": "fighting"
 }

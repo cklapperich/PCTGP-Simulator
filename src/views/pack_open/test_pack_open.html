@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Pack Open Test</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #333;
+        }
+        #phaser-container {
+            width: 100vw;
+            height: 100vh;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser.min.js"></script>
+</head>
+<body>
+    <div id="phaser-container"></div>
+    
+    <script type="module">
+        import { pullPack, loadPackData } from './pack_pull.js';
+        import { PackOpenScene } from './phaser_pack_open.js';
+
+        async function startTest() {
+            try {
+                // Load pack data and pull cards
+                const packData = await loadPackData('A1M');
+                const cards = await pullPack(packData);
+                
+                // Create card art paths map
+                const cardArtPaths = {};
+                cards.forEach(card => {
+                    cardArtPaths[card.id] = `/assets/cardart/${packData.set_id}/${card.id}.png`;
+                });
+
+                // Create a boot scene that will initialize our pack open scene with data
+                class BootScene extends Phaser.Scene {
+                    constructor() {
+                        super({ key: 'BootScene' });
+                    }
+
+                    create() {
+                        // Start the pack open scene with our data
+                        this.scene.add('PackOpenScene', PackOpenScene);
+                        this.scene.start('PackOpenScene', {
+                            packArtPath: '/assets/packart/A1M.png',
+                            cardData: cards,
+                            cardArtPaths: cardArtPaths
+                        });
+                    }
+                }
+
+                // Configure the game
+                const config = {
+                    type: Phaser.AUTO,
+                    parent: 'phaser-container',
+                    backgroundColor: '#1099bb',
+                    antialias: false,
+                    scale: {
+                        mode: Phaser.Scale.RESIZE,
+                        parent: 'phaser-container',
+                        width: '100%',
+                        height: '100%'
+                    },
+                    scene: BootScene
+                };
+
+                // Create the game
+                new Phaser.Game(config);
+
+                console.log('Test initialized with:', {
+                    cards,
+                    cardArtPaths
+                });
+            } catch (error) {
+                console.error('Failed to start test:', error);
+            }
+        }
+
+        // Start the test when page loads
+        window.onload = startTest;
+    </script>
+</body>
+</html>

@@ -6,11 +6,11 @@
   "HP": 80,
   "category": "pokemon",
   "stage": "basic",
-  "weakness": "water",
   "retreat": 2,
   "artist": "Ryuta Fuse",
   "rarity": "diamond_1",
   "pack": "charizard",
+  "resistance": null,
   "attacks": [
     {
       "name": "Magma Punch 50",
@@ -24,5 +24,6 @@
         "amount": 50
       }
     }
-  ]
+  ],
+  "weakness": "water"
 }

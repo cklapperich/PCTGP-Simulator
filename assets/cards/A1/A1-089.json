@@ -7,11 +7,11 @@
   "category": "pokemon",
   "stage": "stage 2",
   "evolvesFrom": "Frogadier",
-  "weakness": "lightning",
   "retreat": 1,
   "artist": "5ban Graphics",
   "rarity": "diamond_3",
   "pack": "charizard",
+  "resistance": null,
   "attacks": [
     {
       "name": "Mist Slash 60",
@@ -25,5 +25,6 @@
         "amount": 60
       }
     }
-  ]
+  ],
+  "weakness": "lightning"
 }

@@ -7,11 +7,11 @@
   "category": "pokemon",
   "stage": "stage 1",
   "evolvesFrom": "Krabby",
-  "weakness": "lightning",
   "retreat": 3,
   "artist": "Shigenori Negishi",
   "rarity": "diamond_2",
   "pack": "mewtwo",
+  "resistance": null,
   "attacks": [
     {
       "name": "KO Crab 80+",
@@ -26,5 +26,6 @@
         "amount": 80
       }
     }
-  ]
+  ],
+  "weakness": "lightning"
 }

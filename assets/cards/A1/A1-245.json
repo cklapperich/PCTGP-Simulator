@@ -7,11 +7,11 @@
   "category": "pokemon",
   "stage": "stage 2",
   "evolvesFrom": "Pidgeotto",
-  "weakness": "lightning",
   "retreat": 1,
   "artist": "Anesaki Dynamic",
   "rarity": "1_star",
   "pack": "mewtwo",
+  "resistance": null,
   "attacks": [
     {
       "name": "Wing Attack 70",
@@ -25,5 +25,6 @@
         "amount": 70
       }
     }
-  ]
+  ],
+  "weakness": "lightning"
 }

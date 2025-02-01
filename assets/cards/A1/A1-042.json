@@ -6,10 +6,10 @@
   "HP": 60,
   "category": "pokemon",
   "stage": "basic",
-  "weakness": "water",
   "retreat": 1,
   "artist": "Uta",
   "rarity": "diamond_1",
+  "resistance": null,
   "attacks": [
     {
       "name": "Flare 20",
@@ -22,5 +22,6 @@
         "amount": 20
       }
     }
-  ]
+  ],
+  "weakness": "water"
 }

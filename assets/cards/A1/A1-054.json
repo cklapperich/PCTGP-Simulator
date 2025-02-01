@@ -7,11 +7,11 @@
   "category": "pokemon",
   "stage": "stage 1",
   "evolvesFrom": "Squirtle",
-  "weakness": "lightning",
   "retreat": 1,
   "artist": "Nelnal",
   "rarity": "diamond_2",
   "pack": "pikachu",
+  "resistance": null,
   "attacks": [
     {
       "name": "Wave Splash 40",
@@ -25,5 +25,6 @@
         "amount": 40
       }
     }
-  ]
+  ],
+  "weakness": "lightning"
 }

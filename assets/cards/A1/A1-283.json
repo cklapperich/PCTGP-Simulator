@@ -6,10 +6,10 @@
   "HP": 60,
   "category": "pokemon",
   "stage": "basic",
-  "weakness": "darkness",
   "retreat": 1,
   "artist": "Amelicart",
   "rarity": "3_star",
+  "resistance": null,
   "attacks": [
     {
       "name": "Psy Report 20",
@@ -22,5 +22,6 @@
         "amount": 20
       }
     }
-  ]
+  ],
+  "weakness": "darkness"
 }

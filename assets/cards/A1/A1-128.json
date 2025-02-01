@@ -6,11 +6,11 @@
   "HP": 120,
   "category": "pokemon",
   "stage": "basic",
-  "weakness": "darkness",
   "retreat": 2,
   "artist": "kawayoo",
   "rarity": "diamond_3",
   "pack": "mewtwo",
+  "resistance": null,
   "attacks": [
     {
       "name": "Power Blast 120",
@@ -26,5 +26,6 @@
         "amount": 120
       }
     }
-  ]
+  ],
+  "weakness": "darkness"
 }

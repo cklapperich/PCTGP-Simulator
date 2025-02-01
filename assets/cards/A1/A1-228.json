@@ -7,11 +7,11 @@
   "category": "pokemon",
   "stage": "stage 1",
   "evolvesFrom": "Oddish",
-  "weakness": "fire",
   "retreat": 2,
   "artist": "OKACHEKE",
   "rarity": "1_star",
   "pack": "charizard",
+  "resistance": null,
   "attacks": [
     {
       "name": "Drool 40",
@@ -25,5 +25,6 @@
         "amount": 40
       }
     }
-  ]
+  ],
+  "weakness": "fire"
 }

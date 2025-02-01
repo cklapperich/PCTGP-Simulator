@@ -7,10 +7,10 @@
   "category": "pokemon",
   "stage": "stage 1",
   "evolvesFrom": "Blitzle",
-  "weakness": "fighting",
   "retreat": 1,
   "artist": "Misa Tsutsui",
   "rarity": "diamond_2",
+  "resistance": null,
   "attacks": [
     {
       "name": "Thunder Spear",
@@ -23,5 +23,6 @@
         "amount": 0
       }
     }
-  ]
+  ],
+  "weakness": "fighting"
 }

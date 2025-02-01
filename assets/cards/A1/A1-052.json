@@ -7,10 +7,10 @@
   "category": "pokemon",
   "stage": "stage 1",
   "evolvesFrom": "Sizzlipede",
-  "weakness": "water",
   "retreat": 3,
   "artist": "GOSSAN",
   "rarity": "diamond_2",
+  "resistance": null,
   "attacks": [
     {
       "name": "Fire Blast 130",
@@ -26,5 +26,6 @@
         "amount": 130
       }
     }
-  ]
+  ],
+  "weakness": "water"
 }

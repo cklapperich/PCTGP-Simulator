@@ -7,11 +7,11 @@
   "category": "pokemon",
   "stage": "stage 1",
   "evolvesFrom": "Spearow",
-  "weakness": "lightning",
   "retreat": 1,
   "artist": "Satoshi Shirai",
   "rarity": "diamond_1",
   "pack": "charizard",
+  "resistance": null,
   "attacks": [
     {
       "name": "Drill Run 50",
@@ -25,5 +25,6 @@
         "amount": 50
       }
     }
-  ]
+  ],
+  "weakness": "lightning"
 }

@@ -7,11 +7,11 @@
   "category": "pokemon",
   "stage": "stage 1",
   "evolvesFrom": "Drowzee",
-  "weakness": "darkness",
   "retreat": 2,
   "artist": "Shigenori Negishi",
   "rarity": "diamond_3",
   "pack": "pikachu",
+  "resistance": null,
   "attacks": [
     {
       "name": "Psypunch 50",
@@ -26,5 +26,6 @@
         "amount": 50
       }
     }
-  ]
+  ],
+  "weakness": "darkness"
 }

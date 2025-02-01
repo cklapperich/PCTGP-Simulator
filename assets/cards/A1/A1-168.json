@@ -7,11 +7,11 @@
   "category": "pokemon",
   "stage": "stage 2",
   "evolvesFrom": "Nidorina",
-  "weakness": "fighting",
   "retreat": 2,
   "artist": "nagimiso",
   "rarity": "diamond_3",
   "pack": "pikachu",
+  "resistance": null,
   "attacks": [
     {
       "name": "Lovestrike 80+",
@@ -26,5 +26,6 @@
         "amount": 80
       }
     }
-  ]
+  ],
+  "weakness": "fighting"
 }
