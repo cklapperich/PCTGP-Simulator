@@ -1,0 +1,30 @@
+{
+  "name": "Eelektross",
+  "id": "A1-109",
+  "set": "A1",
+  "type": "lightning",
+  "HP": 140,
+  "category": "pokemon",
+  "stage": "stage 2",
+  "evolvesFrom": "Eelektrik",
+  "weakness": "fighting",
+  "retreat": 3,
+  "artist": "hatachu",
+  "rarity": "diamond_3",
+  "pack": "mewtwo",
+  "attacks": [
+    {
+      "name": "Thunder Fang 80",
+      "cost": [
+        "lightning",
+        "lightning",
+        "colorless"
+      ],
+      "text": "Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed.",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 80
+      }
+    }
+  ]
+}

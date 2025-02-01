@@ -1,0 +1,12 @@
+{
+  "name": "Helix Fossil",
+  "id": "A1-216",
+  "set": "A1",
+  "category": "trainer",
+  "subcategory": "item",
+  "artist": "Toyste Beach",
+  "rarity": "diamond_1",
+  "pack": "pikachu",
+  "text": "Play this card as if it were a 40-HP Basic [C] Pokémon.At any time during your turn, you may discard this card from play.This card can't retreat.",
+  "effect": {}
+}

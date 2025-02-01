@@ -1,0 +1,28 @@
+{
+  "name": "Eevee",
+  "id": "P-A-030",
+  "set": "P-A",
+  "type": "colorless",
+  "HP": 60,
+  "category": "pokemon",
+  "stage": "basic",
+  "retreat": 1,
+  "artist": "En Morikura",
+  "rarity": "unknown",
+  "pack": "promo",
+  "resistance": null,
+  "attacks": [
+    {
+      "name": "Growl",
+      "cost": [
+        "colorless"
+      ],
+      "text": "During your opponent's next turn, attacks used by the Defending Pokémon do −20 damage.",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 0
+      }
+    }
+  ],
+  "weakness": "fighting"
+}

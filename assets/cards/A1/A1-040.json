@@ -1,0 +1,30 @@
+{
+  "name": "Arcanine",
+  "id": "A1-040",
+  "set": "A1",
+  "type": "fire",
+  "HP": 130,
+  "category": "pokemon",
+  "stage": "stage 1",
+  "evolvesFrom": "Growlithe",
+  "weakness": "water",
+  "retreat": 2,
+  "artist": "kodama",
+  "rarity": "diamond_3",
+  "pack": "pikachu",
+  "attacks": [
+    {
+      "name": "Heat Tackle 100",
+      "cost": [
+        "fire",
+        "fire",
+        "colorless"
+      ],
+      "text": "This Pokémon also does 20 damage to itself.",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 100
+      }
+    }
+  ]
+}

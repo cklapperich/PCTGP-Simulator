@@ -1,0 +1,28 @@
+{
+  "name": "Swoobat",
+  "id": "A1-134",
+  "set": "A1",
+  "type": "psychic",
+  "HP": 90,
+  "category": "pokemon",
+  "stage": "stage 1",
+  "evolvesFrom": "Woobat",
+  "weakness": "darkness",
+  "retreat": 1,
+  "artist": "Masakazu Fukuda",
+  "rarity": "diamond_1",
+  "attacks": [
+    {
+      "name": "Heart Stamp 60",
+      "cost": [
+        "psychic",
+        "colorless"
+      ],
+      "text": "",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 60
+      }
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "name": "Gogoat",
+  "id": "A1-032",
+  "set": "A1",
+  "type": "grass",
+  "HP": 120,
+  "category": "pokemon",
+  "stage": "stage 1",
+  "evolvesFrom": "Skiddo",
+  "weakness": "fire",
+  "retreat": 2,
+  "artist": "You Iribi",
+  "rarity": "diamond_1",
+  "pack": "charizard",
+  "attacks": [
+    {
+      "name": "Razor Leaf 70",
+      "cost": [
+        "grass",
+        "colorless",
+        "colorless"
+      ],
+      "text": "",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 70
+      }
+    }
+  ]
+}

@@ -156,13 +156,11 @@ export class Zone {
     attachedEnergy: { [key in Type]?: number };
     attachedTools: Card[];
     damage: number;
-    attackState: { [key: string]: any };
     constructor() {
         this.cards = [];
         this.attachedEnergy = {};
         this.attachedTools = [];
         this.damage = 0;
-        this.attackState = {};
     }
 
     clear(): Card[] {
@@ -171,7 +169,6 @@ export class Zone {
         this.attachedEnergy = {};
         this.attachedTools = [];
         this.damage = 0;
-        this.attackState = {} // TODO: MAKE SURE TO ALWAYS CLEAR ON ZONE CHANGES!
         return clearedCards;
     }
 

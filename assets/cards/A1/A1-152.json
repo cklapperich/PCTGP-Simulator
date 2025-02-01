@@ -1,0 +1,28 @@
+{
+  "name": "Marowak",
+  "id": "A1-152",
+  "set": "A1",
+  "type": "fighting",
+  "HP": 100,
+  "category": "pokemon",
+  "stage": "stage 1",
+  "evolvesFrom": "Cubone",
+  "weakness": "grass",
+  "retreat": 1,
+  "artist": "Shin Nagasawa",
+  "rarity": "diamond_2",
+  "pack": "mewtwo",
+  "attacks": [
+    {
+      "name": "Bone Beatdown 40",
+      "cost": [
+        "fighting"
+      ],
+      "text": "",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 40
+      }
+    }
+  ]
+}

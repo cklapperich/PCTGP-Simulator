@@ -1,0 +1,29 @@
+{
+  "name": "Chansey",
+  "id": "A1-202",
+  "set": "A1",
+  "type": "colorless",
+  "HP": 120,
+  "category": "pokemon",
+  "stage": "basic",
+  "weakness": "fighting",
+  "retreat": 3,
+  "artist": "MAHOU",
+  "rarity": "diamond_2",
+  "pack": "pikachu",
+  "attacks": [
+    {
+      "name": "Gentle Slap 60",
+      "cost": [
+        "colorless",
+        "colorless",
+        "colorless"
+      ],
+      "text": "",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 60
+      }
+    }
+  ]
+}

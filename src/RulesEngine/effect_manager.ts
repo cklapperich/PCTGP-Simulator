@@ -3,6 +3,7 @@ import { GameState } from './models';
 import { EffectSourceType, EffectTiming, DURATION } from './enums';
 import { GameContext } from './types';
 
+
 /**
  * Effect system for Pokemon TCG.
  * 
@@ -175,4 +176,57 @@ export class EffectManager {
             }
         }
     }
+}
+
+// Type definitions
+type EffectConfig = {
+    timing: EffectTiming;
+    duration: number;
+    requiresSource: boolean;
+    create: (data: any) => {
+        run: (gameState: GameState, context: GameContext) => any;
+    };
+};
+
+type EffectRegistry = {
+    [key: string]: EffectConfig;
+};
+
+// Global registry of effect types
+const effectRegistry: EffectRegistry = {};
+
+/**
+ * Register a new effect type with its configuration
+ */
+export function registerEffect(effectType: string, config: EffectConfig): void {
+    if (effectRegistry[effectType]) {
+        throw new Error(`Effect type ${effectType} is already registered`);
+    }
+    effectRegistry[effectType] = config;
+}
+
+/**
+ * Create a new effect instance of the specified type
+ */
+export function createEffect(effectType: string, source, sourceType, target): Effect {
+    const config = effectRegistry[effectType];
+    if (!config) {
+        throw new Error(`Unknown effect type: ${effectType}`);
+    }
+
+    // Create the effect instance using the registered configuration
+    const instance = config.create(data);
+
+    // Return a new Effect that combines the fixed config with the instance's run function
+    // and includes required source/sourceType
+    return new Effect({
+        id: crypto.randomUUID(),
+        source: data.source,
+        sourceType: data.sourceType,
+        target: data.target,
+        timing: config.timing,
+        duration: config.duration,
+        requiresSource: config.requiresSource,
+        run: instance.run
+    });
 }

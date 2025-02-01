@@ -1,0 +1,30 @@
+{
+  "name": "Gardevoir",
+  "id": "A1-132",
+  "set": "A1",
+  "type": "psychic",
+  "HP": 110,
+  "category": "pokemon",
+  "stage": "stage 2",
+  "evolvesFrom": "Kirlia",
+  "weakness": "darkness",
+  "retreat": 2,
+  "artist": "Yuu Nishida",
+  "rarity": "diamond_3",
+  "pack": "mewtwo",
+  "attacks": [
+    {
+      "name": "Psyshot 60",
+      "cost": [
+        "psychic",
+        "psychic",
+        "colorless"
+      ],
+      "text": "",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 60
+      }
+    }
+  ]
+}

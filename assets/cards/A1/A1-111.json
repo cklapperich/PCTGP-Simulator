@@ -1,0 +1,28 @@
+{
+  "name": "Heliolisk",
+  "id": "A1-111",
+  "set": "A1",
+  "type": "lightning",
+  "HP": 90,
+  "category": "pokemon",
+  "stage": "stage 1",
+  "evolvesFrom": "Helioptile",
+  "weakness": "fighting",
+  "retreat": 1,
+  "artist": "otumami",
+  "rarity": "diamond_1",
+  "attacks": [
+    {
+      "name": "Quick Attack 40+",
+      "cost": [
+        "colorless",
+        "colorless"
+      ],
+      "text": "Flip a coin. If heads, this attack does 40 more damage.",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 40
+      }
+    }
+  ]
+}

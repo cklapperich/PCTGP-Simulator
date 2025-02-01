@@ -1,0 +1,30 @@
+{
+  "name": "Mewtwo",
+  "id": "A1-128",
+  "set": "A1",
+  "type": "psychic",
+  "HP": 120,
+  "category": "pokemon",
+  "stage": "basic",
+  "weakness": "darkness",
+  "retreat": 2,
+  "artist": "kawayoo",
+  "rarity": "diamond_3",
+  "pack": "mewtwo",
+  "attacks": [
+    {
+      "name": "Power Blast 120",
+      "cost": [
+        "psychic",
+        "psychic",
+        "colorless",
+        "colorless"
+      ],
+      "text": "Discard 2 [P] Energy from this Pokémon.",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 120
+      }
+    }
+  ]
+}

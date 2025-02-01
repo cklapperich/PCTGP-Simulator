@@ -1,0 +1,27 @@
+{
+  "name": "Eevee",
+  "id": "A1-206",
+  "set": "A1",
+  "type": "colorless",
+  "HP": 60,
+  "category": "pokemon",
+  "stage": "basic",
+  "weakness": "fighting",
+  "retreat": 1,
+  "artist": "Atsuko Nishida",
+  "rarity": "diamond_1",
+  "pack": "charizard",
+  "attacks": [
+    {
+      "name": "Tackle 20",
+      "cost": [
+        "colorless"
+      ],
+      "text": "",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 20
+      }
+    }
+  ]
+}

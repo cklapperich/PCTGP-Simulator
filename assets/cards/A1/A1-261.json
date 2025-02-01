@@ -1,0 +1,31 @@
+{
+  "name": "Gengar ex",
+  "id": "A1-261",
+  "set": "A1",
+  "type": "psychic",
+  "HP": 170,
+  "category": "pokemon",
+  "stage": "stage 2",
+  "evolvesFrom": "Haunter",
+  "weakness": "darkness",
+  "retreat": 2,
+  "artist": "PLANETA CG Works",
+  "rarity": "2_star",
+  "pack": "mewtwo",
+  "attacks": [
+    {
+      "name": "Spooky Shot 100",
+      "cost": [
+        "psychic",
+        "psychic",
+        "psychic"
+      ],
+      "text": "",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 100
+      }
+    }
+  ],
+  "ex": true
+}

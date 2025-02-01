@@ -1,0 +1,26 @@
+{
+  "name": "Woobat",
+  "id": "A1-133",
+  "set": "A1",
+  "type": "psychic",
+  "HP": 60,
+  "category": "pokemon",
+  "stage": "basic",
+  "weakness": "darkness",
+  "retreat": 1,
+  "artist": "MAHOU",
+  "rarity": "diamond_1",
+  "attacks": [
+    {
+      "name": "Gnaw 10",
+      "cost": [
+        "colorless"
+      ],
+      "text": "",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 10
+      }
+    }
+  ]
+}

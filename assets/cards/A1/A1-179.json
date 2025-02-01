@@ -1,0 +1,26 @@
+{
+  "name": "Pawniard",
+  "id": "A1-179",
+  "set": "A1",
+  "type": "metal",
+  "HP": 50,
+  "category": "pokemon",
+  "stage": "basic",
+  "weakness": "fire",
+  "retreat": 1,
+  "artist": "Kouki Saitou",
+  "rarity": "diamond_1",
+  "attacks": [
+    {
+      "name": "Pierce 30",
+      "cost": [
+        "metal"
+      ],
+      "text": "",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 30
+      }
+    }
+  ]
+}

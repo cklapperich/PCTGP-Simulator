@@ -1,0 +1,31 @@
+{
+  "name": "Golem",
+  "id": "A1-149",
+  "set": "A1",
+  "type": "fighting",
+  "HP": 160,
+  "category": "pokemon",
+  "stage": "stage 2",
+  "evolvesFrom": "Graveler",
+  "weakness": "grass",
+  "retreat": 4,
+  "artist": "Sumiyoshi Kizuki",
+  "rarity": "diamond_3",
+  "pack": "pikachu",
+  "attacks": [
+    {
+      "name": "Double-Edge 150",
+      "cost": [
+        "fighting",
+        "colorless",
+        "colorless",
+        "colorless"
+      ],
+      "text": "This Pokémon also does 50 damage to itself.",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 150
+      }
+    }
+  ]
+}

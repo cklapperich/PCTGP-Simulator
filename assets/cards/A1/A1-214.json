@@ -1,0 +1,27 @@
+{
+  "name": "Wooloo",
+  "id": "A1-214",
+  "set": "A1",
+  "type": "colorless",
+  "HP": 70,
+  "category": "pokemon",
+  "stage": "basic",
+  "weakness": "fighting",
+  "retreat": 1,
+  "artist": "Yoriyuki Ikegami",
+  "rarity": "diamond_1",
+  "attacks": [
+    {
+      "name": "Tackle 30",
+      "cost": [
+        "colorless",
+        "colorless"
+      ],
+      "text": "",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 30
+      }
+    }
+  ]
+}

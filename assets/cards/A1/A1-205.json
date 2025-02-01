@@ -1,0 +1,27 @@
+{
+  "name": "Ditto",
+  "id": "A1-205",
+  "set": "A1",
+  "type": "colorless",
+  "HP": 70,
+  "category": "pokemon",
+  "stage": "basic",
+  "weakness": "fighting",
+  "retreat": 1,
+  "artist": "Miki Tanaka",
+  "rarity": "diamond_3",
+  "pack": "mewtwo",
+  "attacks": [
+    {
+      "name": "Copy Anything",
+      "cost": [
+        "colorless"
+      ],
+      "text": "Choose 1 of your opponent's Pokémon's attacks and use it as this attack. If this Pokémon doesn't have the necessary Energy to use that attack, this attack does nothing.",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 0
+      }
+    }
+  ]
+}

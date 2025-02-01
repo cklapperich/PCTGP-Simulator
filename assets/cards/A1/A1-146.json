@@ -1,0 +1,31 @@
+{
+  "name": "Machamp ex",
+  "id": "A1-146",
+  "set": "A1",
+  "type": "fighting",
+  "HP": 180,
+  "category": "pokemon",
+  "stage": "stage 2",
+  "evolvesFrom": "Machoke",
+  "weakness": "psychic",
+  "retreat": 3,
+  "artist": "PLANETA CG Works",
+  "rarity": "diamond_4",
+  "pack": "charizard",
+  "attacks": [
+    {
+      "name": "Mega Punch 120",
+      "cost": [
+        "fighting",
+        "fighting",
+        "fighting"
+      ],
+      "text": "",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 120
+      }
+    }
+  ],
+  "ex": true
+}

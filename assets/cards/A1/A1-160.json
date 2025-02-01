@@ -1,0 +1,27 @@
+{
+  "name": "Mienfoo",
+  "id": "A1-160",
+  "set": "A1",
+  "type": "fighting",
+  "HP": 60,
+  "category": "pokemon",
+  "stage": "basic",
+  "weakness": "psychic",
+  "retreat": 1,
+  "artist": "match",
+  "rarity": "diamond_1",
+  "pack": "pikachu",
+  "attacks": [
+    {
+      "name": "Pound 20",
+      "cost": [
+        "colorless"
+      ],
+      "text": "",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 20
+      }
+    }
+  ]
+}

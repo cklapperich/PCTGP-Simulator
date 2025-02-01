@@ -1,0 +1,27 @@
+{
+  "name": "Charmander",
+  "id": "A1-033",
+  "set": "A1",
+  "type": "fire",
+  "HP": 60,
+  "category": "pokemon",
+  "stage": "basic",
+  "weakness": "water",
+  "retreat": 1,
+  "artist": "Teeziro",
+  "rarity": "diamond_1",
+  "pack": "charizard",
+  "attacks": [
+    {
+      "name": "Ember 30",
+      "cost": [
+        "fire"
+      ],
+      "text": "Discard a [R] Energy from this Pokémon.",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 30
+      }
+    }
+  ]
+}

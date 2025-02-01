@@ -1,0 +1,26 @@
+{
+  "name": "Heatmor",
+  "id": "A1-048",
+  "set": "A1",
+  "type": "fire",
+  "HP": 80,
+  "category": "pokemon",
+  "stage": "basic",
+  "weakness": "water",
+  "retreat": 1,
+  "artist": "Suwama Chiaki",
+  "rarity": "diamond_1",
+  "attacks": [
+    {
+      "name": "Combustion 30",
+      "cost": [
+        "fire"
+      ],
+      "text": "",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 30
+      }
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "name": "Ponyta",
+  "id": "A1-042",
+  "set": "A1",
+  "type": "fire",
+  "HP": 60,
+  "category": "pokemon",
+  "stage": "basic",
+  "weakness": "water",
+  "retreat": 1,
+  "artist": "Uta",
+  "rarity": "diamond_1",
+  "attacks": [
+    {
+      "name": "Flare 20",
+      "cost": [
+        "fire"
+      ],
+      "text": "",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 20
+      }
+    }
+  ]
+}

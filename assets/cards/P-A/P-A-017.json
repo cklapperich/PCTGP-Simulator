@@ -1,0 +1,28 @@
+{
+  "name": "Mankey",
+  "id": "P-A-017",
+  "set": "P-A",
+  "type": "fighting",
+  "HP": 60,
+  "category": "pokemon",
+  "stage": "basic",
+  "retreat": 1,
+  "artist": "Souichirou Gunjima",
+  "rarity": "unknown",
+  "pack": "promo",
+  "resistance": null,
+  "attacks": [
+    {
+      "name": "Reckless Charge 30",
+      "cost": [
+        "fighting"
+      ],
+      "text": "This Pokémon also does 10 damage to itself.",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 30
+      }
+    }
+  ],
+  "weakness": "psychic"
+}

@@ -1,0 +1,29 @@
+{
+  "name": "Wigglytuff",
+  "id": "A1-194",
+  "set": "A1",
+  "type": "colorless",
+  "HP": 100,
+  "category": "pokemon",
+  "stage": "stage 1",
+  "evolvesFrom": "Jigglypuff",
+  "weakness": "fighting",
+  "retreat": 2,
+  "artist": "Atsuko Nishida",
+  "rarity": "diamond_1",
+  "pack": "pikachu",
+  "attacks": [
+    {
+      "name": "Hyper Voice 60",
+      "cost": [
+        "colorless",
+        "colorless"
+      ],
+      "text": "",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 60
+      }
+    }
+  ]
+}

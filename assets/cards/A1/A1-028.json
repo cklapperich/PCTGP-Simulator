@@ -1,0 +1,27 @@
+{
+  "name": "Whimsicott",
+  "id": "A1-028",
+  "set": "A1",
+  "type": "grass",
+  "HP": 80,
+  "category": "pokemon",
+  "stage": "stage 1",
+  "evolvesFrom": "Cottonee",
+  "weakness": "fire",
+  "retreat": 1,
+  "artist": "Atsuko Nishida",
+  "rarity": "diamond_2",
+  "attacks": [
+    {
+      "name": "Rolling Tackle 40",
+      "cost": [
+        "colorless"
+      ],
+      "text": "",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 40
+      }
+    }
+  ]
+}

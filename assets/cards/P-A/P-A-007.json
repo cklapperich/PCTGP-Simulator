@@ -1,0 +1,12 @@
+{
+  "name": "Professor's Research",
+  "id": "P-A-007",
+  "set": "P-A",
+  "category": "trainer",
+  "subcategory": "supporter",
+  "artist": "Naoki Saito",
+  "rarity": "unknown",
+  "text": "Draw 2 cards.",
+  "resistance": null,
+  "effect": {}
+}

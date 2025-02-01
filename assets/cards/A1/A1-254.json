@@ -1,0 +1,31 @@
+{
+  "name": "Arcanine ex",
+  "id": "A1-254",
+  "set": "A1",
+  "type": "fire",
+  "HP": 150,
+  "category": "pokemon",
+  "stage": "stage 1",
+  "evolvesFrom": "Growlithe",
+  "weakness": "water",
+  "retreat": 2,
+  "artist": "PLANETA Saito",
+  "rarity": "2_star",
+  "pack": "pikachu",
+  "attacks": [
+    {
+      "name": "Inferno Onrush 120",
+      "cost": [
+        "fire",
+        "fire",
+        "colorless"
+      ],
+      "text": "This Pokémon also does 20 damage to itself.",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 120
+      }
+    }
+  ],
+  "ex": true
+}

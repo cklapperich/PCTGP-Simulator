@@ -1,0 +1,42 @@
+{
+  "name": "Articuno ex",
+  "id": "A1-275",
+  "set": "A1",
+  "type": "water",
+  "HP": 140,
+  "category": "pokemon",
+  "stage": "basic",
+  "weakness": "lightning",
+  "retreat": 2,
+  "artist": "kodama",
+  "rarity": "2_star",
+  "pack": "mewtwo",
+  "attacks": [
+    {
+      "name": "Ice Wing 40",
+      "cost": [
+        "water",
+        "colorless"
+      ],
+      "text": "",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 40
+      }
+    },
+    {
+      "name": "Blizzard 80",
+      "cost": [
+        "water",
+        "water",
+        "water"
+      ],
+      "text": "This attack also does 10 damage to each of your opponent's Benched Pokémon.",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 80
+      }
+    }
+  ],
+  "ex": true
+}

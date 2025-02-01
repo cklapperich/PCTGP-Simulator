@@ -1,5 +1,7 @@
 {
     "name": "Bulbasaur",
+    "category":"pokemon",
+    "subcategory":"supporter",
     "id": "A1-001",
     "stage": "basic",
     "set": "A1",

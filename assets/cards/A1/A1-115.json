@@ -1,0 +1,27 @@
+{
+  "name": "Abra",
+  "id": "A1-115",
+  "set": "A1",
+  "type": "psychic",
+  "HP": 60,
+  "category": "pokemon",
+  "stage": "basic",
+  "weakness": "darkness",
+  "retreat": 1,
+  "artist": "Aya Kusube",
+  "rarity": "diamond_1",
+  "pack": "charizard",
+  "attacks": [
+    {
+      "name": "Teleport",
+      "cost": [
+        "colorless"
+      ],
+      "text": "Switch this Pokémon with 1 of your Benched Pokémon.",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 0
+      }
+    }
+  ]
+}

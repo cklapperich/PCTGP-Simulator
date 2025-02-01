@@ -1,0 +1,29 @@
+{
+  "name": "Onix",
+  "id": "A1-150",
+  "set": "A1",
+  "type": "fighting",
+  "HP": 110,
+  "category": "pokemon",
+  "stage": "basic",
+  "weakness": "grass",
+  "retreat": 4,
+  "artist": "otumami",
+  "rarity": "diamond_2",
+  "pack": "pikachu",
+  "attacks": [
+    {
+      "name": "Land Crush 70",
+      "cost": [
+        "fighting",
+        "fighting",
+        "fighting"
+      ],
+      "text": "",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 70
+      }
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "name": "Venusaur ex",
+  "id": "A1-004",
+  "set": "A1",
+  "type": "grass",
+  "HP": 190,
+  "category": "pokemon",
+  "stage": "stage 2",
+  "evolvesFrom": "Ivysaur",
+  "weakness": "fire",
+  "retreat": 3,
+  "artist": "PLANETA CG Works",
+  "rarity": "diamond_4",
+  "pack": "mewtwo",
+  "attacks": [
+    {
+      "name": "Razor Leaf 60",
+      "cost": [
+        "grass",
+        "colorless",
+        "colorless"
+      ],
+      "text": "",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 60
+      }
+    },
+    {
+      "name": "Giant Bloom 100",
+      "cost": [
+        "grass",
+        "grass",
+        "colorless",
+        "colorless"
+      ],
+      "text": "Heal 30 damage from this Pokémon.",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 100
+      }
+    }
+  ],
+  "ex": true
+}

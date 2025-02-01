@@ -1,0 +1,30 @@
+{
+  "name": "Alakazam",
+  "id": "A1-236",
+  "set": "A1",
+  "type": "psychic",
+  "HP": 130,
+  "category": "pokemon",
+  "stage": "stage 2",
+  "evolvesFrom": "Kadabra",
+  "weakness": "darkness",
+  "retreat": 2,
+  "artist": "AKIRA EGAWA",
+  "rarity": "1_star",
+  "pack": "charizard",
+  "attacks": [
+    {
+      "name": "Psychic 60+",
+      "cost": [
+        "psychic",
+        "colorless",
+        "colorless"
+      ],
+      "text": "This attack does 30 more damage for each Energy attached to your opponent's Active Pokémon.",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 60
+      }
+    }
+  ]
+}

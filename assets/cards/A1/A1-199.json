@@ -1,0 +1,26 @@
+{
+  "name": "Doduo",
+  "id": "A1-199",
+  "set": "A1",
+  "type": "colorless",
+  "HP": 60,
+  "category": "pokemon",
+  "stage": "basic",
+  "weakness": "lightning",
+  "retreat": 1,
+  "artist": "Yuya Oka",
+  "rarity": "diamond_1",
+  "attacks": [
+    {
+      "name": "Peck 20",
+      "cost": [
+        "colorless"
+      ],
+      "text": "",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 20
+      }
+    }
+  ]
+}

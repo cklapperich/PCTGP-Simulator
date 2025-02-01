@@ -1,0 +1,28 @@
+{
+  "name": "Drowzee",
+  "id": "A1-124",
+  "set": "A1",
+  "type": "psychic",
+  "HP": 70,
+  "category": "pokemon",
+  "stage": "basic",
+  "weakness": "darkness",
+  "retreat": 2,
+  "artist": "Yukiko Baba",
+  "rarity": "diamond_1",
+  "pack": "pikachu",
+  "attacks": [
+    {
+      "name": "Mumble 30",
+      "cost": [
+        "psychic",
+        "colorless"
+      ],
+      "text": "",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 30
+      }
+    }
+  ]
+}

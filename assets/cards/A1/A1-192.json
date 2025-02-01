@@ -1,0 +1,29 @@
+{
+  "name": "Fearow",
+  "id": "A1-192",
+  "set": "A1",
+  "type": "colorless",
+  "HP": 100,
+  "category": "pokemon",
+  "stage": "stage 1",
+  "evolvesFrom": "Spearow",
+  "weakness": "lightning",
+  "retreat": 1,
+  "artist": "Satoshi Shirai",
+  "rarity": "diamond_1",
+  "pack": "charizard",
+  "attacks": [
+    {
+      "name": "Drill Run 50",
+      "cost": [
+        "colorless",
+        "colorless"
+      ],
+      "text": "Flip a coin. If heads, discard a random Energy from your opponent's Active Pokémon.",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 50
+      }
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "name": "Nidoqueen",
+  "id": "A1-240",
+  "set": "A1",
+  "type": "darkness",
+  "HP": 140,
+  "category": "pokemon",
+  "stage": "stage 2",
+  "evolvesFrom": "Nidorina",
+  "weakness": "fighting",
+  "retreat": 2,
+  "artist": "aoki",
+  "rarity": "1_star",
+  "pack": "pikachu",
+  "attacks": [
+    {
+      "name": "Lovestrike 80+",
+      "cost": [
+        "darkness",
+        "darkness",
+        "colorless"
+      ],
+      "text": "This attack does 50 more damage for each of your Benched Nidoking.",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 80
+      }
+    }
+  ]
+}

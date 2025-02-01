@@ -1,0 +1,28 @@
+{
+  "name": "Kakuna",
+  "id": "A1-009",
+  "set": "A1",
+  "type": "grass",
+  "HP": 80,
+  "category": "pokemon",
+  "stage": "stage 1",
+  "evolvesFrom": "Weedle",
+  "weakness": "fire",
+  "retreat": 2,
+  "artist": "miki kudo",
+  "rarity": "diamond_1",
+  "pack": "mewtwo",
+  "attacks": [
+    {
+      "name": "Bug Bite 30",
+      "cost": [
+        "grass"
+      ],
+      "text": "",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 30
+      }
+    }
+  ]
+}

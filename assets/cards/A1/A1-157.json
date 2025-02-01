@@ -1,0 +1,31 @@
+{
+  "name": "Rhydon",
+  "id": "A1-157",
+  "set": "A1",
+  "type": "fighting",
+  "HP": 120,
+  "category": "pokemon",
+  "stage": "stage 1",
+  "evolvesFrom": "Rhyhorn",
+  "weakness": "grass",
+  "retreat": 4,
+  "artist": "Masakazu Fukuda",
+  "rarity": "diamond_2",
+  "pack": "mewtwo",
+  "attacks": [
+    {
+      "name": "Horn Drill 100",
+      "cost": [
+        "fighting",
+        "fighting",
+        "fighting",
+        "colorless"
+      ],
+      "text": "",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 100
+      }
+    }
+  ]
+}

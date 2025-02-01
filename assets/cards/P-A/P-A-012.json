@@ -1,0 +1,27 @@
+{
+  "name": "Meowth",
+  "id": "P-A-012",
+  "set": "P-A",
+  "type": "colorless",
+  "HP": 60,
+  "category": "pokemon",
+  "stage": "basic",
+  "retreat": 1,
+  "artist": "Shigenori Negishi",
+  "rarity": "unknown",
+  "resistance": null,
+  "attacks": [
+    {
+      "name": "Pay Day 10",
+      "cost": [
+        "colorless"
+      ],
+      "text": "Draw 1 card.",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 10
+      }
+    }
+  ],
+  "weakness": "fighting"
+}

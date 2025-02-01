@@ -1,0 +1,12 @@
+{
+  "name": "Brock",
+  "id": "A1-271",
+  "set": "A1",
+  "category": "trainer",
+  "subcategory": "supporter",
+  "artist": "Ryuta Fuse",
+  "rarity": "2_star",
+  "pack": "pikachu",
+  "text": "Take a [F] Energy from your Energy Zone and attach it to Golem or Onix.",
+  "effect": {}
+}

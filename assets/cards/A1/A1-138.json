@@ -1,0 +1,28 @@
+{
+  "name": "Sandslash",
+  "id": "A1-138",
+  "set": "A1",
+  "type": "fighting",
+  "HP": 100,
+  "category": "pokemon",
+  "stage": "stage 1",
+  "evolvesFrom": "Sandshrew",
+  "weakness": "grass",
+  "retreat": 2,
+  "artist": "Miki Tanaka",
+  "rarity": "diamond_2",
+  "attacks": [
+    {
+      "name": "Slash 70",
+      "cost": [
+        "fighting",
+        "fighting"
+      ],
+      "text": "",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 70
+      }
+    }
+  ]
+}

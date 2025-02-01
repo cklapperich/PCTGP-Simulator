@@ -1,0 +1,27 @@
+{
+  "name": "Nidoran♀",
+  "id": "A1-166",
+  "set": "A1",
+  "type": "darkness",
+  "HP": 60,
+  "category": "pokemon",
+  "stage": "basic",
+  "weakness": "fighting",
+  "retreat": 1,
+  "artist": "Miki Tanaka",
+  "rarity": "diamond_1",
+  "pack": "pikachu",
+  "attacks": [
+    {
+      "name": "Call for Family",
+      "cost": [
+        "darkness"
+      ],
+      "text": "Put 1 random Nidoran♂ from your deck onto your Bench.",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 0
+      }
+    }
+  ]
+}

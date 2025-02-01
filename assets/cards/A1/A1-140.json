@@ -1,0 +1,28 @@
+{
+  "name": "Dugtrio",
+  "id": "A1-140",
+  "set": "A1",
+  "type": "fighting",
+  "HP": 70,
+  "category": "pokemon",
+  "stage": "stage 1",
+  "evolvesFrom": "Diglett",
+  "weakness": "grass",
+  "retreat": 1,
+  "artist": "Akira Komayama",
+  "rarity": "diamond_2",
+  "pack": "pikachu",
+  "attacks": [
+    {
+      "name": "Dig 40",
+      "cost": [
+        "fighting"
+      ],
+      "text": "Flip a coin. If heads, during your opponent's next turn, prevent all damage from—and effects of—attacks done to this Pokémon.",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 40
+      }
+    }
+  ]
+}

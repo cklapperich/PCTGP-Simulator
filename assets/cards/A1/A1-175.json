@@ -1,0 +1,30 @@
+{
+  "name": "Muk",
+  "id": "A1-175",
+  "set": "A1",
+  "type": "darkness",
+  "HP": 130,
+  "category": "pokemon",
+  "stage": "stage 1",
+  "evolvesFrom": "Grimer",
+  "weakness": "fighting",
+  "retreat": 3,
+  "artist": "Hajime Kusajima",
+  "rarity": "diamond_3",
+  "pack": "mewtwo",
+  "attacks": [
+    {
+      "name": "Venoshock 70+",
+      "cost": [
+        "darkness",
+        "darkness",
+        "colorless"
+      ],
+      "text": "If your opponent's Active Pokémon is Poisoned, this attack does 50 more damage.",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 70
+      }
+    }
+  ]
+}

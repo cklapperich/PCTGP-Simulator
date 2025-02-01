@@ -1,0 +1,31 @@
+{
+  "name": "Venusaur",
+  "id": "A1-003",
+  "set": "A1",
+  "type": "grass",
+  "HP": 160,
+  "category": "pokemon",
+  "stage": "stage 2",
+  "evolvesFrom": "Ivysaur",
+  "weakness": "fire",
+  "retreat": 3,
+  "artist": "Ryota Murayama",
+  "rarity": "diamond_3",
+  "pack": "mewtwo",
+  "attacks": [
+    {
+      "name": "Mega Drain 80",
+      "cost": [
+        "grass",
+        "grass",
+        "colorless",
+        "colorless"
+      ],
+      "text": "Heal 30 damage from this Pokémon.",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 80
+      }
+    }
+  ]
+}

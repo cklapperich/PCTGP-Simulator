@@ -1,0 +1,28 @@
+{
+  "name": "Electabuzz",
+  "id": "A1-101",
+  "set": "A1",
+  "type": "lightning",
+  "HP": 70,
+  "category": "pokemon",
+  "stage": "basic",
+  "weakness": "fighting",
+  "retreat": 1,
+  "artist": "Ryuta Fuse",
+  "rarity": "diamond_1",
+  "pack": "pikachu",
+  "attacks": [
+    {
+      "name": "Thunder Punch 40+",
+      "cost": [
+        "lightning",
+        "lightning"
+      ],
+      "text": "Flip a coin. If heads, this attack does 40 more damage. If tails, this Pokémon also does 20 damage to itself.",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 40
+      }
+    }
+  ]
+}

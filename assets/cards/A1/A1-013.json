@@ -1,0 +1,30 @@
+{
+  "name": "Vileplume",
+  "id": "A1-013",
+  "set": "A1",
+  "type": "grass",
+  "HP": 140,
+  "category": "pokemon",
+  "stage": "stage 2",
+  "evolvesFrom": "Gloom",
+  "weakness": "fire",
+  "retreat": 3,
+  "artist": "Kyoko Umemoto",
+  "rarity": "diamond_3",
+  "pack": "charizard",
+  "attacks": [
+    {
+      "name": "Soothing Scent 80",
+      "cost": [
+        "grass",
+        "grass",
+        "colorless"
+      ],
+      "text": "Your opponent's Active Pokémon is now Asleep.",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 80
+      }
+    }
+  ]
+}

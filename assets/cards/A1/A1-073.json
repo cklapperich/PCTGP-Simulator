@@ -1,0 +1,28 @@
+{
+  "name": "Seaking",
+  "id": "A1-073",
+  "set": "A1",
+  "type": "water",
+  "HP": 100,
+  "category": "pokemon",
+  "stage": "stage 1",
+  "evolvesFrom": "Goldeen",
+  "weakness": "lightning",
+  "retreat": 1,
+  "artist": "Kyoko Umemoto",
+  "rarity": "diamond_1",
+  "pack": "pikachu",
+  "attacks": [
+    {
+      "name": "Horn Hazard 80",
+      "cost": [
+        "water"
+      ],
+      "text": "Flip a coin. If tails, this attack does nothing.",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 80
+      }
+    }
+  ]
+}

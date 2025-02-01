@@ -1,0 +1,28 @@
+{
+  "name": "Pidgeotto",
+  "id": "A1-187",
+  "set": "A1",
+  "type": "colorless",
+  "HP": 80,
+  "category": "pokemon",
+  "stage": "stage 1",
+  "evolvesFrom": "Pidgey",
+  "weakness": "lightning",
+  "retreat": 1,
+  "artist": "Scav",
+  "rarity": "diamond_1",
+  "pack": "mewtwo",
+  "attacks": [
+    {
+      "name": "Gust 30",
+      "cost": [
+        "colorless"
+      ],
+      "text": "",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 30
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "name": "Kangaskhan",
+  "id": "A1-203",
+  "set": "A1",
+  "type": "colorless",
+  "HP": 100,
+  "category": "pokemon",
+  "stage": "basic",
+  "weakness": "fighting",
+  "retreat": 3,
+  "artist": "Ken Sugimori",
+  "rarity": "diamond_3",
+  "pack": "charizard",
+  "attacks": [
+    {
+      "name": "Dizzy Punch 30x",
+      "cost": [
+        "colorless"
+      ],
+      "text": "Flip 2 coins. This attack does 30 damage for each heads.",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 30
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "name": "Zebstrika",
+  "id": "A1-106",
+  "set": "A1",
+  "type": "lightning",
+  "HP": 90,
+  "category": "pokemon",
+  "stage": "stage 1",
+  "evolvesFrom": "Blitzle",
+  "weakness": "fighting",
+  "retreat": 1,
+  "artist": "Misa Tsutsui",
+  "rarity": "diamond_2",
+  "attacks": [
+    {
+      "name": "Thunder Spear",
+      "cost": [
+        "lightning"
+      ],
+      "text": "This attack does 30 damage to 1 of your opponent's Pokémon.",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 0
+      }
+    }
+  ]
+}

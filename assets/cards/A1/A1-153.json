@@ -1,0 +1,30 @@
+{
+  "name": "Marowak ex",
+  "id": "A1-153",
+  "set": "A1",
+  "type": "fighting",
+  "HP": 140,
+  "category": "pokemon",
+  "stage": "stage 1",
+  "evolvesFrom": "Cubone",
+  "weakness": "grass",
+  "retreat": 1,
+  "artist": "PLANETA Mochizuki",
+  "rarity": "diamond_4",
+  "pack": "mewtwo",
+  "attacks": [
+    {
+      "name": "Bonemerang 80x",
+      "cost": [
+        "fighting",
+        "fighting"
+      ],
+      "text": "Flip 2 coins. This attack does 80 damage for each heads.",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 80
+      }
+    }
+  ],
+  "ex": true
+}

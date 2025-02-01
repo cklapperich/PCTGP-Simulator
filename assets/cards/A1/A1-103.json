@@ -1,0 +1,29 @@
+{
+  "name": "Zapdos",
+  "id": "A1-103",
+  "set": "A1",
+  "type": "lightning",
+  "HP": 100,
+  "category": "pokemon",
+  "stage": "basic",
+  "weakness": "lightning",
+  "retreat": 1,
+  "artist": "Hitoshi Ariga",
+  "rarity": "diamond_3",
+  "pack": "pikachu",
+  "attacks": [
+    {
+      "name": "Raging Thunder 100",
+      "cost": [
+        "lightning",
+        "lightning",
+        "colorless"
+      ],
+      "text": "This attack also does 30 damage to 1 of your Benched Pokémon.",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 100
+      }
+    }
+  ]
+}

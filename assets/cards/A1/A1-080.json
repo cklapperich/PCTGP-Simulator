@@ -1,0 +1,30 @@
+{
+  "name": "Vaporeon",
+  "id": "A1-080",
+  "set": "A1",
+  "type": "water",
+  "HP": 130,
+  "category": "pokemon",
+  "stage": "stage 1",
+  "evolvesFrom": "Eevee",
+  "weakness": "lightning",
+  "retreat": 2,
+  "artist": "Kagemaru Himeno",
+  "rarity": "diamond_3",
+  "pack": "mewtwo",
+  "attacks": [
+    {
+      "name": "Bubble Drain 60",
+      "cost": [
+        "water",
+        "colorless",
+        "colorless"
+      ],
+      "text": "Heal 30 damage from this Pokémon.",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 60
+      }
+    }
+  ]
+}

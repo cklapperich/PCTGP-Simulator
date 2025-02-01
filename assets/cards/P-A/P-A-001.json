@@ -1,0 +1,12 @@
+{
+  "name": "Potion",
+  "id": "P-A-001",
+  "set": "P-A",
+  "category": "trainer",
+  "subcategory": "item",
+  "artist": "5ban Graphics",
+  "rarity": "unknown",
+  "text": "Heal 20 damage from 1 of your Pokémon.",
+  "resistance": null,
+  "effect": {}
+}

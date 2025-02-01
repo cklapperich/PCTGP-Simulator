@@ -1,0 +1,29 @@
+{
+  "name": "Gloom",
+  "id": "A1-012",
+  "set": "A1",
+  "type": "grass",
+  "HP": 80,
+  "category": "pokemon",
+  "stage": "stage 1",
+  "evolvesFrom": "Oddish",
+  "weakness": "fire",
+  "retreat": 2,
+  "artist": "Anesaki Dynamic",
+  "rarity": "diamond_2",
+  "pack": "charizard",
+  "attacks": [
+    {
+      "name": "Drool 40",
+      "cost": [
+        "grass",
+        "colorless"
+      ],
+      "text": "",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 40
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "name": "Geodude",
+  "id": "A1-147",
+  "set": "A1",
+  "type": "fighting",
+  "HP": 70,
+  "category": "pokemon",
+  "stage": "basic",
+  "weakness": "grass",
+  "retreat": 2,
+  "artist": "Kouki Saitou",
+  "rarity": "diamond_1",
+  "pack": "pikachu",
+  "attacks": [
+    {
+      "name": "Tackle 20",
+      "cost": [
+        "fighting"
+      ],
+      "text": "",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 20
+      }
+    }
+  ]
+}

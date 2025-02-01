@@ -1,0 +1,12 @@
+{
+  "name": "Koga",
+  "id": "A1-222",
+  "set": "A1",
+  "category": "trainer",
+  "subcategory": "supporter",
+  "artist": "Souichirou Gunjima",
+  "rarity": "diamond_2",
+  "pack": "mewtwo",
+  "text": "Put your Muk or Weezing in the Active Spot into your hand.",
+  "effect": {}
+}

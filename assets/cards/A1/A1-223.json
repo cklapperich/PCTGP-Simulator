@@ -1,0 +1,12 @@
+{
+  "name": "Giovanni",
+  "id": "A1-223",
+  "set": "A1",
+  "category": "trainer",
+  "subcategory": "supporter",
+  "artist": "Hideki Ishikawa",
+  "rarity": "diamond_2",
+  "pack": "mewtwo",
+  "text": "During this turn, attacks used by your Pokémon do +10 damage to your opponent's Active Pokémon.",
+  "effect": {}
+}

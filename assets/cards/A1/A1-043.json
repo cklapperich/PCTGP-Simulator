@@ -1,0 +1,27 @@
+{
+  "name": "Rapidash",
+  "id": "A1-043",
+  "set": "A1",
+  "type": "fire",
+  "HP": 100,
+  "category": "pokemon",
+  "stage": "stage 1",
+  "evolvesFrom": "Ponyta",
+  "weakness": "water",
+  "retreat": 1,
+  "artist": "Misa Tsutsui",
+  "rarity": "diamond_2",
+  "attacks": [
+    {
+      "name": "Fire Mane 40",
+      "cost": [
+        "fire"
+      ],
+      "text": "",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 40
+      }
+    }
+  ]
+}

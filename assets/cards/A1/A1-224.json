@@ -1,0 +1,13 @@
+{
+  "name": "Brock",
+  "id": "A1-224",
+  "set": "A1",
+  "category": "trainer",
+  "subcategory": "supporter",
+  "artist": "Taira Akitsu",
+  "rarity": "diamond_2",
+  "pack": "pikachu",
+  "text": "Take a [F] Energy from your Energy Zone and attach it to Golem or Onix.",
+  "resistance": null,
+  "effect": {}
+}

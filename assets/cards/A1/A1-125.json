@@ -1,0 +1,30 @@
+{
+  "name": "Hypno",
+  "id": "A1-125",
+  "set": "A1",
+  "type": "psychic",
+  "HP": 100,
+  "category": "pokemon",
+  "stage": "stage 1",
+  "evolvesFrom": "Drowzee",
+  "weakness": "darkness",
+  "retreat": 2,
+  "artist": "Shigenori Negishi",
+  "rarity": "diamond_3",
+  "pack": "pikachu",
+  "attacks": [
+    {
+      "name": "Psypunch 50",
+      "cost": [
+        "psychic",
+        "psychic",
+        "colorless"
+      ],
+      "text": "",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 50
+      }
+    }
+  ]
+}

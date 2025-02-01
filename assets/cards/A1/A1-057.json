@@ -1,0 +1,27 @@
+{
+  "name": "Psyduck",
+  "id": "A1-057",
+  "set": "A1",
+  "type": "water",
+  "HP": 60,
+  "category": "pokemon",
+  "stage": "basic",
+  "retreat": 1,
+  "artist": "Shibuzoh.",
+  "rarity": "diamond_1",
+  "resistance": null,
+  "attacks": [
+    {
+      "name": "Headache 10",
+      "cost": [
+        "colorless"
+      ],
+      "text": "Your opponent can't use any Supporter cards from their hand during their next turn.",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 10
+      }
+    }
+  ],
+  "weakness": "lightning"
+}

@@ -1,0 +1,29 @@
+{
+  "name": "Articuno",
+  "id": "A1-083",
+  "set": "A1",
+  "type": "water",
+  "HP": 100,
+  "category": "pokemon",
+  "stage": "basic",
+  "weakness": "lightning",
+  "retreat": 1,
+  "artist": "Hitoshi Ariga",
+  "rarity": "diamond_3",
+  "pack": "mewtwo",
+  "attacks": [
+    {
+      "name": "Ice Beam 60",
+      "cost": [
+        "water",
+        "water",
+        "colorless"
+      ],
+      "text": "Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed.",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 60
+      }
+    }
+  ]
+}

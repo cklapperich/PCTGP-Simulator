@@ -1,0 +1,27 @@
+{
+  "name": "Charmander",
+  "id": "P-A-032",
+  "set": "P-A",
+  "type": "fire",
+  "HP": 60,
+  "category": "pokemon",
+  "stage": "basic",
+  "retreat": 1,
+  "artist": "Naoyo Kimura",
+  "rarity": "unknown",
+  "resistance": null,
+  "attacks": [
+    {
+      "name": "Ember 30",
+      "cost": [
+        "fire"
+      ],
+      "text": "Discard a [R] Energy from this Pokémon.",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 30
+      }
+    }
+  ],
+  "weakness": "water"
+}

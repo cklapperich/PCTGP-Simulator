@@ -1,0 +1,28 @@
+{
+  "name": "Frosmoth",
+  "id": "A1-093",
+  "set": "A1",
+  "type": "water",
+  "HP": 90,
+  "category": "pokemon",
+  "stage": "stage 1",
+  "evolvesFrom": "Snom",
+  "weakness": "metal",
+  "retreat": 1,
+  "artist": "aoki",
+  "rarity": "diamond_2",
+  "attacks": [
+    {
+      "name": "Powder Snow 40",
+      "cost": [
+        "water",
+        "colorless"
+      ],
+      "text": "Your opponent's Active Pokémon is now Asleep.",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 40
+      }
+    }
+  ]
+}

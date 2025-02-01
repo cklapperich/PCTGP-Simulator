@@ -1,0 +1,27 @@
+{
+  "name": "Tynamo",
+  "id": "A1-107",
+  "set": "A1",
+  "type": "lightning",
+  "HP": 30,
+  "category": "pokemon",
+  "stage": "basic",
+  "weakness": "fighting",
+  "retreat": 1,
+  "artist": "Asako Ito",
+  "rarity": "diamond_1",
+  "pack": "mewtwo",
+  "attacks": [
+    {
+      "name": "Tiny Charge 30",
+      "cost": [
+        "lightning"
+      ],
+      "text": "",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 30
+      }
+    }
+  ]
+}

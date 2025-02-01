@@ -1,0 +1,30 @@
+{
+  "name": "Golurk",
+  "id": "A1-136",
+  "set": "A1",
+  "type": "psychic",
+  "HP": 140,
+  "category": "pokemon",
+  "stage": "stage 1",
+  "evolvesFrom": "Golett",
+  "weakness": "darkness",
+  "retreat": 4,
+  "artist": "match",
+  "rarity": "diamond_2",
+  "attacks": [
+    {
+      "name": "Double Lariat 100x",
+      "cost": [
+        "psychic",
+        "psychic",
+        "colorless",
+        "colorless"
+      ],
+      "text": "Flip 2 coins. This attack does 100 damage for each heads.",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 100
+      }
+    }
+  ]
+}

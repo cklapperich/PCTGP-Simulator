@@ -1,0 +1,12 @@
+{
+  "name": "X Speed",
+  "id": "P-A-002",
+  "set": "P-A",
+  "category": "trainer",
+  "subcategory": "item",
+  "artist": "Toyste Beach",
+  "rarity": "unknown",
+  "text": "During this turn, the Retreat Cost of your Active Pokémon is 1 less.",
+  "resistance": null,
+  "effect": {}
+}

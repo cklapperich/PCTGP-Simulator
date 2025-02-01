@@ -1,0 +1,26 @@
+{
+  "name": "Minccino",
+  "id": "A1-212",
+  "set": "A1",
+  "type": "colorless",
+  "HP": 60,
+  "category": "pokemon",
+  "stage": "basic",
+  "weakness": "fighting",
+  "retreat": 1,
+  "artist": "sui",
+  "rarity": "diamond_1",
+  "attacks": [
+    {
+      "name": "Tail Smack 20",
+      "cost": [
+        "colorless"
+      ],
+      "text": "",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 20
+      }
+    }
+  ]
+}

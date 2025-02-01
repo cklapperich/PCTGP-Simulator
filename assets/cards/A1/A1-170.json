@@ -1,0 +1,29 @@
+{
+  "name": "Nidorino",
+  "id": "A1-170",
+  "set": "A1",
+  "type": "darkness",
+  "HP": 90,
+  "category": "pokemon",
+  "stage": "stage 1",
+  "evolvesFrom": "Nidoran♂",
+  "weakness": "fighting",
+  "retreat": 2,
+  "artist": "Kouki Saitou",
+  "rarity": "diamond_2",
+  "pack": "pikachu",
+  "attacks": [
+    {
+      "name": "Horn Attack 40",
+      "cost": [
+        "darkness",
+        "colorless"
+      ],
+      "text": "",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 40
+      }
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "name": "Blastoise",
+  "id": "P-A-029",
+  "set": "P-A",
+  "type": "water",
+  "HP": 150,
+  "category": "pokemon",
+  "stage": "stage 2",
+  "evolvesFrom": "Wartortle",
+  "retreat": 3,
+  "artist": "danciao",
+  "rarity": "unknown",
+  "pack": "promo",
+  "resistance": null,
+  "attacks": [
+    {
+      "name": "Hydro Pump 80+",
+      "cost": [
+        "water",
+        "water",
+        "colorless"
+      ],
+      "text": "If this Pokémon has at least 2 extra [W] Energy attached, this attack does 60 more damage.",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 80
+      }
+    }
+  ],
+  "weakness": "lightning"
+}

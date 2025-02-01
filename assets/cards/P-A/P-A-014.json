@@ -1,0 +1,31 @@
+{
+  "name": "Lapras ex",
+  "id": "P-A-014",
+  "set": "P-A",
+  "type": "water",
+  "HP": 140,
+  "category": "pokemon",
+  "stage": "basic",
+  "retreat": 3,
+  "artist": "PLANETA CG Works",
+  "rarity": "unknown",
+  "pack": "promo",
+  "resistance": null,
+  "attacks": [
+    {
+      "name": "Bubble Drain 80",
+      "cost": [
+        "water",
+        "water",
+        "colorless"
+      ],
+      "text": "Heal 20 damage from this Pokémon.",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 80
+      }
+    }
+  ],
+  "ex": true,
+  "weakness": "lightning"
+}

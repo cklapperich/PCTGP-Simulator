@@ -1,0 +1,30 @@
+{
+  "name": "Starmie ex",
+  "id": "A1-257",
+  "set": "A1",
+  "type": "water",
+  "HP": 130,
+  "category": "pokemon",
+  "stage": "stage 1",
+  "evolvesFrom": "Staryu",
+  "weakness": "lightning",
+  "retreat": 0,
+  "artist": "PLANETA Igarashi",
+  "rarity": "2_star",
+  "pack": "charizard",
+  "attacks": [
+    {
+      "name": "Hydro Splash 90",
+      "cost": [
+        "water",
+        "water"
+      ],
+      "text": "",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 90
+      }
+    }
+  ],
+  "ex": true
+}

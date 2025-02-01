@@ -1,0 +1,30 @@
+{
+  "name": "Centiskorch",
+  "id": "A1-052",
+  "set": "A1",
+  "type": "fire",
+  "HP": 130,
+  "category": "pokemon",
+  "stage": "stage 1",
+  "evolvesFrom": "Sizzlipede",
+  "weakness": "water",
+  "retreat": 3,
+  "artist": "GOSSAN",
+  "rarity": "diamond_2",
+  "attacks": [
+    {
+      "name": "Fire Blast 130",
+      "cost": [
+        "fire",
+        "colorless",
+        "colorless",
+        "colorless"
+      ],
+      "text": "Discard a [R] Energy from this Pokémon.",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 130
+      }
+    }
+  ]
+}

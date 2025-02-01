@@ -1,0 +1,31 @@
+{
+  "name": "Volcarona",
+  "id": "P-A-028",
+  "set": "P-A",
+  "type": "fire",
+  "HP": 120,
+  "category": "pokemon",
+  "stage": "stage 1",
+  "evolvesFrom": "Larvesta",
+  "retreat": 2,
+  "artist": "Shin Nagasawa",
+  "rarity": "unknown",
+  "pack": "promo",
+  "resistance": null,
+  "attacks": [
+    {
+      "name": "Volcanic Ash",
+      "cost": [
+        "fire",
+        "fire",
+        "colorless"
+      ],
+      "text": "Discard 2 [R] Energy from this Pokémon. This attack does 80 damage to 1 of your opponent's Pokémon.",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 0
+      }
+    }
+  ],
+  "weakness": "water"
+}

@@ -1,0 +1,12 @@
+{
+  "name": "Red Card",
+  "id": "P-A-006",
+  "set": "P-A",
+  "category": "trainer",
+  "subcategory": "item",
+  "artist": "5ban Graphics",
+  "rarity": "unknown",
+  "text": "Your opponent shuffles their hand into their deck and draws 3 cards.",
+  "resistance": null,
+  "effect": {}
+}

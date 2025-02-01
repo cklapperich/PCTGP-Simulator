@@ -1,0 +1,27 @@
+{
+  "name": "Meltan",
+  "id": "A1-181",
+  "set": "A1",
+  "type": "metal",
+  "HP": 60,
+  "category": "pokemon",
+  "stage": "basic",
+  "weakness": "fire",
+  "retreat": 1,
+  "artist": "Shin Nagasawa",
+  "rarity": "diamond_1",
+  "pack": "charizard",
+  "attacks": [
+    {
+      "name": "Amass",
+      "cost": [
+        "metal"
+      ],
+      "text": "Take 1 [M] Energy from your Energy Zone and attach it to this Pokémon.",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 0
+      }
+    }
+  ]
+}

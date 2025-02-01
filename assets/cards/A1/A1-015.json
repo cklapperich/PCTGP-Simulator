@@ -1,0 +1,30 @@
+{
+  "name": "Parasect",
+  "id": "A1-015",
+  "set": "A1",
+  "type": "grass",
+  "HP": 120,
+  "category": "pokemon",
+  "stage": "stage 1",
+  "evolvesFrom": "Paras",
+  "weakness": "fire",
+  "retreat": 2,
+  "artist": "Eri Yamaki",
+  "rarity": "diamond_2",
+  "pack": "pikachu",
+  "attacks": [
+    {
+      "name": "Slash 80",
+      "cost": [
+        "grass",
+        "grass",
+        "colorless"
+      ],
+      "text": "",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 80
+      }
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "name": "Aerodactyl",
+  "id": "A1-210",
+  "set": "A1",
+  "type": "colorless",
+  "HP": 100,
+  "category": "pokemon",
+  "stage": "stage 1",
+  "evolvesFrom": "Old Amber",
+  "weakness": "lightning",
+  "retreat": 1,
+  "artist": "Naoyo Kimura",
+  "rarity": "diamond_3",
+  "pack": "mewtwo",
+  "attacks": [
+    {
+      "name": "Primal Wingbeat",
+      "cost": [
+        "colorless",
+        "colorless"
+      ],
+      "text": "Flip a coin. If heads, your opponent shuffles their Active Pokémon back into their deck.",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 0
+      }
+    }
+  ]
+}

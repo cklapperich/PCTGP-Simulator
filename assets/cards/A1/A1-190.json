@@ -1,0 +1,27 @@
+{
+  "name": "Raticate",
+  "id": "A1-190",
+  "set": "A1",
+  "type": "colorless",
+  "HP": 80,
+  "category": "pokemon",
+  "stage": "stage 1",
+  "evolvesFrom": "Rattata",
+  "weakness": "fighting",
+  "retreat": 1,
+  "artist": "Shigenori Negishi",
+  "rarity": "diamond_1",
+  "attacks": [
+    {
+      "name": "Bite 40",
+      "cost": [
+        "colorless"
+      ],
+      "text": "",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 40
+      }
+    }
+  ]
+}

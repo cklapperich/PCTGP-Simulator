@@ -1,0 +1,30 @@
+{
+  "name": "Raichu",
+  "id": "A1-095",
+  "set": "A1",
+  "type": "lightning",
+  "HP": 100,
+  "category": "pokemon",
+  "stage": "stage 1",
+  "evolvesFrom": "Pikachu",
+  "weakness": "fighting",
+  "retreat": 1,
+  "artist": "AKIRA EGAWA",
+  "rarity": "diamond_3",
+  "pack": "pikachu",
+  "attacks": [
+    {
+      "name": "Thunderbolt 140",
+      "cost": [
+        "lightning",
+        "lightning",
+        "lightning"
+      ],
+      "text": "Discard all Energy from this Pokémon.",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 140
+      }
+    }
+  ]
+}

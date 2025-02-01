@@ -1,0 +1,31 @@
+{
+  "name": "Dragonite",
+  "id": "A1-244",
+  "set": "A1",
+  "type": "dragon",
+  "HP": 160,
+  "category": "pokemon",
+  "stage": "stage 2",
+  "evolvesFrom": "Dragonair",
+  "weakness": "none",
+  "retreat": 3,
+  "artist": "Gemi",
+  "rarity": "1_star",
+  "pack": "mewtwo",
+  "attacks": [
+    {
+      "name": "Draco Meteor",
+      "cost": [
+        "water",
+        "lightning",
+        "colorless",
+        "colorless"
+      ],
+      "text": "1 of your opponent's Pokémon is chosen at random 4 times. For each time a Pokémon was chosen, do 50 damage to it.",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 0
+      }
+    }
+  ]
+}

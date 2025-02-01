@@ -1,0 +1,12 @@
+{
+  "name": "Pokédex",
+  "id": "P-A-004",
+  "set": "P-A",
+  "category": "trainer",
+  "subcategory": "item",
+  "artist": "Ryo Ueda",
+  "rarity": "unknown",
+  "text": "Look at the top 3 cards of your deck.",
+  "resistance": null,
+  "effect": {}
+}

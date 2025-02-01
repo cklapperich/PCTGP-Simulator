@@ -1,0 +1,28 @@
+{
+  "name": "Gengar",
+  "id": "A1-122",
+  "set": "A1",
+  "type": "psychic",
+  "HP": 130,
+  "category": "pokemon",
+  "stage": "stage 2",
+  "evolvesFrom": "Haunter",
+  "weakness": "darkness",
+  "retreat": 2,
+  "artist": "Naoyo Kimura",
+  "rarity": "diamond_3",
+  "pack": "mewtwo",
+  "attacks": [
+    {
+      "name": "Bother 50",
+      "cost": [
+        "psychic"
+      ],
+      "text": "Your opponent can't use any Supporter cards from their hand during their next turn.",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 50
+      }
+    }
+  ]
+}

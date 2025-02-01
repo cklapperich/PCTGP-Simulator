@@ -1,0 +1,30 @@
+{
+  "name": "Poliwrath",
+  "id": "A1-061",
+  "set": "A1",
+  "type": "water",
+  "HP": 150,
+  "category": "pokemon",
+  "stage": "stage 2",
+  "evolvesFrom": "Poliwhirl",
+  "weakness": "lightning",
+  "retreat": 2,
+  "artist": "Akira Komayama",
+  "rarity": "diamond_3",
+  "pack": "charizard",
+  "attacks": [
+    {
+      "name": "Mega Punch 80",
+      "cost": [
+        "water",
+        "colorless",
+        "colorless"
+      ],
+      "text": "",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 80
+      }
+    }
+  ]
+}

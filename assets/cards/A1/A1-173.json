@@ -1,0 +1,28 @@
+{
+  "name": "Golbat",
+  "id": "A1-173",
+  "set": "A1",
+  "type": "darkness",
+  "HP": 70,
+  "category": "pokemon",
+  "stage": "stage 1",
+  "evolvesFrom": "Zubat",
+  "weakness": "fighting",
+  "retreat": 1,
+  "artist": "Masakazu Fukuda",
+  "rarity": "diamond_2",
+  "pack": "mewtwo",
+  "attacks": [
+    {
+      "name": "Wing Attack 40",
+      "cost": [
+        "colorless"
+      ],
+      "text": "",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 40
+      }
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "name": "Petilil",
+  "id": "A1-029",
+  "set": "A1",
+  "type": "grass",
+  "HP": 60,
+  "category": "pokemon",
+  "stage": "basic",
+  "weakness": "fire",
+  "retreat": 1,
+  "artist": "Naoyo Kimura",
+  "rarity": "diamond_1",
+  "attacks": [
+    {
+      "name": "Blot 10",
+      "cost": [
+        "grass"
+      ],
+      "text": "Heal 10 damage from this Pokémon.",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 10
+      }
+    }
+  ]
+}

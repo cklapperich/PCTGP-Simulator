@@ -1,0 +1,12 @@
+{
+  "name": "Erika",
+  "id": "A1-219",
+  "set": "A1",
+  "category": "trainer",
+  "subcategory": "supporter",
+  "artist": "kirisAki",
+  "rarity": "diamond_2",
+  "pack": "charizard",
+  "text": "Heal 50 damage from 1 of your [G] Pokémon.",
+  "effect": {}
+}

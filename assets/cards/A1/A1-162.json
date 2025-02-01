@@ -1,0 +1,27 @@
+{
+  "name": "Clobbopus",
+  "id": "A1-162",
+  "set": "A1",
+  "type": "fighting",
+  "HP": 80,
+  "category": "pokemon",
+  "stage": "basic",
+  "weakness": "psychic",
+  "retreat": 2,
+  "artist": "Yuu Nishida",
+  "rarity": "diamond_1",
+  "attacks": [
+    {
+      "name": "Knuckle Punch 30",
+      "cost": [
+        "fighting",
+        "colorless"
+      ],
+      "text": "",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 30
+      }
+    }
+  ]
+}

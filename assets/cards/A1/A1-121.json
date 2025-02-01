@@ -1,0 +1,28 @@
+{
+  "name": "Haunter",
+  "id": "A1-121",
+  "set": "A1",
+  "type": "psychic",
+  "HP": 80,
+  "category": "pokemon",
+  "stage": "stage 1",
+  "evolvesFrom": "Gastly",
+  "weakness": "darkness",
+  "retreat": 1,
+  "artist": "Nisata Niso",
+  "rarity": "diamond_2",
+  "pack": "mewtwo",
+  "attacks": [
+    {
+      "name": "Will-O-Wisp 30",
+      "cost": [
+        "psychic"
+      ],
+      "text": "",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 30
+      }
+    }
+  ]
+}

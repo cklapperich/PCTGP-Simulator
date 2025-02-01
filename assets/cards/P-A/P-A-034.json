@@ -1,0 +1,27 @@
+{
+  "name": "Piplup",
+  "id": "P-A-034",
+  "set": "P-A",
+  "type": "water",
+  "HP": 60,
+  "category": "pokemon",
+  "stage": "basic",
+  "retreat": 1,
+  "artist": "Kariya",
+  "rarity": "unknown",
+  "resistance": null,
+  "attacks": [
+    {
+      "name": "Nap",
+      "cost": [
+        "colorless"
+      ],
+      "text": "Heal 20 damage from this Pokémon.",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 0
+      }
+    }
+  ],
+  "weakness": "lightning"
+}

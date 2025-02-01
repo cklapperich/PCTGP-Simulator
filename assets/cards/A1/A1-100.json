@@ -1,0 +1,29 @@
+{
+  "name": "Electrode",
+  "id": "A1-100",
+  "set": "A1",
+  "type": "lightning",
+  "HP": 80,
+  "category": "pokemon",
+  "stage": "stage 1",
+  "evolvesFrom": "Voltorb",
+  "weakness": "fighting",
+  "retreat": 0,
+  "artist": "Asako Ito",
+  "rarity": "diamond_2",
+  "pack": "pikachu",
+  "attacks": [
+    {
+      "name": "Electro Ball 70",
+      "cost": [
+        "lightning",
+        "lightning"
+      ],
+      "text": "",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 70
+      }
+    }
+  ]
+}

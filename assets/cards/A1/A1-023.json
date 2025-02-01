@@ -1,0 +1,29 @@
+{
+  "name": "Exeggutor ex",
+  "id": "A1-023",
+  "set": "A1",
+  "type": "grass",
+  "HP": 160,
+  "category": "pokemon",
+  "stage": "stage 1",
+  "evolvesFrom": "Exeggcute",
+  "weakness": "fire",
+  "retreat": 3,
+  "artist": "PLANETA CG Works",
+  "rarity": "diamond_4",
+  "pack": "charizard",
+  "attacks": [
+    {
+      "name": "Tropical Swing 40+",
+      "cost": [
+        "grass"
+      ],
+      "text": "Flip a coin. If heads, this attack does 40 more damage.",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 40
+      }
+    }
+  ],
+  "ex": true
+}

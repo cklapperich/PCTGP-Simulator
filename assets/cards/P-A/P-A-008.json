@@ -1,0 +1,12 @@
+{
+  "name": "Pokédex",
+  "id": "P-A-008",
+  "set": "P-A",
+  "category": "trainer",
+  "subcategory": "item",
+  "artist": "Yuu Nishida",
+  "rarity": "unknown",
+  "text": "Look at the top 3 cards of your deck.",
+  "resistance": null,
+  "effect": {}
+}

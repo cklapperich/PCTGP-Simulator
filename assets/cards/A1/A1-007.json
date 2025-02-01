@@ -1,0 +1,30 @@
+{
+  "name": "Butterfree",
+  "id": "A1-007",
+  "set": "A1",
+  "type": "grass",
+  "HP": 120,
+  "category": "pokemon",
+  "stage": "stage 2",
+  "evolvesFrom": "Metapod",
+  "weakness": "fire",
+  "retreat": 1,
+  "artist": "Shin Nagasawa",
+  "rarity": "diamond_3",
+  "pack": "pikachu",
+  "attacks": [
+    {
+      "name": "Gust 60",
+      "cost": [
+        "grass",
+        "colorless",
+        "colorless"
+      ],
+      "text": "",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 60
+      }
+    }
+  ]
+}

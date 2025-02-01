@@ -1,0 +1,12 @@
+{
+  "name": "Lt. Surge",
+  "id": "A1-226",
+  "set": "A1",
+  "category": "trainer",
+  "subcategory": "supporter",
+  "artist": "nagimiso",
+  "rarity": "diamond_2",
+  "pack": "pikachu",
+  "text": "Move all [L] Energy from your Benched Pokémon to your Raichu, Electrode, or Electabuzz in the Active Spot.",
+  "effect": {}
+}

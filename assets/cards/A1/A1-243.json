@@ -1,0 +1,28 @@
+{
+  "name": "Weezing",
+  "id": "A1-243",
+  "set": "A1",
+  "type": "darkness",
+  "HP": 110,
+  "category": "pokemon",
+  "stage": "stage 1",
+  "evolvesFrom": "Koffing",
+  "weakness": "fighting",
+  "retreat": 3,
+  "artist": "KEIICHIRO ITO",
+  "rarity": "1_star",
+  "pack": "mewtwo",
+  "attacks": [
+    {
+      "name": "Tackle 30",
+      "cost": [
+        "darkness"
+      ],
+      "text": "",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 30
+      }
+    }
+  ]
+}

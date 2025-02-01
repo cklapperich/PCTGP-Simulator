@@ -1,0 +1,26 @@
+{
+  "name": "Blitzle",
+  "id": "A1-105",
+  "set": "A1",
+  "type": "lightning",
+  "HP": 60,
+  "category": "pokemon",
+  "stage": "basic",
+  "weakness": "fighting",
+  "retreat": 1,
+  "artist": "Shin Nagasawa",
+  "rarity": "diamond_1",
+  "attacks": [
+    {
+      "name": "Zap Kick 20",
+      "cost": [
+        "lightning"
+      ],
+      "text": "",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 20
+      }
+    }
+  ]
+}

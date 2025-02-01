@@ -1,0 +1,27 @@
+{
+  "name": "Magnemite",
+  "id": "P-A-024",
+  "set": "P-A",
+  "type": "lightning",
+  "HP": 60,
+  "category": "pokemon",
+  "stage": "basic",
+  "retreat": 1,
+  "artist": "Miki Tanaka",
+  "rarity": "unknown",
+  "resistance": null,
+  "attacks": [
+    {
+      "name": "Lightning Ball 20",
+      "cost": [
+        "lightning"
+      ],
+      "text": "",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 20
+      }
+    }
+  ],
+  "weakness": "fighting"
+}

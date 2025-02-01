@@ -1,0 +1,27 @@
+{
+  "name": "Grimer",
+  "id": "A1-174",
+  "set": "A1",
+  "type": "darkness",
+  "HP": 70,
+  "category": "pokemon",
+  "stage": "basic",
+  "weakness": "fighting",
+  "retreat": 3,
+  "artist": "Pani Kobayashi",
+  "rarity": "diamond_1",
+  "pack": "mewtwo",
+  "attacks": [
+    {
+      "name": "Poison Gas 10",
+      "cost": [
+        "darkness"
+      ],
+      "text": "Your opponent's Active Pokémon is now Poisoned.",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 10
+      }
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "name": "Lilligant",
+  "id": "A1-030",
+  "set": "A1",
+  "type": "grass",
+  "HP": 100,
+  "category": "pokemon",
+  "stage": "stage 1",
+  "evolvesFrom": "Petilil",
+  "weakness": "fire",
+  "retreat": 1,
+  "artist": "You Iribi",
+  "rarity": "diamond_2",
+  "attacks": [
+    {
+      "name": "Leaf Supply 50",
+      "cost": [
+        "grass",
+        "grass"
+      ],
+      "text": "Take a [G] Energy from your Energy Zone and attach it to 1 of your Benched [G] Pokémon.",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 50
+      }
+    }
+  ]
+}

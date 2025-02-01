@@ -1,0 +1,43 @@
+{
+  "name": "Blastoise ex",
+  "id": "A1-256",
+  "set": "A1",
+  "type": "water",
+  "HP": 180,
+  "category": "pokemon",
+  "stage": "stage 2",
+  "evolvesFrom": "Wartortle",
+  "weakness": "lightning",
+  "retreat": 3,
+  "artist": "PLANETA CG Works",
+  "rarity": "2_star",
+  "pack": "pikachu",
+  "attacks": [
+    {
+      "name": "Surf 40",
+      "cost": [
+        "water",
+        "colorless"
+      ],
+      "text": "",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 40
+      }
+    },
+    {
+      "name": "Hydro Bazooka 100+",
+      "cost": [
+        "water",
+        "water",
+        "colorless"
+      ],
+      "text": "If this Pokémon has at least 2 extra [W] Energy attached, this attack does 60 more damage.",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 100
+      }
+    }
+  ],
+  "ex": true
+}

@@ -1,0 +1,27 @@
+{
+  "name": "Skiddo",
+  "id": "A1-031",
+  "set": "A1",
+  "type": "grass",
+  "HP": 70,
+  "category": "pokemon",
+  "stage": "basic",
+  "weakness": "fire",
+  "retreat": 1,
+  "artist": "Naoki Saito",
+  "rarity": "diamond_1",
+  "pack": "charizard",
+  "attacks": [
+    {
+      "name": "Surprise Attack 40",
+      "cost": [
+        "colorless"
+      ],
+      "text": "Flip a coin. If tails, this attack does nothing.",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 40
+      }
+    }
+  ]
+}

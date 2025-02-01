@@ -1,0 +1,29 @@
+{
+  "name": "Pidgeot",
+  "id": "A1-245",
+  "set": "A1",
+  "type": "colorless",
+  "HP": 130,
+  "category": "pokemon",
+  "stage": "stage 2",
+  "evolvesFrom": "Pidgeotto",
+  "weakness": "lightning",
+  "retreat": 1,
+  "artist": "Anesaki Dynamic",
+  "rarity": "1_star",
+  "pack": "mewtwo",
+  "attacks": [
+    {
+      "name": "Wing Attack 70",
+      "cost": [
+        "colorless",
+        "colorless"
+      ],
+      "text": "",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 70
+      }
+    }
+  ]
+}

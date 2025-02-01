@@ -1,0 +1,29 @@
+{
+  "name": "Victreebel",
+  "id": "A1-020",
+  "set": "A1",
+  "type": "grass",
+  "HP": 140,
+  "category": "pokemon",
+  "stage": "stage 2",
+  "evolvesFrom": "Weepinbell",
+  "weakness": "fire",
+  "retreat": 2,
+  "artist": "Sumiyoshi Kizuki",
+  "rarity": "diamond_3",
+  "pack": "charizard",
+  "attacks": [
+    {
+      "name": "Vine Whip 60",
+      "cost": [
+        "grass",
+        "colorless"
+      ],
+      "text": "",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 60
+      }
+    }
+  ]
+}

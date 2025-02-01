@@ -1,0 +1,31 @@
+{
+  "name": "Magneton",
+  "id": "A1-098",
+  "set": "A1",
+  "type": "lightning",
+  "HP": 80,
+  "category": "pokemon",
+  "stage": "stage 1",
+  "evolvesFrom": "Magnemite",
+  "weakness": "fighting",
+  "retreat": 2,
+  "artist": "kirisAki",
+  "rarity": "diamond_3",
+  "pack": "pikachu",
+  "attacks": [
+    {
+      "name": "Spinning Attack 60",
+      "cost": [
+        "lightning",
+        "colorless",
+        "colorless",
+        "colorless"
+      ],
+      "text": "",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 60
+      }
+    }
+  ]
+}

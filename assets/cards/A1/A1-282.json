@@ -1,0 +1,43 @@
+{
+  "name": "Mewtwo ex",
+  "id": "A1-282",
+  "set": "A1",
+  "type": "psychic",
+  "HP": 150,
+  "category": "pokemon",
+  "stage": "basic",
+  "weakness": "darkness",
+  "retreat": 2,
+  "artist": "Nurikabe",
+  "rarity": "3_star",
+  "pack": "mewtwo",
+  "attacks": [
+    {
+      "name": "Psychic Sphere 50",
+      "cost": [
+        "psychic",
+        "colorless"
+      ],
+      "text": "",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 50
+      }
+    },
+    {
+      "name": "Psydrive 150",
+      "cost": [
+        "psychic",
+        "psychic",
+        "colorless",
+        "colorless"
+      ],
+      "text": "Discard 2 [P] Energy from this Pokémon.",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 150
+      }
+    }
+  ],
+  "ex": true
+}

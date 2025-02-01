@@ -1,0 +1,28 @@
+{
+  "name": "Bisharp",
+  "id": "A1-180",
+  "set": "A1",
+  "type": "metal",
+  "HP": 90,
+  "category": "pokemon",
+  "stage": "stage 1",
+  "evolvesFrom": "Pawniard",
+  "weakness": "fire",
+  "retreat": 1,
+  "artist": "Anesaki Dynamic",
+  "rarity": "diamond_2",
+  "attacks": [
+    {
+      "name": "Metal Claw 70",
+      "cost": [
+        "metal",
+        "metal"
+      ],
+      "text": "",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 70
+      }
+    }
+  ]
+}

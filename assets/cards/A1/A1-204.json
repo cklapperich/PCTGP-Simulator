@@ -1,0 +1,28 @@
+{
+  "name": "Tauros",
+  "id": "A1-204",
+  "set": "A1",
+  "type": "colorless",
+  "HP": 100,
+  "category": "pokemon",
+  "stage": "basic",
+  "weakness": "fighting",
+  "retreat": 2,
+  "artist": "kodama",
+  "rarity": "diamond_2",
+  "pack": "charizard",
+  "attacks": [
+    {
+      "name": "Horn Attack 50",
+      "cost": [
+        "colorless",
+        "colorless"
+      ],
+      "text": "",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 50
+      }
+    }
+  ]
+}

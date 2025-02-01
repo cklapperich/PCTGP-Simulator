@@ -1,0 +1,27 @@
+{
+  "name": "Caterpie",
+  "id": "A1-005",
+  "set": "A1",
+  "type": "grass",
+  "HP": 50,
+  "category": "pokemon",
+  "stage": "basic",
+  "weakness": "fire",
+  "retreat": 1,
+  "artist": "Miki Tanaka",
+  "rarity": "diamond_1",
+  "pack": "pikachu",
+  "attacks": [
+    {
+      "name": "Find a Friend",
+      "cost": [
+        "colorless"
+      ],
+      "text": "Put 1 random [G] Pokémon from your deck into your hand.",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 0
+      }
+    }
+  ]
+}

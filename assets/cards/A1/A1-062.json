@@ -1,0 +1,27 @@
+{
+  "name": "Tentacool",
+  "id": "A1-062",
+  "set": "A1",
+  "type": "water",
+  "HP": 60,
+  "category": "pokemon",
+  "stage": "basic",
+  "weakness": "lightning",
+  "retreat": 1,
+  "artist": "Shinya Komatsu",
+  "rarity": "diamond_1",
+  "pack": "mewtwo",
+  "attacks": [
+    {
+      "name": "Gentle Slap 20",
+      "cost": [
+        "water"
+      ],
+      "text": "",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 20
+      }
+    }
+  ]
+}

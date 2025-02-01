@@ -1,0 +1,12 @@
+{
+  "name": "Misty",
+  "id": "A1-220",
+  "set": "A1",
+  "category": "trainer",
+  "subcategory": "supporter",
+  "artist": "Sanosuke Sakuma",
+  "rarity": "diamond_2",
+  "pack": "pikachu",
+  "text": "Choose 1 of your [W] Pokémon, and flip a coin until you get tails. For each heads, take a [W] Energy from your Energy Zone and attach it to that Pokémon.",
+  "effect": {}
+}

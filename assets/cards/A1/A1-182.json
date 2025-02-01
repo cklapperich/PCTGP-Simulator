@@ -1,0 +1,31 @@
+{
+  "name": "Melmetal",
+  "id": "A1-182",
+  "set": "A1",
+  "type": "metal",
+  "HP": 130,
+  "category": "pokemon",
+  "stage": "stage 1",
+  "evolvesFrom": "Meltan",
+  "weakness": "fire",
+  "retreat": 3,
+  "artist": "Kouki Saitou",
+  "rarity": "diamond_3",
+  "pack": "charizard",
+  "attacks": [
+    {
+      "name": "Heavy Impact 120",
+      "cost": [
+        "metal",
+        "metal",
+        "metal",
+        "colorless"
+      ],
+      "text": "",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 120
+      }
+    }
+  ]
+}

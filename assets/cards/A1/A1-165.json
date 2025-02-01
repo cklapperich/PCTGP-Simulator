@@ -1,0 +1,28 @@
+{
+  "name": "Arbok",
+  "id": "A1-165",
+  "set": "A1",
+  "type": "darkness",
+  "HP": 100,
+  "category": "pokemon",
+  "stage": "stage 1",
+  "evolvesFrom": "Ekans",
+  "weakness": "fighting",
+  "retreat": 2,
+  "artist": "Naoki Saito",
+  "rarity": "diamond_2",
+  "attacks": [
+    {
+      "name": "Corner 60",
+      "cost": [
+        "darkness",
+        "colorless"
+      ],
+      "text": "During your opponent's next turn, the Defending Pokémon can't retreat.",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 60
+      }
+    }
+  ]
+}

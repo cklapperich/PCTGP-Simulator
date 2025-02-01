@@ -1,0 +1,12 @@
+{
+  "name": "Hand Scope",
+  "id": "P-A-003",
+  "set": "P-A",
+  "category": "trainer",
+  "subcategory": "item",
+  "artist": "Toyste Beach",
+  "rarity": "unknown",
+  "text": "Your opponent reveals their hand.",
+  "resistance": null,
+  "effect": {}
+}

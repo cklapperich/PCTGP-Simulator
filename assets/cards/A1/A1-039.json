@@ -1,0 +1,28 @@
+{
+  "name": "Growlithe",
+  "id": "A1-039",
+  "set": "A1",
+  "type": "fire",
+  "HP": 70,
+  "category": "pokemon",
+  "stage": "basic",
+  "weakness": "water",
+  "retreat": 1,
+  "artist": "Mizue",
+  "rarity": "diamond_1",
+  "pack": "pikachu",
+  "attacks": [
+    {
+      "name": "Bite 20",
+      "cost": [
+        "colorless",
+        "colorless"
+      ],
+      "text": "",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 20
+      }
+    }
+  ]
+}

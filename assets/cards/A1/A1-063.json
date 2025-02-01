@@ -1,0 +1,29 @@
+{
+  "name": "Tentacruel",
+  "id": "A1-063",
+  "set": "A1",
+  "type": "water",
+  "HP": 110,
+  "category": "pokemon",
+  "stage": "stage 1",
+  "evolvesFrom": "Tentacool",
+  "weakness": "lightning",
+  "retreat": 2,
+  "artist": "kodama",
+  "rarity": "diamond_2",
+  "pack": "mewtwo",
+  "attacks": [
+    {
+      "name": "Poison Tentacles 50",
+      "cost": [
+        "water",
+        "colorless"
+      ],
+      "text": "Your opponent's Active Pokémon is now Poisoned.",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 50
+      }
+    }
+  ]
+}

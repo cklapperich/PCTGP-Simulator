@@ -1,0 +1,27 @@
+{
+  "name": "Bellsprout",
+  "id": "A1-018",
+  "set": "A1",
+  "type": "grass",
+  "HP": 60,
+  "category": "pokemon",
+  "stage": "basic",
+  "weakness": "fire",
+  "retreat": 1,
+  "artist": "HYOGONOSUKE",
+  "rarity": "diamond_1",
+  "pack": "charizard",
+  "attacks": [
+    {
+      "name": "Vine Whip 20",
+      "cost": [
+        "grass"
+      ],
+      "text": "",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 20
+      }
+    }
+  ]
+}

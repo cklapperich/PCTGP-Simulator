@@ -1,0 +1,27 @@
+{
+  "name": "Pinsir",
+  "id": "A1-026",
+  "set": "A1",
+  "type": "grass",
+  "HP": 90,
+  "category": "pokemon",
+  "stage": "basic",
+  "weakness": "fire",
+  "retreat": 2,
+  "artist": "Eri Yamaki",
+  "rarity": "diamond_2",
+  "attacks": [
+    {
+      "name": "Double Horn 50x",
+      "cost": [
+        "grass",
+        "grass"
+      ],
+      "text": "Flip 2 coins. This attack does 50 damage for each heads.",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 50
+      }
+    }
+  ]
+}

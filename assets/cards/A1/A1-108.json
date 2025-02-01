@@ -1,0 +1,28 @@
+{
+  "name": "Eelektrik",
+  "id": "A1-108",
+  "set": "A1",
+  "type": "lightning",
+  "HP": 80,
+  "category": "pokemon",
+  "stage": "stage 1",
+  "evolvesFrom": "Tynamo",
+  "weakness": "fighting",
+  "retreat": 2,
+  "artist": "Midori Harada",
+  "rarity": "diamond_2",
+  "pack": "mewtwo",
+  "attacks": [
+    {
+      "name": "Head Bolt 40",
+      "cost": [
+        "lightning"
+      ],
+      "text": "",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 40
+      }
+    }
+  ]
+}

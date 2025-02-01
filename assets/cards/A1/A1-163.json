@@ -1,0 +1,29 @@
+{
+  "name": "Grapploct",
+  "id": "A1-163",
+  "set": "A1",
+  "type": "fighting",
+  "HP": 130,
+  "category": "pokemon",
+  "stage": "stage 1",
+  "evolvesFrom": "Clobbopus",
+  "weakness": "psychic",
+  "retreat": 3,
+  "artist": "kurumitsu",
+  "rarity": "diamond_2",
+  "attacks": [
+    {
+      "name": "Knock Back 70",
+      "cost": [
+        "fighting",
+        "fighting",
+        "colorless"
+      ],
+      "text": "Switch out your opponent's Active Pokémon to the Bench. (Your opponent chooses the new Active Pokémon.)",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 70
+      }
+    }
+  ]
+}

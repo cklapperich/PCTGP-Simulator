@@ -1,0 +1,28 @@
+{
+  "name": "Jynx",
+  "id": "A1-127",
+  "set": "A1",
+  "type": "psychic",
+  "HP": 80,
+  "category": "pokemon",
+  "stage": "basic",
+  "weakness": "darkness",
+  "retreat": 1,
+  "artist": "Oswaldo KATO",
+  "rarity": "diamond_1",
+  "pack": "mewtwo",
+  "attacks": [
+    {
+      "name": "Psychic 30+",
+      "cost": [
+        "psychic",
+        "colorless"
+      ],
+      "text": "This attack does 20 more damage for each Energy attached to your opponent's Active Pokémon.",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 30
+      }
+    }
+  ]
+}

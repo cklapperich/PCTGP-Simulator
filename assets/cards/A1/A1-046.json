@@ -1,0 +1,29 @@
+{
+  "name": "Moltres",
+  "id": "A1-046",
+  "set": "A1",
+  "type": "fire",
+  "HP": 100,
+  "category": "pokemon",
+  "stage": "basic",
+  "weakness": "lightning",
+  "retreat": 1,
+  "artist": "Hitoshi Ariga",
+  "rarity": "diamond_3",
+  "pack": "charizard",
+  "attacks": [
+    {
+      "name": "Sky Attack 130",
+      "cost": [
+        "fire",
+        "colorless",
+        "colorless"
+      ],
+      "text": "Flip a coin. If tails, this attack does nothing.",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 130
+      }
+    }
+  ]
+}

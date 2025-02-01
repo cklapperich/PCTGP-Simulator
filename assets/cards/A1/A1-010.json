@@ -1,0 +1,28 @@
+{
+  "name": "Beedrill",
+  "id": "A1-010",
+  "set": "A1",
+  "type": "grass",
+  "HP": 120,
+  "category": "pokemon",
+  "stage": "stage 2",
+  "evolvesFrom": "Kakuna",
+  "weakness": "fire",
+  "retreat": 1,
+  "artist": "You Iribi",
+  "rarity": "diamond_3",
+  "pack": "mewtwo",
+  "attacks": [
+    {
+      "name": "Sharp Sting 70",
+      "cost": [
+        "grass"
+      ],
+      "text": "",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 70
+      }
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "name": "Moltres ex",
+  "id": "P-A-025",
+  "set": "P-A",
+  "type": "fire",
+  "HP": 140,
+  "category": "pokemon",
+  "stage": "basic",
+  "retreat": 2,
+  "artist": "PLANETA Igarashi",
+  "rarity": "unknown",
+  "resistance": null,
+  "attacks": [
+    {
+      "name": "Inferno Dance",
+      "cost": [
+        "fire"
+      ],
+      "text": "Flip 3 coins. Take an amount of [R] Energy from your Energy Zone equal to the number of heads and attach it to your Benched [R] Pokémon in any way you like.",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 0
+      }
+    },
+    {
+      "name": "Heat Blast 70",
+      "cost": [
+        "fire",
+        "colorless",
+        "colorless"
+      ],
+      "text": "",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 70
+      }
+    }
+  ],
+  "ex": true,
+  "weakness": "lightning"
+}

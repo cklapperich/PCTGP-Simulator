@@ -1,0 +1,26 @@
+{
+  "name": "Snom",
+  "id": "A1-092",
+  "set": "A1",
+  "type": "water",
+  "HP": 50,
+  "category": "pokemon",
+  "stage": "basic",
+  "weakness": "metal",
+  "retreat": 1,
+  "artist": "ryoma uratsuka",
+  "rarity": "diamond_1",
+  "attacks": [
+    {
+      "name": "Ram 10",
+      "cost": [
+        "colorless"
+      ],
+      "text": "",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 10
+      }
+    }
+  ]
+}

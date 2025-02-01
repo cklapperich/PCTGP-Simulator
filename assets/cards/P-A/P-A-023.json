@@ -1,0 +1,28 @@
+{
+  "name": "Bulbasaur",
+  "id": "P-A-023",
+  "set": "P-A",
+  "type": "grass",
+  "HP": 70,
+  "category": "pokemon",
+  "stage": "basic",
+  "retreat": 1,
+  "artist": "Kouki Saitou",
+  "rarity": "unknown",
+  "resistance": null,
+  "attacks": [
+    {
+      "name": "Vine Whip 40",
+      "cost": [
+        "grass",
+        "colorless"
+      ],
+      "text": "",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 40
+      }
+    }
+  ],
+  "weakness": "fire"
+}

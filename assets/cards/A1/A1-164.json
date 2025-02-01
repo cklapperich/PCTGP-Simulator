@@ -1,0 +1,26 @@
+{
+  "name": "Ekans",
+  "id": "A1-164",
+  "set": "A1",
+  "type": "darkness",
+  "HP": 60,
+  "category": "pokemon",
+  "stage": "basic",
+  "weakness": "fighting",
+  "retreat": 1,
+  "artist": "MAHOU",
+  "rarity": "diamond_1",
+  "attacks": [
+    {
+      "name": "Bite 20",
+      "cost": [
+        "darkness"
+      ],
+      "text": "",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 20
+      }
+    }
+  ]
+}

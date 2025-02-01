@@ -1,0 +1,29 @@
+{
+  "name": "Chansey",
+  "id": "P-A-011",
+  "set": "P-A",
+  "type": "colorless",
+  "HP": 120,
+  "category": "pokemon",
+  "stage": "basic",
+  "retreat": 3,
+  "artist": "sowsow",
+  "rarity": "unknown",
+  "resistance": null,
+  "attacks": [
+    {
+      "name": "Gentle Slap 60",
+      "cost": [
+        "colorless",
+        "colorless",
+        "colorless"
+      ],
+      "text": "",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 60
+      }
+    }
+  ],
+  "weakness": "fighting"
+}

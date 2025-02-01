@@ -1,0 +1,28 @@
+{
+  "name": "Golett",
+  "id": "A1-135",
+  "set": "A1",
+  "type": "psychic",
+  "HP": 90,
+  "category": "pokemon",
+  "stage": "basic",
+  "weakness": "darkness",
+  "retreat": 3,
+  "artist": "Kyoko Umemoto",
+  "rarity": "diamond_1",
+  "attacks": [
+    {
+      "name": "Mega Punch 50",
+      "cost": [
+        "psychic",
+        "colorless",
+        "colorless"
+      ],
+      "text": "",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 50
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "name": "Mawile",
+  "id": "A1-178",
+  "set": "A1",
+  "type": "metal",
+  "HP": 70,
+  "category": "pokemon",
+  "stage": "basic",
+  "weakness": "fire",
+  "retreat": 1,
+  "artist": "Kagemaru Himeno",
+  "rarity": "diamond_1",
+  "pack": "charizard",
+  "attacks": [
+    {
+      "name": "Crunch 20",
+      "cost": [
+        "metal"
+      ],
+      "text": "Flip a coin. If heads, discard a random Energy from your opponent's Active Pokémon.",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 20
+      }
+    }
+  ]
+}

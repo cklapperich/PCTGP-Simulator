@@ -12,14 +12,16 @@
             "name": "Headache",
             "cost": ["water"],
             "text": "Your opponnent can't use any supporter cards from their hand during their next turn.",
-            "damage_effect":{
-                "effect":"basic",
+            "effects":[
+            {
+                "EffectType":"direct_damage",
                 "value":10
             },
-            "extra_effect":{
-                "effect":"supporter_block",
+            {
+                "EffectType":"supporter_block",
                 "turns":1
             }
+        ]
         }
     ]
 }

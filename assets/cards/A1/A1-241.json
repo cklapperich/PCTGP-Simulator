@@ -1,0 +1,30 @@
+{
+  "name": "Nidoking",
+  "id": "A1-241",
+  "set": "A1",
+  "type": "darkness",
+  "HP": 150,
+  "category": "pokemon",
+  "stage": "stage 2",
+  "evolvesFrom": "Nidorino",
+  "weakness": "fighting",
+  "retreat": 3,
+  "artist": "nagimiso",
+  "rarity": "1_star",
+  "pack": "pikachu",
+  "attacks": [
+    {
+      "name": "Poison Horn 90",
+      "cost": [
+        "darkness",
+        "darkness",
+        "colorless"
+      ],
+      "text": "Your opponent's Active Pokémon is now Poisoned.",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 90
+      }
+    }
+  ]
+}

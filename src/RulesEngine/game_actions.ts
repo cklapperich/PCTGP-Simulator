@@ -71,13 +71,11 @@ export function applyEffect(
     effect.sourceType = sourceType;
 
     // If the effect has an on_apply function, call it
-    if gameState.effectManager.canApplyEffect(gameState, effect) {
-        if (effect.on_apply) {
-            effect.on_apply(gameState, sourceCard, effect_data.target);
-        }
+    if gameState.effectManager.query("CAN_APPLY_EFFECT", gameState, effect) {
+        effect.run(gameState, sourceCard, effect_data.target);
     }
     if (effect.duration>0){
-        gameState.effectManager.addEffect(gameState, effect);
+        gameState.addEffect(gameState, effect);
     }
 
 
@@ -100,14 +98,13 @@ export function applyDamageCalculation(
     // Get damage modifications from effects if not ignored
     if (!options.ignoreTargetEffects) {
         // Get all active damage modifying effects
-        const damageEffects = gameState.effectManager.getActiveEffects(
+        const damageEffects = gameState.effectManager.query("DAMAGE_MODIFICATION",
             gameState,
-            EffectType.DAMAGE_MODIFICATION
         );
 
         // Apply each effect's modifier in order
         for (const effect of damageEffects) {
-            if (effect.modifier && gameState.effectManager.canApplyEffect(gameState, effect)) {
+            if (effect.modifier && gameState.effectManager.query("CAN_APPLY_EFFECT", gameState, effect)) {
                 finalDamage = effect.modifier(finalDamage, gameState);
             }
         }

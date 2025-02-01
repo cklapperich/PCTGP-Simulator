@@ -1,0 +1,12 @@
+{
+  "name": "Poké Ball",
+  "id": "P-A-005",
+  "set": "P-A",
+  "category": "trainer",
+  "subcategory": "item",
+  "artist": "Ryo Ueda",
+  "rarity": "unknown",
+  "text": "Put 1 random Basic Pokemon from your deck into your hand.",
+  "resistance": null,
+  "effect": {}
+}

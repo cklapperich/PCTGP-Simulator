@@ -1,0 +1,28 @@
+{
+  "name": "Kabutops",
+  "id": "A1-159",
+  "set": "A1",
+  "type": "fighting",
+  "HP": 140,
+  "category": "pokemon",
+  "stage": "stage 2",
+  "evolvesFrom": "Kabuto",
+  "weakness": "grass",
+  "retreat": 1,
+  "artist": "Shin Nagasawa",
+  "rarity": "diamond_3",
+  "pack": "charizard",
+  "attacks": [
+    {
+      "name": "Leech Life 50",
+      "cost": [
+        "fighting"
+      ],
+      "text": "Heal from this Pokémon the same amount of damage you did to your opponent's Active Pokémon.",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 50
+      }
+    }
+  ]
+}

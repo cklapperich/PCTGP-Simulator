@@ -1,0 +1,30 @@
+{
+  "name": "Seadra",
+  "id": "A1-071",
+  "set": "A1",
+  "type": "water",
+  "HP": 70,
+  "category": "pokemon",
+  "stage": "stage 1",
+  "evolvesFrom": "Horsea",
+  "weakness": "lightning",
+  "retreat": 1,
+  "artist": "Sanosuke Sakuma",
+  "rarity": "diamond_2",
+  "pack": "pikachu",
+  "attacks": [
+    {
+      "name": "Water Arrow",
+      "cost": [
+        "water",
+        "water",
+        "water"
+      ],
+      "text": "This attack does 50 damage to 1 of your opponent's Pokémon.",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 0
+      }
+    }
+  ]
+}

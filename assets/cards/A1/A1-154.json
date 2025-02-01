@@ -1,0 +1,27 @@
+{
+  "name": "Hitmonlee",
+  "id": "A1-154",
+  "set": "A1",
+  "type": "fighting",
+  "HP": 80,
+  "category": "pokemon",
+  "stage": "basic",
+  "weakness": "psychic",
+  "retreat": 1,
+  "artist": "Yukiko Baba",
+  "rarity": "diamond_1",
+  "pack": "mewtwo",
+  "attacks": [
+    {
+      "name": "Stretch Kick",
+      "cost": [
+        "fighting"
+      ],
+      "text": "This attack does 30 damage to 1 of your opponent's Benched Pokémon.",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 0
+      }
+    }
+  ]
+}

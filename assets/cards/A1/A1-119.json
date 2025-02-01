@@ -1,0 +1,29 @@
+{
+  "name": "Slowbro",
+  "id": "A1-119",
+  "set": "A1",
+  "type": "psychic",
+  "HP": 130,
+  "category": "pokemon",
+  "stage": "stage 1",
+  "evolvesFrom": "Slowpoke",
+  "weakness": "darkness",
+  "retreat": 3,
+  "artist": "Kagemaru Himeno",
+  "rarity": "diamond_2",
+  "attacks": [
+    {
+      "name": "Super Psy Bolt 80",
+      "cost": [
+        "psychic",
+        "psychic",
+        "colorless"
+      ],
+      "text": "",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 80
+      }
+    }
+  ]
+}

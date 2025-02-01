@@ -1,0 +1,28 @@
+{
+  "name": "Tangela",
+  "id": "A1-024",
+  "set": "A1",
+  "type": "grass",
+  "HP": 80,
+  "category": "pokemon",
+  "stage": "basic",
+  "weakness": "fire",
+  "retreat": 2,
+  "artist": "Midori Harada",
+  "rarity": "diamond_1",
+  "pack": "charizard",
+  "attacks": [
+    {
+      "name": "Absorb 40",
+      "cost": [
+        "grass",
+        "colorless"
+      ],
+      "text": "Heal 10 damage from this Pokémon.",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 40
+      }
+    }
+  ]
+}

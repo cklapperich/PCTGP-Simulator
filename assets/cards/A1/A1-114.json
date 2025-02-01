@@ -1,0 +1,28 @@
+{
+  "name": "Clefable",
+  "id": "A1-114",
+  "set": "A1",
+  "type": "psychic",
+  "HP": 100,
+  "category": "pokemon",
+  "stage": "stage 1",
+  "evolvesFrom": "Clefairy",
+  "weakness": "metal",
+  "retreat": 1,
+  "artist": "Sanosuke Sakuma",
+  "rarity": "diamond_2",
+  "pack": "pikachu",
+  "attacks": [
+    {
+      "name": "Magical Shot 40",
+      "cost": [
+        "psychic"
+      ],
+      "text": "",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 40
+      }
+    }
+  ]
+}

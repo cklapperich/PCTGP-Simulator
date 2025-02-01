@@ -1,0 +1,28 @@
+{
+  "name": "Mienshao",
+  "id": "A1-161",
+  "set": "A1",
+  "type": "fighting",
+  "HP": 80,
+  "category": "pokemon",
+  "stage": "stage 1",
+  "evolvesFrom": "Mienfoo",
+  "weakness": "psychic",
+  "retreat": 1,
+  "artist": "Atsuko Nishida",
+  "rarity": "diamond_2",
+  "pack": "pikachu",
+  "attacks": [
+    {
+      "name": "Spiral Kick 40",
+      "cost": [
+        "colorless"
+      ],
+      "text": "",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 40
+      }
+    }
+  ]
+}

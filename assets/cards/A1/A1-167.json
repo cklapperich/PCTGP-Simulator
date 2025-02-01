@@ -1,0 +1,28 @@
+{
+  "name": "Nidorina",
+  "id": "A1-167",
+  "set": "A1",
+  "type": "darkness",
+  "HP": 80,
+  "category": "pokemon",
+  "stage": "stage 1",
+  "evolvesFrom": "Nidoran♀",
+  "weakness": "fighting",
+  "retreat": 1,
+  "artist": "Kagemaru Himeno",
+  "rarity": "diamond_2",
+  "pack": "pikachu",
+  "attacks": [
+    {
+      "name": "Bite 30",
+      "cost": [
+        "darkness"
+      ],
+      "text": "",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 30
+      }
+    }
+  ]
+}

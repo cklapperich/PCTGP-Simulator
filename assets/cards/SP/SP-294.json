@@ -1,0 +1,37 @@
+{
+  "name": "Hisuian Electrode V",
+  "id": "SP-294",
+  "set": "SP",
+  "type": "grass",
+  "HP": 210,
+  "category": "pokemon",
+  "stage": "basic",
+  "retreat": 1,
+  "artist": "5ban Graphics",
+  "rarity": "unknown",
+  "resistance": null,
+  "attacks": [
+    {
+      "name": "Tantrum Blast 100×",
+      "cost": [],
+      "text": "This attack does 100 damage for each Special Condition affecting this Pokémon.",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 100
+      }
+    },
+    {
+      "name": "Solar Shot 120",
+      "cost": [
+        "grass",
+        "colorless"
+      ],
+      "text": "Discard all Energy from this Pokémon.",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 120
+      }
+    }
+  ],
+  "weakness": "fire"
+}

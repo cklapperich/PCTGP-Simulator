@@ -1,0 +1,27 @@
+{
+  "name": "Cubone",
+  "id": "A1-239",
+  "set": "A1",
+  "type": "fighting",
+  "HP": 60,
+  "category": "pokemon",
+  "stage": "basic",
+  "weakness": "grass",
+  "retreat": 1,
+  "artist": "Teeziro",
+  "rarity": "1_star",
+  "pack": "mewtwo",
+  "attacks": [
+    {
+      "name": "Growl",
+      "cost": [
+        "colorless"
+      ],
+      "text": "During your opponent's next turn, attacks used by the Defending Pokémon do -20 damage.",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 0
+      }
+    }
+  ]
+}

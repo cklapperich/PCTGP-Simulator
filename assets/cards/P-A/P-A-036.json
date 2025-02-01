@@ -1,0 +1,30 @@
+{
+  "name": "Electivire",
+  "id": "P-A-036",
+  "set": "P-A",
+  "type": "lightning",
+  "HP": 120,
+  "category": "pokemon",
+  "stage": "stage 1",
+  "evolvesFrom": "Electabuzz",
+  "retreat": 3,
+  "artist": "Sumiyoshi Kizuki",
+  "rarity": "unknown",
+  "pack": "promo",
+  "resistance": null,
+  "attacks": [
+    {
+      "name": "Exciting Voltage 40+",
+      "cost": [
+        "lightning",
+        "lightning"
+      ],
+      "text": "If this Pokémon has at least 2 extra [L] Energy attached, this attack does 80 more damage.",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 40
+      }
+    }
+  ],
+  "weakness": "fighting"
+}

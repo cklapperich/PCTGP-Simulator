@@ -1,0 +1,31 @@
+{
+  "name": "Wigglytuff ex",
+  "id": "A1-265",
+  "set": "A1",
+  "type": "colorless",
+  "HP": 140,
+  "category": "pokemon",
+  "stage": "stage 1",
+  "evolvesFrom": "Jigglypuff",
+  "weakness": "fighting",
+  "retreat": 2,
+  "artist": "PLANETA Igarashi",
+  "rarity": "2_star",
+  "pack": "pikachu",
+  "attacks": [
+    {
+      "name": "Sleepy Song 80",
+      "cost": [
+        "colorless",
+        "colorless",
+        "colorless"
+      ],
+      "text": "Your opponent's Active Pokémon is now Asleep.",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 80
+      }
+    }
+  ],
+  "ex": true
+}

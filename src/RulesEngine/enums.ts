@@ -1,7 +1,8 @@
 export const DURATION = {
     PERMANENT: 999,
-    UNTIL_END_OF_TURN: 0,
-    UNTIL_END_OF_NEXT_TURN: 1
+    INSTANT : 0,
+    UNTIL_END_OF_TURN: 1,
+    UNTIL_END_OF_NEXT_TURN: 2
 } as const;
 
 export enum EffectTiming {

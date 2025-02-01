@@ -1,0 +1,27 @@
+{
+  "name": "Voltorb",
+  "id": "A1-099",
+  "set": "A1",
+  "type": "lightning",
+  "HP": 60,
+  "category": "pokemon",
+  "stage": "basic",
+  "weakness": "fighting",
+  "retreat": 1,
+  "artist": "SATOSHI NAKAI",
+  "rarity": "diamond_1",
+  "pack": "pikachu",
+  "attacks": [
+    {
+      "name": "Tackle 20",
+      "cost": [
+        "lightning"
+      ],
+      "text": "",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 20
+      }
+    }
+  ]
+}

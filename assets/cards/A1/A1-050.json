@@ -1,0 +1,29 @@
+{
+  "name": "Salazzle",
+  "id": "A1-050",
+  "set": "A1",
+  "type": "fire",
+  "HP": 90,
+  "category": "pokemon",
+  "stage": "stage 1",
+  "evolvesFrom": "Salandit",
+  "weakness": "water",
+  "retreat": 1,
+  "artist": "hatachu",
+  "rarity": "diamond_1",
+  "pack": "mewtwo",
+  "attacks": [
+    {
+      "name": "Fire Claws 60",
+      "cost": [
+        "fire",
+        "colorless"
+      ],
+      "text": "",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 60
+      }
+    }
+  ]
+}

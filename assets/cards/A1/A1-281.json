@@ -1,0 +1,29 @@
+{
+  "name": "Pikachu ex",
+  "id": "A1-281",
+  "set": "A1",
+  "type": "lightning",
+  "HP": 120,
+  "category": "pokemon",
+  "stage": "basic",
+  "weakness": "fighting",
+  "retreat": 1,
+  "artist": "Ryota Murayama",
+  "rarity": "3_star",
+  "pack": "pikachu",
+  "attacks": [
+    {
+      "name": "Circle Circuit 30x",
+      "cost": [
+        "lightning",
+        "lightning"
+      ],
+      "text": "This attack does 30 damage for each of your Benched [L] Pokémon.",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 30
+      }
+    }
+  ],
+  "ex": true
+}

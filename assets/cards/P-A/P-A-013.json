@@ -1,0 +1,31 @@
+{
+  "name": "Butterfree",
+  "id": "P-A-013",
+  "set": "P-A",
+  "type": "grass",
+  "HP": 120,
+  "category": "pokemon",
+  "stage": "stage 2",
+  "evolvesFrom": "Metapod",
+  "retreat": 1,
+  "artist": "miki kudo",
+  "rarity": "unknown",
+  "pack": "promo",
+  "resistance": null,
+  "attacks": [
+    {
+      "name": "Gust 60",
+      "cost": [
+        "grass",
+        "colorless",
+        "colorless"
+      ],
+      "text": "",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 60
+      }
+    }
+  ],
+  "weakness": "fire"
+}

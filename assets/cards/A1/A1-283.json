@@ -1,0 +1,26 @@
+{
+  "name": "Mew",
+  "id": "A1-283",
+  "set": "A1",
+  "type": "psychic",
+  "HP": 60,
+  "category": "pokemon",
+  "stage": "basic",
+  "weakness": "darkness",
+  "retreat": 1,
+  "artist": "Amelicart",
+  "rarity": "3_star",
+  "attacks": [
+    {
+      "name": "Psy Report 20",
+      "cost": [
+        "psychic"
+      ],
+      "text": "Your opponent reveals their hand.",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 20
+      }
+    }
+  ]
+}

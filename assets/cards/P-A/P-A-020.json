@@ -1,0 +1,29 @@
+{
+  "name": "Haunter",
+  "id": "P-A-020",
+  "set": "P-A",
+  "type": "psychic",
+  "HP": 70,
+  "category": "pokemon",
+  "stage": "stage 1",
+  "evolvesFrom": "Gastly",
+  "retreat": 1,
+  "artist": "Mékayu",
+  "rarity": "unknown",
+  "pack": "promo",
+  "resistance": null,
+  "attacks": [
+    {
+      "name": "Surprise Attack 50",
+      "cost": [
+        "psychic"
+      ],
+      "text": "Flip a coin. If tails, this attack does nothing.",
+      "effect": {
+        "type": "SIMPLE_DAMAGE",
+        "amount": 50
+      }
+    }
+  ],
+  "weakness": "darkness"
+}
