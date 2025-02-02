@@ -1,4 +1,5 @@
-import {PackAnimations} from './pack_animations.js';
+import { PackAnimations } from './pack_animations.js';
+
 const CONTAINER_CONFIG = {
     WIDTH: 1000,      // Base container width
     HEIGHT: 800,      // Base container height
@@ -6,7 +7,7 @@ const CONTAINER_CONFIG = {
     PACK_SCALE: 0.84, // Pack scale = card scale * 1.2
 };
 
-class PackOpenScene extends Phaser.Scene {
+export class PackOpenScene extends Phaser.Scene {
     constructor() {
         super({ key: 'PackOpenScene' });
         this.state = {
@@ -23,37 +24,9 @@ class PackOpenScene extends Phaser.Scene {
     }
 
     init(data) {
-        this.packArtPath = data.packArtPath;
-        this.cardData = data.cardData;
-        this.cardArtPaths = data.cardArtPaths;
-    }
-
-    async preload() {
-        this.setupLoadingHandlers();
-        await this.loadPackArt();
-    }
-
-    setupLoadingHandlers() {
-        this.load.on('start', () => console.log('Loading started'));
-        this.load.on('progress', (value) => console.log('Loading progress:', value));
-        this.load.on('complete', () => console.log('All assets loaded successfully'));
-        this.load.on('loaderror', (fileObj) => {
-            console.error('Error loading file:', {
-                key: fileObj.key,
-                src: fileObj.src,
-                type: fileObj.type
-            });
-        });
-    }
-
-    async loadPackArt() {
-        const packartKey = 'pack-sprite';
-        this.load.image(packartKey, this.packArtPath);
-        
-        await new Promise((resolve) => {
-            this.load.once('complete', resolve);
-            this.load.start();
-        });
+        // Store direct references to IDs which are our texture keys
+        this.packId = data.packId;
+        this.cardData = data.cards;
     }
 
     create() {
@@ -83,6 +56,23 @@ class PackOpenScene extends Phaser.Scene {
         const availableHeight = this.scale.height * 0.9;
         const scale = (availableHeight * targetScale) / sprite.height;
         sprite.setScale(scale);
+    }
+
+    setupSprites() {
+        // Use the provided texture key for pack
+        this.sprites.pack = this.add.sprite(0, 0, this.packId);
+        this.sprites.pack.setOrigin(0, 0);
+        this.scaleSprite(this.sprites.pack, CONTAINER_CONFIG.PACK_SCALE);
+        
+        const packWidth = this.sprites.pack.width * this.sprites.pack.scaleX;
+        const packHeight = this.sprites.pack.height * this.sprites.pack.scaleY;
+        this.sprites.pack.x = -packWidth / 2;
+        this.sprites.pack.y = -packHeight / 2;
+        
+        this.sprites.card = this.add.sprite(0, 0, '');
+        this.sprites.card.setVisible(false);
+        
+        this.gameContainer.add([this.sprites.pack, this.sprites.card]);
     }
 
     setupInteractions() {
@@ -128,22 +118,6 @@ class PackOpenScene extends Phaser.Scene {
         }
     }
 
-    setupSprites() {
-        this.sprites.pack = this.add.sprite(0, 0, 'pack-sprite');
-        this.sprites.pack.setOrigin(0, 0);
-        this.scaleSprite(this.sprites.pack, CONTAINER_CONFIG.PACK_SCALE);
-        
-        const packWidth = this.sprites.pack.width * this.sprites.pack.scaleX;
-        const packHeight = this.sprites.pack.height * this.sprites.pack.scaleY;
-        this.sprites.pack.x = -packWidth / 2;
-        this.sprites.pack.y = -packHeight / 2;
-        
-        this.sprites.card = this.add.sprite(0, 0, '');
-        this.sprites.card.setVisible(false);
-        
-        this.gameContainer.add([this.sprites.pack, this.sprites.card]);
-    }
-
     pause(duration) {
         return new Promise(resolve => {
             this.time.delayedCall(duration, resolve);
@@ -161,27 +135,15 @@ class PackOpenScene extends Phaser.Scene {
         if (!this.state.currentPack || this.state.currentCardIndex < 0) return;
 
         const currentCard = this.state.currentPack[this.state.currentCardIndex];
-        const cardKey = `card-${currentCard.id}`;
+        // Use the card's ID directly as the texture key
+        const textureKey = currentCard.id;
 
-        if (!this.textures.exists(cardKey)) {
-            try {
-                const cardPath = this.cardArtPaths[currentCard.id];
-                
-                this.load.image(cardKey, cardPath, {
-                    antialias: false
-                });
-                await new Promise((resolve, reject) => {
-                    this.load.once('complete', resolve);
-                    this.load.once('loaderror', reject);
-                    this.load.start();
-                });
-            } catch (error) {
-                console.error('Failed to load card texture:', error);
-                return;
-            }
+        if (!textureKey || !this.textures.exists(textureKey)) {
+            console.error(`Texture not found for card ID: ${currentCard.id}`);
+            return;
         }
 
-        this.sprites.card.setTexture(cardKey);
+        this.sprites.card.setTexture(textureKey);
         this.scaleSprite(this.sprites.card, CONTAINER_CONFIG.CARD_SCALE);
         this.sprites.card.setVisible(true);
     }
@@ -200,5 +162,3 @@ class PackOpenScene extends Phaser.Scene {
         }
     }
 }
-
-export { PackOpenScene};

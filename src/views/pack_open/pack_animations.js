@@ -3,7 +3,7 @@ const ANIMATION_CONFIG = {
     INITIAL_PAUSE: 300,      // Pause after flash
     SPLIT_PAUSE: 800,        // Pause after initial split
     DISSOLVE_DURATION: 600,  // Final separation animation
-    SPLIT_DISTANCE: 0.03,    // Initial split (5% of container)
+    SPLIT_DISTANCE: 0.03,    // Initial split (3% of container)
     PIXEL_SIZE: 8,          // Size of each "pixel" in dissolve effect
     DISSOLVE_FRAME_TIME: 16.67 // ~60fps
 };
@@ -39,7 +39,8 @@ class PackAnimations {
     }
 
     createSplitPieces() {
-        const texture = this.scene.textures.get('pack-sprite');
+        // Use packId directly as the texture key
+        const texture = this.scene.textures.get(this.scene.packId);
         const splitPoint = 0.23;
         const height = texture.source[0].height;
         const splitY = height * splitPoint;
@@ -50,12 +51,14 @@ class PackAnimations {
         
         const gapSize = this.scene.scale.height * ANIMATION_CONFIG.SPLIT_DISTANCE;
         
-        this.scene.sprites.packBottom = this.scene.add.sprite(packX, packY, 'pack-sprite');
+        // Use packId directly as the texture key
+        this.scene.sprites.packBottom = this.scene.add.sprite(packX, packY, this.scene.packId);
         this.scene.sprites.packBottom.setOrigin(0, 0);
         this.scene.sprites.packBottom.setCrop(0, splitY, texture.source[0].width, height - splitY);
         this.scene.sprites.packBottom.setScale(packScale);
         
-        this.scene.sprites.packTop = this.scene.add.sprite(packX, packY - gapSize, 'pack-sprite');
+        // Use packId directly as the texture key
+        this.scene.sprites.packTop = this.scene.add.sprite(packX, packY - gapSize, this.scene.packId);
         this.scene.sprites.packTop.setOrigin(0, 0);
         this.scene.sprites.packTop.setCrop(0, 0, texture.source[0].width, splitY);
         this.scene.sprites.packTop.setScale(packScale);
@@ -83,7 +86,8 @@ class PackAnimations {
 
     async animatePixelDissolve(bounds, sourceSprite, textureStartY, textureHeight) {
         const pixels = [];
-        const texture = this.scene.textures.get('pack-sprite');
+        // Use packId directly as the texture key
+        const texture = this.scene.textures.get(this.scene.packId);
         const textureWidth = texture.source[0].width;
         
         const canvas = document.createElement('canvas');
@@ -178,4 +182,4 @@ class PackAnimations {
     }
 }
 
-export {PackAnimations };
+export { PackAnimations };
