@@ -20,7 +20,7 @@ export default defineConfig({
     copyPublicDir: true,
     rollupOptions: {
       input: {
-        main: resolve(__dirname, 'index.html'),
+        // Only include the pack open test page
         packOpen: resolve(__dirname, 'src/views/pack_open/test_pack_open.html')
       },
       external: [
@@ -29,5 +29,9 @@ export default defineConfig({
     }
   },
   // This ensures the assets directory is copied as-is to dist
-  publicDir: 'assets'
+  publicDir: 'assets',
+  // Exclude game.js and its dependencies from the build
+  optimizeDeps: {
+    exclude: ['src/game.js', '@world/GameState.js', '@world/WorldEngineSimple.js']
+  }
 })
