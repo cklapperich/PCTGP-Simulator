@@ -11,10 +11,11 @@ const worldData = await World.loadRaw('/assets/worlds.ldtk');
 
 const config = {
     type: Phaser.AUTO,
-    width: 800,
-    height: 600,
+    resolution: window.devicePixelRatio, // Handle high DPI displays
+    antialias: false,  // Smoother scaling for non-pixel art
+    roundPixels: false, // Prevent pixel snapping which can cause blur
     scene: [WorldScene],
-    pixelArt: true,
+    pixelArt: false,
     scale: {
         mode: Phaser.Scale.FIT,
         autoCenter: Phaser.Scale.CENTER_BOTH

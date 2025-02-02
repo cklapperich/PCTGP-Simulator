@@ -18,11 +18,8 @@
     <div id="phaser-container"></div>
     
     <script type="module">
-        // Import and make Phaser globally available first
         import Phaser from 'phaser';
-        window.Phaser = Phaser;
-        
-        // Then import our game code that depends on global Phaser
+        window.Phaser = Phaser;  // Make Phaser globally available
         import { BootScene } from './test_pack_open.js';
 
         const config = {
@@ -30,6 +27,8 @@
             parent: 'phaser-container',
             backgroundColor: '#1099bb',
             antialias: false,
+            pixelArt: true,
+            roundPixels: false,
             scale: {
                 mode: Phaser.Scale.RESIZE,
                 parent: 'phaser-container',
