@@ -9,10 +9,9 @@ const CONTAINER_CONFIG = {
 const ANIMATION_CONFIG = {
     FLASH_DURATION: 200,     // Flash effect duration
     INITIAL_PAUSE: 300,      // Pause after flash
-    SPLIT_PAUSE: 400,        // Pause after initial split
-    SPLIT_DURATION: 600,     // Final separation animation
-    FADE_DURATION: 400,      // Final fade out
-    SPLIT_DISTANCE: 0.00,    // Initial split (5% of container)
+    SPLIT_PAUSE: 800,        // Pause after initial split
+    DISSOLVE_DURATION: 600,     // Final separation animation
+    SPLIT_DISTANCE: 0.03,    // Initial split (5% of container)
     PIXEL_SIZE: 8,          // Size of each "pixel" in dissolve effect
     DISSOLVE_FRAME_TIME: 16.67 // ~60fps
 };
@@ -29,7 +28,10 @@ class PackOpenScene extends Phaser.Scene {
             pack: null,
             packTop: null,
             packBottom: null,
-            card: null
+            card: null,
+            // Add debug rectangles
+            topRect: null,
+            bottomRect: null
         };
     }
 
@@ -77,25 +79,9 @@ class PackOpenScene extends Phaser.Scene {
     }
 
     setupContainer() {
-        // Create main container centered in the game
+        // Container still centered in game window
         this.gameContainer = this.add.container(this.scale.width / 2, this.scale.height / 2);
         this.gameContainer.setSize(CONTAINER_CONFIG.WIDTH, CONTAINER_CONFIG.HEIGHT);
-        
-        // Set container origin to center
-        this.gameContainer.x = this.scale.width / 2;
-        this.gameContainer.y = this.scale.height / 2;
-    }
-
-    setupSprites() {
-        // Setup pack sprite
-        this.sprites.pack = this.add.sprite(0, 0, 'pack-sprite');
-        this.scaleSprite(this.sprites.pack, CONTAINER_CONFIG.PACK_SCALE);
-        this.gameContainer.add(this.sprites.pack);
-        
-        // Setup card sprite (initially hidden)
-        this.sprites.card = this.add.sprite(0, 0, '');
-        this.sprites.card.setVisible(false);
-        this.gameContainer.add(this.sprites.card);
     }
 
     scaleSprite(sprite, targetScale) {
@@ -184,71 +170,168 @@ class PackOpenScene extends Phaser.Scene {
             });
         });
     }
-
-    pause(duration) {
-        return new Promise(resolve => {
-            this.time.delayedCall(duration, resolve);
-        });
+    setupSprites() {
+        // Center pack in container
+        this.sprites.pack = this.add.sprite(0, 0, 'pack-sprite');
+        this.sprites.pack.setOrigin(0, 0);
+        this.scaleSprite(this.sprites.pack, CONTAINER_CONFIG.PACK_SCALE);
+        
+        // Calculate offset to center the pack in container
+        const packWidth = this.sprites.pack.width * this.sprites.pack.scaleX;
+        const packHeight = this.sprites.pack.height * this.sprites.pack.scaleY;
+        this.sprites.pack.x = -packWidth / 2;
+        this.sprites.pack.y = -packHeight / 2;
+        
+        // Initialize card sprite (hidden initially)
+        this.sprites.card = this.add.sprite(0, 0, '');
+        this.sprites.card.setVisible(false);
+        
+        this.gameContainer.add([this.sprites.pack, this.sprites.card]);
     }
-
+    
     createSplitPieces() {
         const texture = this.textures.get('pack-sprite');
-        const splitPoint = 0.23; // Split at 23% from top
+        const splitPoint = 0.23;  // This controls where the texture is split
         const height = texture.source[0].height;
         const splitY = height * splitPoint;
         
-        // Create top and bottom pieces
-        this.sprites.packTop = this.add.sprite(0, 0, 'pack-sprite');
-        this.sprites.packBottom = this.add.sprite(0, 0, 'pack-sprite');
-        
-        // Set crop for each piece
-        this.sprites.packTop.setCrop(0, 0, texture.source[0].width, splitY);
-        this.sprites.packBottom.setCrop(0, splitY, texture.source[0].width, height - splitY);
-        
-        // Scale pieces to match original pack
+        // Get original pack position
+        const packX = this.sprites.pack.x;
+        const packY = this.sprites.pack.y;
         const packScale = this.sprites.pack.scale;
-        this.sprites.packTop.setScale(packScale);
+        
+        // Calculate gap size using SPLIT_DISTANCE
+        const gapSize = CONTAINER_CONFIG.HEIGHT * ANIMATION_CONFIG.SPLIT_DISTANCE;
+        
+        // Create bottom piece - stays at original position
+        this.sprites.packBottom = this.add.sprite(packX, packY, 'pack-sprite');
+        this.sprites.packBottom.setOrigin(0, 0);
+        this.sprites.packBottom.setCrop(0, splitY, texture.source[0].width, height - splitY);
         this.sprites.packBottom.setScale(packScale);
         
-        // Add to container
-        this.gameContainer.add([this.sprites.packTop, this.sprites.packBottom]);
+        // Create top piece - move up by gap size
+        this.sprites.packTop = this.add.sprite(packX, packY - gapSize, 'pack-sprite');
+        this.sprites.packTop.setOrigin(0, 0);
+        this.sprites.packTop.setCrop(0, 0, texture.source[0].width, splitY);
+        this.sprites.packTop.setScale(packScale);
         
-        // Hide original pack sprite
+        // Add both pieces to the container and hide original pack
+        this.gameContainer.add([this.sprites.packBottom, this.sprites.packTop]);
         this.sprites.pack.setVisible(false);
+    
+        // Return coordinates for debug rectangles - these stay at the logically correct positions
+        return {
+            top: {
+                x: packX,
+                y: packY - gapSize,
+                width: texture.source[0].width * packScale,
+                height: splitY * packScale
+            },
+            bottom: {
+                x: packX,
+                y: packY + (splitY * packScale),  // Rectangle shows true position
+                width: texture.source[0].width * packScale,
+                height: (height - splitY) * packScale
+            }
+        };
     }
 
-    async animatePixelDissolve() {
+    async animatePackOpening() {
+        await this.createFlashEffect();
+        await this.pause(ANIMATION_CONFIG.INITIAL_PAUSE);
+        
+        const coords = this.createSplitPieces();
+        
+        // Calculate texture split points
+        const texture = this.textures.get('pack-sprite');
+        const splitPoint = 0.23;
+        const textureHeight = texture.source[0].height;
+        const splitY = Math.floor(textureHeight * splitPoint);
+    
+        // Calculate bounds exactly
+        const packScale = this.sprites.pack.scale;
+        const packX = this.sprites.pack.x;
+        const packY = this.sprites.pack.y;
+        const gapSize = CONTAINER_CONFIG.HEIGHT * ANIMATION_CONFIG.SPLIT_DISTANCE;
+    
+        const topBounds = {
+            x: packX + (texture.source[0].width * packScale) / 2,
+            y: (packY - gapSize) + (splitY * packScale) / 2,
+            width: texture.source[0].width * packScale,
+            height: splitY * packScale
+        };
+    
+        const bottomBounds = {
+            x: packX + (texture.source[0].width * packScale) / 2,
+            y: packY + (splitY * packScale) + ((textureHeight - splitY) * packScale) / 2,
+            width: texture.source[0].width * packScale,
+            height: (textureHeight - splitY) * packScale
+        };
+        await this.pause(ANIMATION_CONFIG.SPLIT_PAUSE);
+        this.sprites.packTop.setVisible(false);
+        this.sprites.packBottom.setVisible(false);
+
+        // Dissolve both pieces simultaneously
+        await Promise.all([
+            // Dissolve top piece
+            this.animatePixelDissolve(
+                topBounds,
+                this.sprites.packTop,
+                0,  // Start at top of texture
+                splitY  // Use top portion height
+            ),
+            // Dissolve bottom piece
+            this.animatePixelDissolve(
+                bottomBounds,
+                this.sprites.packBottom,
+                splitY,  // Start at split point
+                textureHeight - splitY  // Use remaining height
+            )
+        ]);
+    
+        // Clean up sprites after dissolution
+        this.sprites.packTop.destroy();
+        this.sprites.packBottom.destroy();
+    }
+    async animatePixelDissolve(bounds, sourceSprite, textureStartY, textureHeight) {
         const PIXEL_SIZE = ANIMATION_CONFIG.PIXEL_SIZE;
         const pixels = [];
         
         // Get pack texture for color sampling
         const texture = this.textures.get('pack-sprite');
         const textureWidth = texture.source[0].width;
-        const textureHeight = texture.source[0].height;
         
         // Create a temporary canvas for color sampling
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d');
         canvas.width = textureWidth;
-        canvas.height = textureHeight;
+        canvas.height = texture.source[0].height;
         ctx.drawImage(texture.source[0].image, 0, 0);
         
-        // Calculate grid dimensions based on pack sprite size
-        const gridWidth = Math.ceil(this.sprites.pack.width * this.sprites.pack.scaleX / PIXEL_SIZE);
-        const gridHeight = Math.ceil(this.sprites.pack.height * this.sprites.pack.scaleY / PIXEL_SIZE);
+        // Calculate grid dimensions based on bounds
+        const gridWidth = Math.ceil(bounds.width / PIXEL_SIZE);
+        const gridHeight = Math.ceil(bounds.height / PIXEL_SIZE);
         
-        // Create grid of rectangles covering the pack
+        // Calculate target area bounds
+        const targetLeft = bounds.x - bounds.width / 2;
+        const targetTop = bounds.y - bounds.height / 2;
+        
+        // Create grid of rectangles covering the target area
         for (let x = 0; x < gridWidth; x++) {
             for (let y = 0; y < gridHeight; y++) {
-                // Sample color from texture at this position
+                // Calculate position in world space
+                const worldX = targetLeft + (x * PIXEL_SIZE);
+                const worldY = targetTop + (y * PIXEL_SIZE);
+                
+                // Sample color from appropriate part of texture
                 const textureX = Math.floor((x / gridWidth) * textureWidth);
-                const textureY = Math.floor((y / gridHeight) * textureHeight);
+                const textureY = textureStartY + Math.floor((y / gridHeight) * textureHeight);
                 const pixelData = ctx.getImageData(textureX, textureY, 1, 1).data;
                 const color = (pixelData[0] << 16) | (pixelData[1] << 8) | pixelData[2];
                 
                 const pixel = this.add.rectangle(
-                    (x - gridWidth/2) * PIXEL_SIZE,
-                    (y - gridHeight/2) * PIXEL_SIZE,
+                    worldX,
+                    worldY,
                     PIXEL_SIZE,
                     PIXEL_SIZE,
                     color
@@ -258,11 +341,8 @@ class PackOpenScene extends Phaser.Scene {
             }
         }
         
-        // Hide original pack sprite but keep it for reference
-        this.sprites.pack.setVisible(false);
-        
         // Randomly remove pixels over time
-        const totalDuration = ANIMATION_CONFIG.SPLIT_DURATION;
+        const totalDuration = ANIMATION_CONFIG.DISSOLVE_DURATION;
         const pixelsPerFrame = Math.ceil(pixels.length / (totalDuration / ANIMATION_CONFIG.DISSOLVE_FRAME_TIME));
         
         await new Promise(resolve => {
@@ -272,7 +352,6 @@ class PackOpenScene extends Phaser.Scene {
                 for (let i = 0; i < pixelsPerFrame; i++) {
                     if (remainingPixels.length === 0) {
                         clearInterval(dissolveInterval);
-                        this.sprites.pack.destroy();
                         pixels.forEach(p => p.destroy());
                         resolve();
                         return;
@@ -295,46 +374,10 @@ class PackOpenScene extends Phaser.Scene {
         });
     }
 
-    async animatePackOpening() {
-        // 1. Flash effect and initial pause
-        await this.createFlashEffect();
-        await this.pause(ANIMATION_CONFIG.INITIAL_PAUSE);
-        
-        // 2. Create split pieces and animate split
-        this.createSplitPieces();
-        
-        // 3. Initial split animation
-        await Promise.all([
-            new Promise(resolve => {
-                this.tweens.add({
-                    targets: this.sprites.packTop,
-                    y: -CONTAINER_CONFIG.HEIGHT * ANIMATION_CONFIG.SPLIT_DISTANCE,
-                    duration: ANIMATION_CONFIG.SPLIT_DURATION / 3,
-                    ease: 'Power1',
-                    onComplete: resolve
-                });
-            }),
-            new Promise(resolve => {
-                this.tweens.add({
-                    targets: this.sprites.packBottom,
-                    y: CONTAINER_CONFIG.HEIGHT * ANIMATION_CONFIG.SPLIT_DISTANCE,
-                    duration: ANIMATION_CONFIG.SPLIT_DURATION / 3,
-                    ease: 'Power1',
-                    onComplete: resolve
-                });
-            })
-        ]);
-
-        // 4. Pause before dissolve
-        await this.pause(ANIMATION_CONFIG.SPLIT_PAUSE);
-
-        // 5. Destroy split pieces and create pixel dissolve effect
-        this.sprites.packTop.destroy();
-        this.sprites.packBottom.destroy();
-        this.sprites.pack.setVisible(true);
-        
-        // 6. Animate pixel dissolve
-        await this.animatePixelDissolve();
+    pause(duration) {
+        return new Promise(resolve => {
+            this.time.delayedCall(duration, resolve);
+        });
     }
 
     async showFirstCard() {
