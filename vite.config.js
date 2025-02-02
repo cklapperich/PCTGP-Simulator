@@ -10,8 +10,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': resolve(__dirname, 'src'),
-      '@assets': resolve(__dirname, 'assets'),
-      '@world': resolve(__dirname, 'src/views/WorldEngine')
+      '@assets': resolve(__dirname, 'assets')
     }
   },
   build: {
@@ -25,8 +24,7 @@ export default defineConfig({
         packOpen: resolve(__dirname, 'src/views/pack_open/test_pack_open.html')
       },
       external: [
-        'https://cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser.min.js',
-        'phaser'
+        'https://cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser.min.js'
       ]
     }
   },

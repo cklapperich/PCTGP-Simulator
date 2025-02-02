@@ -11,12 +11,15 @@ const PORT = process.env.PORT || 3000;
 // Determine if we're in production
 const isProduction = process.env.NODE_ENV === 'production';
 
-// In production, serve from the dist directory
-// In development, serve from the root directory
-const staticPath = isProduction ? path.join(__dirname, 'dist') : __dirname;
-
-// Serve static files
-app.use(express.static(staticPath));
+// In production, serve the Vite build output
+if (isProduction) {
+    app.use(express.static(path.join(__dirname, 'dist')));
+    // Also serve assets from dist/assets
+    app.use('/assets', express.static(path.join(__dirname, 'dist/assets')));
+} else {
+    // In development, serve from root directory
+    app.use(express.static(__dirname));
+}
 
 // Health check endpoint for Render
 app.get('/health', (req, res) => {
@@ -35,6 +38,7 @@ app.get('/', (req, res) => {
 app.use((req, res, next) => {
     if (req.path.includes('/assets/')) {
         console.error(`404: Asset not found - ${req.path}`);
+        console.error(`Looked in: ${isProduction ? 'dist' + req.path : req.path}`);
     }
     res.status(404).send('Not Found');
 });
@@ -47,5 +51,6 @@ app.use((err, req, res, next) => {
 
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
-    console.log(`Serving static files from: ${staticPath}`);
+    console.log(`Mode: ${isProduction ? 'production' : 'development'}`);
+    console.log(`Static files: ${isProduction ? 'dist' : 'root'}`);
 });
