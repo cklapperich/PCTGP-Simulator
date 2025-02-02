@@ -16,14 +16,23 @@ export default defineConfig({
   build: {
     target: 'esnext',
     outDir: 'dist',
+    // Copy all assets to dist/assets maintaining directory structure
+    assetsDir: 'assets',
     rollupOptions: {
       input: resolve(__dirname, 'index.html'),
       output: {
         entryFileNames: 'assets/[name]-[hash].js',
         chunkFileNames: 'assets/[name]-[hash].js',
-        assetFileNames: 'assets/[name]-[hash][extname]'
+        assetFileNames: (assetInfo) => {
+          // Keep original path structure for assets
+          if (assetInfo.name.startsWith('assets/')) {
+            return assetInfo.name;
+          }
+          return 'assets/[name]-[hash][extname]';
+        }
       }
     }
   },
+  // Copy the entire assets directory to dist
   publicDir: 'assets'
 })
