@@ -11,8 +11,12 @@ export default defineConfig({
     alias: {
       '@': resolve(__dirname, 'src'),
       '@assets': resolve(__dirname, 'assets'),
-      '@world': resolve(__dirname, 'src/views/WorldEngine')
+      '@world': resolve(__dirname, 'src/views/WorldEngine'),
+      'phaser': resolve(__dirname, 'node_modules/phaser/dist/phaser.js')
     }
+  },
+  optimizeDeps: {
+    include: ['phaser']
   },
   build: {
     target: 'esnext',
@@ -20,7 +24,7 @@ export default defineConfig({
     copyPublicDir: true,
     rollupOptions: {
       input: {
-        packOpen: resolve(__dirname, 'src/views/pack_open/test_pack_open.html')
+        main: resolve(__dirname, 'src/views/pack_open/test_pack_open.html')
       }
     }
   },

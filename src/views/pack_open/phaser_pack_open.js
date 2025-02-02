@@ -33,6 +33,7 @@ export class PackOpenScene extends Phaser.Scene {
         this.setupSprites();
         this.setupInteractions();
         this.setupKeyboardControls();
+        this.scale.on('resize', this.handleResize, this);
         this.animations = new PackAnimations(this, this.gameContainer);
     }
 
@@ -74,24 +75,19 @@ export class PackOpenScene extends Phaser.Scene {
         this.gameContainer.add(this.sprites.background);
     }
 
-    scaleSprite(sprite, targetScale, preventEnlarge = false) {
+    scaleSprite(sprite, targetScale) {
         if (!sprite) return;
         
         const availableHeight = this.gameContainer.height;
         const scale = (availableHeight * targetScale) / sprite.height;
-        
-        if (preventEnlarge) {
-            // If preventing enlargement, cap at 1.0 scale
-            sprite.setScale(Math.min(scale, 1.0));
-        } else {
-            sprite.setScale(scale);
-        }
+        sprite.setScale(scale);
     }
+
     setupSprites() {
         // Use the provided texture key for pack
         this.sprites.pack = this.add.sprite(0, 0, this.packId);
         this.sprites.pack.setOrigin(0, 0);
-        this.scaleSprite(this.sprites.pack, this.config.sprites.pack.heightScale, true);
+        this.scaleSprite(this.sprites.pack, this.config.sprites.pack.heightScale);
         
         const packWidth = this.sprites.pack.width * this.sprites.pack.scaleX;
         const packHeight = this.sprites.pack.height * this.sprites.pack.scaleY;
@@ -99,7 +95,7 @@ export class PackOpenScene extends Phaser.Scene {
         this.sprites.pack.y = -packHeight / 2;
         
         this.sprites.card = this.add.sprite(0, 0, '');
-        this.sprites.card.antialiasing = false;
+        this.sprites.card.antialiasing = true;
 
         this.sprites.card.setVisible(false);
         
@@ -124,6 +120,43 @@ export class PackOpenScene extends Phaser.Scene {
         this.input.keyboard.on('keydown-LEFT', () => {
             if (this.state === PackState.INTERACTIVE) this.previousCard();
         });
+    }
+
+    handleResize(gameSize) {
+        // Recalculate container size
+        const { width: targetWidth, height: targetHeight } = this.config.aspectRatio;
+        const scale = this.config.containerScale;
+        
+        let containerWidth, containerHeight;
+        const windowRatio = gameSize.width / gameSize.height;
+        const targetRatio = targetWidth / targetHeight;
+        
+        if (windowRatio > targetRatio) {
+            containerHeight = gameSize.height * scale;
+            containerWidth = containerHeight * targetRatio;
+        } else {
+            containerWidth = gameSize.width * scale;
+            containerHeight = containerWidth / targetRatio;
+        }
+
+        this.gameContainer.setSize(containerWidth, containerHeight);
+        this.gameContainer.x = gameSize.width / 2;
+        this.gameContainer.y = gameSize.height / 2;
+        
+        // Update background scale
+        if (this.sprites.background) {
+            const scaleX = containerWidth / this.sprites.background.width;
+            const scaleY = containerHeight / this.sprites.background.height;
+            const scale = Math.max(scaleX, scaleY);
+            this.sprites.background.setScale(scale);
+        }
+        
+        if (this.sprites.pack?.visible) {
+            this.scaleSprite(this.sprites.pack, this.config.sprites.pack.heightScale);
+        }
+        if (this.sprites.card?.visible) {
+            this.scaleSprite(this.sprites.card, this.config.sprites.card.heightScale);
+        }
     }
 
     async handlePackOpen() {
@@ -156,21 +189,16 @@ export class PackOpenScene extends Phaser.Scene {
 
         const currentCard = this.cardData[this.currentCardIndex];
         const textureKey = currentCard.id;
-        console.log('Texture size:', this.textures.get(textureKey).getSourceImage().width);
-        console.log('Display size:', this.sprites.card.width * this.sprites.card.scaleX);
-        console.log('Scale:', this.sprites.card.scaleX);
+
         if (!textureKey || !this.textures.exists(textureKey)) {
             console.error(`Texture not found for card ID: ${currentCard.id}`);
             return;
         }
 
         this.sprites.card.setTexture(textureKey);
-        this.sprites.card.texture.setFilter(Phaser.Textures.LINEAR );
+        this.sprites.card.texture.setFilter(Phaser.Textures.LINEAR);
         this.scaleSprite(this.sprites.card, this.config.sprites.card.heightScale);
-        const availableHeight = this.gameContainer.height;
-
-        console.log('Container height when scaling sprite:', availableHeight);
-
+        
         this.sprites.card.setVisible(true);
     }
 

@@ -22,7 +22,7 @@ export class BootScene extends Phaser.Scene {
                 cards: cards.map(card => ({ id: card.id })),
                 background: {
                     key: backgroundKey,
-                    path: `/assets/playmats/${backgroundKey}.png`
+                    path: `/playmats/${backgroundKey}.png`
                 }
             });
             
@@ -31,7 +31,7 @@ export class BootScene extends Phaser.Scene {
             this.scene.start('PackOpenScene', {
                 packId,
                 cards,
-                backgroundKey  // Just pass the key - the scene will handle the rest
+                backgroundKey
             });
 
             // Store loader in registry for cleanup

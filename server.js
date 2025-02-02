@@ -14,8 +14,6 @@ const isProduction = process.env.NODE_ENV === 'production';
 // In production, serve the Vite build output
 if (isProduction) {
     app.use(express.static(path.join(__dirname, 'dist')));
-    // Also serve assets from dist/assets
-    app.use('/assets', express.static(path.join(__dirname, 'dist/assets')));
 } else {
     // In development, serve from root directory
     app.use(express.static(__dirname));
@@ -36,10 +34,8 @@ app.get('/', (req, res) => {
 
 // Error handling for 404s
 app.use((req, res, next) => {
-    if (req.path.includes('/assets/')) {
-        console.error(`404: Asset not found - ${req.path}`);
-        console.error(`Looked in: ${isProduction ? 'dist' + req.path : req.path}`);
-    }
+    console.error(`404: Path not found - ${req.path}`);
+    console.error(`Looked in: ${isProduction ? 'dist' + req.path : req.path}`);
     res.status(404).send('Not Found');
 });
 

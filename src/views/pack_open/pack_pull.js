@@ -49,7 +49,7 @@ async function loadPackData(packId) {
 
   try {
     // Add leading slash for absolute path
-    const response = await fetch(`/assets/packs/${packId}.json`);
+    const response = await fetch(`/packs/${packId}.json`);
     const packData = await response.json();
     // Cache the loaded data
     packDataCache.set(packId, packData);

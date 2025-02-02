@@ -8,7 +8,7 @@ export class AssetLoader {
     async loadAssets(manifest) {
         // Extract all assets that need loading
         if (manifest.pack) {
-            const packPath = `/assets/packart/${manifest.pack.id}.png`;
+            const packPath = `/packart/${manifest.pack.id}.png`;
             this.scene.load.image(manifest.pack.id, packPath);
             this.loadedAssets.add(manifest.pack.id);
         }
@@ -17,7 +17,7 @@ export class AssetLoader {
             manifest.cards.forEach(card => {
                 // Extract setId from cardId (format: setId-CardNumber)
                 const setId = card.id.split('-')[0];
-                const cardPath = `/assets/cardart/${setId}/${card.id}.png`;
+                const cardPath = `/cardart/${setId}/${card.id}.png`;
                 this.scene.load.image(card.id, cardPath, { antialias: false });
                 this.loadedAssets.add(card.id);
             });
