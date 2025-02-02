@@ -38,6 +38,12 @@ class PackAnimations {
         });
     }
 
+    scaleSprite(sprite) {
+        const availableHeight = this.gameContainer.height;
+        const scale = (availableHeight * this.scene.config.sprites.pack.heightScale) / sprite.height;
+        sprite.setScale(scale);
+    }
+
     createSplitPieces() {
         // Use packId directly as the texture key
         const texture = this.scene.textures.get(this.scene.packId);
@@ -47,25 +53,24 @@ class PackAnimations {
         
         const packX = this.scene.sprites.pack.x;
         const packY = this.scene.sprites.pack.y;
-        const packScale = this.scene.sprites.pack.scale;
-        
         const gapSize = this.scene.scale.height * ANIMATION_CONFIG.SPLIT_DISTANCE;
         
         // Use packId directly as the texture key
         this.scene.sprites.packBottom = this.scene.add.sprite(packX, packY, this.scene.packId);
         this.scene.sprites.packBottom.setOrigin(0, 0);
         this.scene.sprites.packBottom.setCrop(0, splitY, texture.source[0].width, height - splitY);
-        this.scene.sprites.packBottom.setScale(packScale);
+        this.scaleSprite(this.scene.sprites.packBottom);
         
         // Use packId directly as the texture key
         this.scene.sprites.packTop = this.scene.add.sprite(packX, packY - gapSize, this.scene.packId);
         this.scene.sprites.packTop.setOrigin(0, 0);
         this.scene.sprites.packTop.setCrop(0, 0, texture.source[0].width, splitY);
-        this.scene.sprites.packTop.setScale(packScale);
+        this.scaleSprite(this.scene.sprites.packTop);
         
         this.gameContainer.add([this.scene.sprites.packBottom, this.scene.sprites.packTop]);
         this.scene.sprites.pack.setVisible(false);
     
+        const packScale = this.scene.sprites.packBottom.scale;
         return {
             topBounds: {
                 x: packX + (texture.source[0].width * packScale) / 2,

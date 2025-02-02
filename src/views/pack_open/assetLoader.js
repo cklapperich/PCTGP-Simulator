@@ -23,6 +23,17 @@ export class AssetLoader {
             });
         }
 
+        // Handle background loading - supports both asset paths and texture keys
+        if (manifest.background) {
+            const { key, path } = manifest.background;
+            if (path) {
+                // Load from file path
+                this.scene.load.image(key, path);
+                this.loadedAssets.add(key);
+            }
+            // If no path provided, assume the texture is already loaded or will be provided dynamically
+        }
+
         // Start loading and wait for completion
         return new Promise((resolve, reject) => {
             this.scene.load.once('complete', resolve);
