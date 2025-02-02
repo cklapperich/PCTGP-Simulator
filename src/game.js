@@ -7,7 +7,7 @@ import { World } from 'ldtk'
 const gameState = new GameState();
 
 // Load world data
-const worldData = await World.loadRaw('/worlds.ldtk');
+const worldData = await World.loadRaw('@assets/worlds.ldtk');
 
 const config = {
     type: Phaser.AUTO,
