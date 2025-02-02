@@ -5,7 +5,7 @@ export default defineConfig({
   server: {
     port: 3000,
     open: true,
-    host: true
+    host: true  // Allow network access
   },
   resolve: {
     alias: {
@@ -16,23 +16,17 @@ export default defineConfig({
   build: {
     target: 'esnext',
     outDir: 'dist',
-    // Copy all assets to dist/assets maintaining directory structure
-    assetsDir: 'assets',
     rollupOptions: {
-      input: resolve(__dirname, 'index.html'),
-      output: {
-        entryFileNames: 'assets/[name]-[hash].js',
-        chunkFileNames: 'assets/[name]-[hash].js',
-        assetFileNames: (assetInfo) => {
-          // Keep original path structure for assets
-          if (assetInfo.name.startsWith('assets/')) {
-            return assetInfo.name;
-          }
-          return 'assets/[name]-[hash][extname]';
-        }
-      }
-    }
+      input: {
+        packOpen: resolve(__dirname, 'src/views/pack_open/test_pack_open.html')
+      },
+      external: [
+        'https://cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser.min.js'
+      ]
+    },
+    // Ensure assets are copied to dist
+    assetsDir: 'assets',
+    copyPublicDir: true
   },
-  // Copy the entire assets directory to dist
   publicDir: 'assets'
 })

@@ -7,11 +7,11 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "serve:pack-open": "node src/views/pack_open/serve_pack_open.js",
     "build:ts": "tsc",
     "test": "npm run build:ts && node dist/tests/game_actions_test.js",
     "test:pack": "node src/tests/pack_pull_test.js",
-    "test:rules": "node src/tests/rules_engine_test.js"
+    "test:rules": "node src/tests/rules_engine_test.js",
+    "start": "node server.js"
   },
   "keywords": [
     "pokemon",
@@ -22,10 +22,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.21.2",
+    "express": "^4.18.2",
     "ldtk": "^0.8.7",
-    "phaser": "^3.87.0",
-    "pixi.js": "^8.7.3"
+    "phaser": "^3.87.0"
   },
   "devDependencies": {
     "@types/node": "^22.10.10",
