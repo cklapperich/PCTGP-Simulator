@@ -13,12 +13,16 @@
             height: 100vh;
         }
     </style>
-    <script src="https://cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser.min.js"></script>
 </head>
 <body>
     <div id="phaser-container"></div>
     
     <script type="module">
+        // Import and make Phaser globally available first
+        import Phaser from 'phaser';
+        window.Phaser = Phaser;
+        
+        // Then import our game code that depends on global Phaser
         import { BootScene } from './test_pack_open.js';
 
         const config = {
