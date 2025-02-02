@@ -16,17 +16,18 @@ export default defineConfig({
   build: {
     target: 'esnext',
     outDir: 'dist',
+    // Ensure source files are copied to dist maintaining directory structure
+    copyPublicDir: true,
     rollupOptions: {
       input: {
+        main: resolve(__dirname, 'index.html'),
         packOpen: resolve(__dirname, 'src/views/pack_open/test_pack_open.html')
       },
       external: [
         'https://cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser.min.js'
       ]
-    },
-    // Ensure assets are copied to dist
-    assetsDir: 'assets',
-    copyPublicDir: true
+    }
   },
+  // This ensures the assets directory is copied as-is to dist
   publicDir: 'assets'
 })
