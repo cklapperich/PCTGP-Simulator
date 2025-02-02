@@ -1,21 +1,42 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Pokemon TCG Simulator</title>
+    <title>Pack Open Test</title>
     <style>
         body {
             margin: 0;
             padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
             background: #333;
         }
+        #phaser-container {
+            width: 100vw;
+            height: 100vh;
+        }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser.min.js"></script>
 </head>
 <body>
-    <div id="game"></div>
-    <script type="module" src="/src/game.js"></script>
+    <div id="phaser-container"></div>
+    
+    <script type="module">
+        import { BootScene } from './src/views/pack_open/test_pack_open.js';
+
+        const config = {
+            type: Phaser.AUTO,
+            parent: 'phaser-container',
+            backgroundColor: '#1099bb',
+            antialias: false,
+            scale: {
+                mode: Phaser.Scale.RESIZE,
+                parent: 'phaser-container',
+                width: '100%',
+                height: '100%'
+            },
+            scene: BootScene
+        };
+
+        // Start the game when page loads
+        window.onload = () => new Phaser.Game(config);
+    </script>
 </body>
 </html>

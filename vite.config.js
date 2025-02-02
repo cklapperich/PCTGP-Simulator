@@ -17,8 +17,11 @@ export default defineConfig({
     target: 'esnext',
     outDir: 'dist',
     rollupOptions: {
-      input: {
-        packOpen: resolve(__dirname, 'src/views/pack_open/test_pack_open.html')
+      input: resolve(__dirname, 'index.html'),
+      output: {
+        entryFileNames: 'assets/[name]-[hash].js',
+        chunkFileNames: 'assets/[name]-[hash].js',
+        assetFileNames: 'assets/[name]-[hash][extname]'
       }
     }
   },
