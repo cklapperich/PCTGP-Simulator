@@ -18,7 +18,7 @@ export class AssetLoader {
                 // Extract setId from cardId (format: setId-CardNumber)
                 const setId = card.id.split('-')[0];
                 const cardPath = `/cardart/${setId}/${card.id}.png`;
-                this.scene.load.image(card.id, cardPath, { antialias: false });
+                this.scene.load.image(card.id, cardPath);
                 this.loadedAssets.add(card.id);
             });
         }
@@ -32,6 +32,22 @@ export class AssetLoader {
                 this.loadedAssets.add(key);
             }
             // If no path provided, assume the texture is already loaded or will be provided dynamically
+        }
+
+        // Handle icon loading
+        if (manifest.icons) {
+            Object.values(manifest.icons).forEach(icon => {
+                this.scene.load.image(icon.key, icon.path);
+                this.loadedAssets.add(icon.key);
+            });
+        }
+
+        // Load fonts
+        if (manifest.fonts) {
+            manifest.fonts.forEach(font => {
+                this.scene.load.bitmapFont(font.key, font.textureURL, font.atlasURL);
+                this.loadedAssets.add(font.key);
+            });
         }
 
         // Start loading and wait for completion

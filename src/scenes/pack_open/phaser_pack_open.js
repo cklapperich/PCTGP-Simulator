@@ -1,78 +1,90 @@
+//phaser_pack_open.js
 import { PackAnimations } from './pack_animations.js';
-import { UIConfig, UIScenes} from '../../config/UIConfig.js';
-
 const PackState = {
     INTERACTIVE: 'INTERACTIVE',
     ANIMATING: 'ANIMATING'
 };
 
 export class PackOpenScene extends Phaser.Scene {
+    static PACKART_SCALE = 0.8; // Pack art should take up 80% of container height
+    static CARD_MARGIN = 20;  // Default margin for card positioning
+
     constructor() {
-        super({ key: UIScenes.PACK_OPEN });
+        super({ key: 'PackOpenScene' });
         this.state = PackState.INTERACTIVE;
         this.sprites = {
             background: null,
             pack: null,
             packTop: null,
             packBottom: null,
-            card: null
+            card: null,
+            energyIcon: null
         };
+        this.cardCounterText = null;
     }
 
     init(data) {
         // Store direct references to IDs which are our texture keys
         this.packId = data.packId;
         this.cardData = data.cards;
-        this.backgroundKey = data.backgroundKey;
-        this.config = UIConfig[UIScenes.PACK_OPEN];
+        this.backgroundKey = data.backgroundKey || null; // Make background optional
+        this.config = data.UIConfig;
     }
 
-    create() { 
-        this.setupContainer();
+    create() {
+        // Create a container sized according to base resolution and scale
+        this.gameContainer = this.add.container(0, 0);
+        this.gameContainer.width = this.config.BASE_RESOLUTION[0] * this.config.GLOBAL_SCALE;
+        this.gameContainer.height = this.config.BASE_RESOLUTION[1] * this.config.GLOBAL_SCALE;
+        
+        // Add debug border around container
+        const border = this.add.rectangle(0, 0, this.gameContainer.width, this.gameContainer.height);
+        border.setStrokeStyle(4, 0xFFFFFF);
+        border.setOrigin(0, 0);
+        this.gameContainer.add(border);
+        
         this.setupBackground();
         this.setupSprites();
+        this.setupEnergyIcon();
+        this.setupCardCounter();
         this.setupInteractions();
         this.setupKeyboardControls();
-        this.scale.on('resize', this.handleResize, this);
         this.animations = new PackAnimations(this, this.gameContainer);
     }
 
-    setupContainer() {
-        // Calculate container size based on aspect ratio
-        const { width: targetWidth, height: targetHeight } = this.config.aspectRatio;
-        const scale = this.config.containerScale;
-        
-        // Calculate the container size while maintaining aspect ratio
-        let containerWidth, containerHeight;
-        const windowRatio = this.scale.width / this.scale.height;
-        const targetRatio = targetWidth / targetHeight;
-        
-        if (windowRatio > targetRatio) {
-            // Window is wider than target ratio
-            containerHeight = this.scale.height * scale;
-            containerWidth = containerHeight * targetRatio;
-        } else {
-            // Window is taller than target ratio
-            containerWidth = this.scale.width * scale;
-            containerHeight = containerWidth / targetRatio;
-        }
-
-        this.gameContainer = this.add.container(this.scale.width / 2, this.scale.height / 2);
-        this.gameContainer.setSize(containerWidth, containerHeight);
+    setupBackground() {
+        // Create black background
+        this.sprites.background = this.add.rectangle(0, 0, this.gameContainer.width, this.gameContainer.height, 0x000000);
+        this.sprites.background.setOrigin(0, 0);
+        this.gameContainer.add(this.sprites.background);
     }
 
-    setupBackground() {
-        // Create background sprite
-        this.sprites.background = this.add.sprite(0, 0, this.backgroundKey);
-        this.sprites.background.setOrigin(0.5);
-        
-        // Scale background to cover container
-        const scaleX = this.gameContainer.width / this.sprites.background.width;
-        const scaleY = this.gameContainer.height / this.sprites.background.height;
-        const scale = Math.max(scaleX, scaleY);
-        this.sprites.background.setScale(scale);
-        
-        this.gameContainer.add(this.sprites.background);
+    setupEnergyIcon() {
+        const iconKey = this.config.icons.energy.key;
+        this.sprites.energyIcon = this.add.sprite(
+            this.gameContainer.width,  // Right edge
+            this.gameContainer.height, // Bottom edge
+            iconKey
+        );
+        this.sprites.energyIcon.setOrigin(1, 1); // Set origin to bottom-right
+        this.sprites.energyIcon.setScale(0.5 * this.config.GLOBAL_SCALE);
+        this.gameContainer.add(this.sprites.energyIcon);
+    }
+
+    setupCardCounter() {
+        // Create card counter text
+        this.cardCounterText = this.add.text(
+            this.gameContainer.width / 2,  // center horizontally
+            PackOpenScene.CARD_MARGIN * this.config.GLOBAL_SCALE,  // margin from top
+            '',  // Initial empty text
+            {
+                fontFamily: this.config.fonts.pokemon,
+                fontSize: 48 * this.config.GLOBAL_SCALE,
+                color: '#FFFFFF'
+            }
+        );
+        this.cardCounterText.setOrigin(0.5, 0);  // Center align horizontally, top align vertically
+        this.gameContainer.add(this.cardCounterText);
     }
 
     scaleSprite(sprite, targetScale) {
@@ -87,16 +99,22 @@ export class PackOpenScene extends Phaser.Scene {
         // Use the provided texture key for pack
         this.sprites.pack = this.add.sprite(0, 0, this.packId);
         this.sprites.pack.setOrigin(0, 0);
-        this.scaleSprite(this.sprites.pack, this.config.sprites.pack.heightScale);
+        this.scaleSprite(this.sprites.pack, PackOpenScene.PACKART_SCALE * this.config.GLOBAL_SCALE);
         
+        // Center pack in container
         const packWidth = this.sprites.pack.width * this.sprites.pack.scaleX;
         const packHeight = this.sprites.pack.height * this.sprites.pack.scaleY;
-        this.sprites.pack.x = -packWidth / 2;
-        this.sprites.pack.y = -packHeight / 2;
+        this.sprites.pack.x = (this.gameContainer.width - packWidth) / 2;
+        this.sprites.pack.y = (this.gameContainer.height - packHeight) / 2;
         
-        this.sprites.card = this.add.sprite(0, 0, '');
-        this.sprites.card.antialiasing = true;
-
+        // Setup card sprite
+        this.sprites.card = this.add.sprite(
+            this.gameContainer.width / 2,  // Center horizontally
+            this.gameContainer.height * 0.6 - PackOpenScene.CARD_MARGIN * this.config.GLOBAL_SCALE,  // Lower in container with margin
+            ''
+        );
+        this.sprites.card.setOrigin(0.5);  // Center anchor point
+        this.sprites.card.texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
         this.sprites.card.setVisible(false);
         
         this.gameContainer.add([this.sprites.pack, this.sprites.card]);
@@ -120,43 +138,6 @@ export class PackOpenScene extends Phaser.Scene {
         this.input.keyboard.on('keydown-LEFT', () => {
             if (this.state === PackState.INTERACTIVE) this.previousCard();
         });
-    }
-
-    handleResize(gameSize) {
-        // Recalculate container size
-        const { width: targetWidth, height: targetHeight } = this.config.aspectRatio;
-        const scale = this.config.containerScale;
-        
-        let containerWidth, containerHeight;
-        const windowRatio = gameSize.width / gameSize.height;
-        const targetRatio = targetWidth / targetHeight;
-        
-        if (windowRatio > targetRatio) {
-            containerHeight = gameSize.height * scale;
-            containerWidth = containerHeight * targetRatio;
-        } else {
-            containerWidth = gameSize.width * scale;
-            containerHeight = containerWidth / targetRatio;
-        }
-
-        this.gameContainer.setSize(containerWidth, containerHeight);
-        this.gameContainer.x = gameSize.width / 2;
-        this.gameContainer.y = gameSize.height / 2;
-        
-        // Update background scale
-        if (this.sprites.background) {
-            const scaleX = containerWidth / this.sprites.background.width;
-            const scaleY = containerHeight / this.sprites.background.height;
-            const scale = Math.max(scaleX, scaleY);
-            this.sprites.background.setScale(scale);
-        }
-        
-        if (this.sprites.pack?.visible) {
-            this.scaleSprite(this.sprites.pack, this.config.sprites.pack.heightScale);
-        }
-        if (this.sprites.card?.visible) {
-            this.scaleSprite(this.sprites.card, this.config.sprites.card.heightScale);
-        }
     }
 
     async handlePackOpen() {
@@ -187,6 +168,9 @@ export class PackOpenScene extends Phaser.Scene {
     async updateCardDisplay() {
         if (!this.cardData || this.currentCardIndex < 0) return;
 
+        await this.pause(100); // Add 100ms delay
+        this.plugins.get('SoundManager').playRandomizedSound('card1');
+
         const currentCard = this.cardData[this.currentCardIndex];
         const textureKey = currentCard.id;
 
@@ -195,10 +179,11 @@ export class PackOpenScene extends Phaser.Scene {
             return;
         }
 
+        // Update card counter text (removed "Card" prefix)
+        this.cardCounterText.setText(`${this.currentCardIndex + 1}/${this.cardData.length}`);
+
         this.sprites.card.setTexture(textureKey);
-        this.sprites.card.texture.setFilter(Phaser.Textures.LINEAR);
-        this.scaleSprite(this.sprites.card, this.config.sprites.card.heightScale);
-        
+        this.sprites.card.setScale(this.config.GLOBAL_SCALE);
         this.sprites.card.setVisible(true);
     }
 

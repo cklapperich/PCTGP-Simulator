@@ -1,22 +1,15 @@
-export const UIScenes = {
-    PACK_OPEN: 'PackOpenScene',
-};
-
 export const UIConfig = {
-    [UIScenes.PACK_OPEN]: {
-        aspectRatio: {
-            width: 10,
-            height: 9
-        },
-        containerScale: 0.9,
-        defaultBackground: 'playmat_mew',  // Default for testing, can be overridden
-        sprites: {
-            pack: {
-                heightScale: 0.84  // Pack takes up 84% of container height
-            },
-            card: {
-                heightScale: 0.7   // Card takes up 70% of container height
-            }
+    BASE_RESOLUTION: [800, 600],
+    DEFAULT_SCALE: 1.0,
+    SCALE_OPTIONS: [1.0, 1.5, 2.0, 2.5, 3.0],
+    GLOBAL_SCALE: 1.0,
+    icons: {
+        energy: {
+            key: 'energy-circle',
+            path: '/icons/EnergyCircle.png'
         }
+    },
+    fonts: {
+        pokemon: 'pokemon-font'  // Font family name defined in CSS
     }
 };

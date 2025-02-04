@@ -7,11 +7,9 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "build:ts": "tsc",
-    "test": "npm run build:ts && node dist/tests/game_actions_test.js",
+    "test:gameactions": "npm run build:ts && node dist/tests/game_actions_test.js",
     "test:pack": "node src/tests/pack_pull_test.js",
-    "test:rules": "node src/tests/rules_engine_test.js",
-    "start": "node server.js"
+    "test:rules": "node src/tests/rules_engine_test.js"
   },
   "keywords": [
     "pokemon",

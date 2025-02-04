@@ -1,55 +1,9 @@
+#!/usr/bin/env node
 import { load } from 'cheerio';
 import axios from 'axios';
 import fs from 'fs/promises';
 import path from 'path';
-
-// Utility function for rate limiting
-const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
-
-// Convert energy symbols to our format
-const energyMap = {
-    'G': 'grass',
-    'R': 'fire',
-    'W': 'water',
-    'L': 'lightning',
-    'P': 'psychic',
-    'F': 'fighting',
-    'D': 'darkness',
-    'M': 'metal',
-    'Y': 'fairy',
-    'N': 'dragon',
-    'C': 'colorless'
-};
-
-// Parse rarity symbols to our format
-function parseRarity(rarityText) {
-    rarityText = rarityText.trim();
-    if (rarityText === 'Crown Rare') return 'crown';
-    
-    const diamondCount = (rarityText.match(/◊/g) || []).length;
-    if (diamondCount > 0) return `diamond_${diamondCount}`;
-    
-    const starCount = (rarityText.match(/☆/g) || []).length;
-    if (starCount > 0) return `${starCount}_star`;
-    
-    return 'unknown';
-}
-
-// Parse attack costs from ptcg-symbol spans
-function parseAttackCost(costText) {
-    return costText ? costText.split('').map(symbol => energyMap[symbol] || 'colorless') : [];
-}
-
-// Parse attack damage amount - just get the last number in the string
-function parseAttackDamage(name) {
-    const numbers = name.match(/\d+/g);
-    return numbers ? parseInt(numbers[numbers.length - 1]) : 0;
-}
-
-// Clean attack name by removing leading "0" and newlines
-function cleanAttackName(name) {
-    return name.replace(/^0\s*/, '').replace(/\n/g, ' ').replace(/\s+/g, ' ').trim();
-}
+import { Type, CardType, Stage, delay, parseRarity, parseAttackCost, parseAttackDamage, cleanAttackName } from './utilities.js';
 
 // Extract card data from HTML
 function parseCardData($, cardNumber, setId) {
@@ -83,15 +37,15 @@ function parseCardData($, cardNumber, setId) {
     // Get card category and stage/subcategory
     const typeText = $('.card-text-type').text().trim();
     if (typeText.includes('Trainer')) {
-        cardData.category = 'trainer';
+        cardData.category = CardType.TRAINER;
         
         // Extract subcategory (Tool, Item, Supporter)
         if (typeText.includes('Tool')) {
-            cardData.subcategory = 'tool';
+            cardData.subcategory = CardType.TOOL;
         } else if (typeText.includes('Item')) {
-            cardData.subcategory = 'item';
+            cardData.subcategory = CardType.TRAINER;
         } else if (typeText.includes('Supporter')) {
-            cardData.subcategory = 'supporter';
+            cardData.subcategory = CardType.SUPPORTER;
         }
         
         // Get trainer card text
@@ -107,17 +61,17 @@ function parseCardData($, cardNumber, setId) {
         // Add empty effect object for trainer cards
         cardData.effect = {};
     } else {
-        cardData.category = 'pokemon';
+        cardData.category = CardType.POKEMON;
         // Add attacks array for Pokemon cards
         cardData.attacks = [];
         
         // Extract stage info
         if (typeText.includes('Basic')) {
-            cardData.stage = 'basic';
+            cardData.stage = Stage.BASIC;
         } else {
             const stageMatch = typeText.match(/Stage (\d+)/);
             if (stageMatch) {
-                cardData.stage = `stage ${stageMatch[1]}`;
+                cardData.stage = `stage_${stageMatch[1]}`;
             }
         }
         
@@ -134,7 +88,7 @@ function parseCardData($, cardNumber, setId) {
     }
 
     // Extract weakness, resistance, and retreat cost for Pokemon
-    if (cardData.category === 'pokemon') {
+    if (cardData.category === CardType.POKEMON) {
         const wrrText = $('.card-text-wrr').first().text();
         const weaknessMatch = wrrText.match(/Weakness: ([A-Za-z]+)/);
         if (weaknessMatch) {
@@ -174,7 +128,7 @@ function parseCardData($, cardNumber, setId) {
     }
 
     // Parse attacks for Pokemon cards
-    if (cardData.category === 'pokemon') {
+    if (cardData.category === CardType.POKEMON) {
         $('.card-text-attack').each((i, elem) => {
             const $attack = $(elem);
             const attackInfo = $attack.find('.card-text-attack-info').text().trim();
@@ -206,22 +160,6 @@ function parseCardData($, cardNumber, setId) {
     return cardData;
 }
 
-// Download and save card image
-async function downloadImage(imageUrl, setId, number) {
-    try {
-        const response = await axios.get(imageUrl, { responseType: 'arraybuffer' });
-        const imagePath = path.join(process.cwd(), 'assets', 'cardart', setId);
-        await fs.mkdir(imagePath, { recursive: true });
-        const paddedNumber = number.toString().padStart(3, '0');
-        await fs.writeFile(
-            path.join(imagePath, `${setId}-${paddedNumber}.png`),
-            response.data
-        );
-    } catch (error) {
-        console.error(`Error downloading image for ${setId}-${number}:`, error.message);
-    }
-}
-
 // Save card data as JSON
 async function saveCardJson(cardData, setId, number) {
     const jsonPath = path.join(process.cwd(), 'assets', 'cards', setId);
@@ -243,12 +181,6 @@ async function scrapeCard(setId, number, baseUrl = 'https://pocket.limitlesstcg.
 
         // Get card data
         const cardData = parseCardData($, number, setId);
-
-        // Get image URL and download
-        const imageUrl = $('.card-image img').attr('src');
-        if (imageUrl) {
-            await downloadImage(imageUrl, setId, number);
-        }
 
         // Save card data
         await saveCardJson(cardData, setId, number);
@@ -273,8 +205,12 @@ async function scrapeSet(setId, maxNumber, baseUrl = 'https://pocket.limitlesstc
     console.log(`Finished scraping set ${setId}`);
 }
 
-// Export functions for use
-export {
-    scrapeSet,
-    scrapeCard
-};
+// Handle command line arguments
+const [,, setId, maxNumber, baseUrl] = process.argv;
+
+if (!setId || !maxNumber) {
+    console.error('Usage: node scrape_cards.js <setId> <maxNumber> [baseUrl]');
+    process.exit(1);
+}
+
+scrapeSet(setId, parseInt(maxNumber), baseUrl).catch(console.error);

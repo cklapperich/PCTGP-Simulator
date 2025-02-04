@@ -1,3 +1,5 @@
+import { PackOpenScene } from './phaser_pack_open.js';
+
 const ANIMATION_CONFIG = {
     FLASH_DURATION: 200,     // Flash effect duration
     INITIAL_PAUSE: 300,      // Pause after flash
@@ -16,10 +18,13 @@ class PackAnimations {
 
     createFlashEffect() {
         return new Promise(resolve => {
+            const packWidth = this.scene.sprites.pack.width * this.scene.sprites.pack.scaleX;
+            const packHeight = this.scene.sprites.pack.height * this.scene.sprites.pack.scaleY;
             const flash = this.scene.add.rectangle(
-                0, 0,
-                this.scene.sprites.pack.width * this.scene.sprites.pack.scaleX,
-                this.scene.sprites.pack.height * this.scene.sprites.pack.scaleY,
+                this.scene.sprites.pack.x + packWidth / 2,
+                this.scene.sprites.pack.y + packHeight / 2,
+                packWidth,
+                packHeight,
                 0xffffff
             );
             flash.setOrigin(0.5);
@@ -39,8 +44,10 @@ class PackAnimations {
     }
 
     scaleSprite(sprite) {
+        if (!sprite) return;
+        
         const availableHeight = this.gameContainer.height;
-        const scale = (availableHeight * this.scene.config.sprites.pack.heightScale) / sprite.height;
+        const scale = (availableHeight * PackOpenScene.PACKART_SCALE * this.scene.config.GLOBAL_SCALE) / sprite.height;
         sprite.setScale(scale);
     }
 
@@ -53,7 +60,7 @@ class PackAnimations {
         
         const packX = this.scene.sprites.pack.x;
         const packY = this.scene.sprites.pack.y;
-        const gapSize = this.scene.scale.height * ANIMATION_CONFIG.SPLIT_DISTANCE;
+        const gapSize = this.gameContainer.height * ANIMATION_CONFIG.SPLIT_DISTANCE;
         
         // Use packId directly as the texture key
         this.scene.sprites.packBottom = this.scene.add.sprite(packX, packY, this.scene.packId);

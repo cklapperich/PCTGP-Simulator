@@ -11,7 +11,7 @@ export default defineConfig({
     alias: {
       '@': resolve(__dirname, 'src'),
       '@assets': resolve(__dirname, 'assets'),
-      '@world': resolve(__dirname, 'src/views/WorldEngine'),
+      '@world': resolve(__dirname, 'src/scenes/world'),
       'phaser': resolve(__dirname, 'node_modules/phaser/dist/phaser.js')
     }
   },
@@ -24,7 +24,7 @@ export default defineConfig({
     copyPublicDir: true,
     rollupOptions: {
       input: {
-        main: resolve(__dirname, 'src/views/pack_open/test_pack_open.html')
+        main: resolve(__dirname, 'src/scenes/pack_open/test_pack_open.html')
       }
     }
   },

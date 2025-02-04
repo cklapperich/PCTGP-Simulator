@@ -61,7 +61,23 @@ export enum Type {
     DARK = "dark",
     DRAGON = "dragon",
     METAL = "metal",
+    FAIRY = "fairy",
     NONE = "none"
+}
+
+// Maps single-letter energy symbols to Type values
+export enum EnergySymbol {
+    G = Type.GRASS,
+    R = Type.FIRE,
+    W = Type.WATER,
+    L = Type.LIGHTNING,
+    P = Type.PSYCHIC,
+    F = Type.FIGHTING,
+    D = Type.DARK,
+    M = Type.METAL,
+    Y = Type.FAIRY,
+    N = Type.DRAGON,
+    C = Type.COLORLESS
 }
 
 export enum Rarity {
