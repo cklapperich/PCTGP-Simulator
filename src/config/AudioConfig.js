@@ -4,7 +4,8 @@ export const audioConfig = {
         card2: '/sounds/sfx/card2.wav',
         win: '/sounds/sfx/win.mp3',
         lose: '/sounds/sfx/lose.mp3',
-        get_pack: '/sounds/sfx/get_pack.mp3'
+        get_pack: '/sounds/sfx/get_pack.mp3',
+        plink:'/sounds/sfx/plink.wav',
     },
     bgm: {}  // Empty for now
 };
