@@ -1,84 +1,28 @@
-import { Type, ZoneName, BENCH_ZONES, Stage, EffectType} from './enums.js';
-import { GameEvent, GameEventType } from './event_models.js';
-import { GameState, Card, Zone } from './models.js';
-import { checkStateBasedActions } from './check_statebased_actions.js';
-import {createEffect} from './effect_manager.js';
-import { EffectSource } from './enums.js';
-
-// export class Effect {
-//     id: string;
-//     type: string;
-//     source: Card;
-//     sourceType: EffectSource;
-//     target: any | null;
-//     duration: number;
-//     priority: number;
-//     modifier: ((value: number, gameState: GameState) => number) | null;
-//     condition: ((gameState: GameState) => boolean) | null;
-//     effectType?: string;
-// }
-// export enum EffectSource {
-//     ATTACK = 'ATTACK',
-//     ABILITY = 'ABILITY',
-//     TRAINER = 'TRAINER'
-// }
-/**
- * Data structure containing all possible fields for any input response.
- * Fields are optional and their usage depends on the input type.
- */
-// export class InputData implements InputDataProps {
-//     handIndex: number | null = null;
-//     sourceZone: string | null = null;
-//     targetZone: string | null = null;
-//     deckIndex: number | null = null;
-//     attackIndex: number | null = null;
-//     attackInfo: any | null = null;  // TODO: Define attack info type
-
-//     constructor(props: Partial<InputDataProps> = {}) {
-//         Object.assign(this, props);
-//     }
-// }
-
-// export class PlayerInput {
-//     inputType: string | undefined;
-//     data: InputData;
-//     playerIndex: number | undefined;
-
-//     constructor({
-//         inputType = undefined,
-//         data = new InputData(),
-//         playerIndex = undefined
-//     }: PlayerInputProps = {}) {
-//         this.inputType = inputType;
-//         this.data = data instanceof InputData ? data : new InputData(data);
-//         this.playerIndex = playerIndex;
-//     }
-// }
+import { Type, ZoneName, BENCH_ZONES, Stage, EffectTiming } from './enums';
+import { GameEvent, GameEventType } from './event_models';
+import { GameState, Card, Zone } from './models';
+import { checkStateBasedActions } from './check_statebased_actions';
+import { Effect, EffectConfig } from './effect_types';
 
 export function applyEffect(
     gameState: GameState, 
-    sourceType: EffectSource, 
-    sourceCard: Card, 
-    effect_data: any, 
-    eventHandler: GameEvent[]
+    effect: Effect
 ): void {
-    // Use the createEffect function from effect_manager to properly create the effect
-    // This will use the registered effect creator for the given type
-    const effect = createEffect(effect_data);
-    
-    // Set the source-related properties that aren't part of the effect data
-    effect.source = sourceCard;
-    effect.sourceType = sourceType;
-
     // If the effect has an on_apply function, call it
-    if gameState.effectManager.query("CAN_APPLY_EFFECT", gameState, effect) {
-        effect.run(gameState, sourceCard, effect_data.target);
+    if (effect.duration > 0) {
+        gameState.effectManager.addEffect(effect);
     }
-    if (effect.duration>0){
-        gameState.addEffect(gameState, effect);
-    }
-
-
+    
+    // Run the effect
+    const context = {
+        sourcePlayerIndex: gameState.currentPlayerIndex,
+        targetPlayerIndex: 1 - gameState.currentPlayerIndex,
+        sourceZoneName: ZoneName.ACTIVE, // Default to active zone for now
+        targetZoneName: ZoneName.ACTIVE, // Default to active zone for now
+        sourceCard: effect.source,
+        targetCard: effect.target
+    };
+    effect.run(gameState, context);
 }
 
 export function applyDamageCalculation(
@@ -86,26 +30,38 @@ export function applyDamageCalculation(
     targetZone: Zone,
     damage: number,
     damageType: Type,
-    eventHandler: GameEvent[],
     options = { applyWeakness: true, ignoreTargetEffects: false }
 ): number {
     // Apply weakness if applicable
     let finalDamage = damage;
-    if (options.applyWeakness && targetZone.getPokemon()?.weakness === damageType) {
-        finalDamage += 20;
+    const targetPokemon = targetZone.getPokemon();
+    if (options.applyWeakness && targetPokemon?.weakness === damageType && damageType !== Type.NONE) {
+        finalDamage += 20; // Add 20 damage for weakness
     }
 
     // Get damage modifications from effects if not ignored
     if (!options.ignoreTargetEffects) {
-        // Get all active damage modifying effects
-        const damageEffects = gameState.effectManager.query("DAMAGE_MODIFICATION",
+        const context = {
+            sourcePlayerIndex: gameState.currentPlayerIndex,
+            targetPlayerIndex: 1 - gameState.currentPlayerIndex,
+            sourceZoneName: ZoneName.ACTIVE,
+            targetZoneName: ZoneName.ACTIVE,
+            damage: finalDamage,
+            damageType,
+            targetCard: targetZone.getPokemon()
+        };
+        
+        // Query damage modification effects
+        const modifications = gameState.effectManager.query(
+            EffectTiming.QUERY_DAMAGE,
             gameState,
+            context
         );
-
-        // Apply each effect's modifier in order
-        for (const effect of damageEffects) {
-            if (effect.modifier && gameState.effectManager.query("CAN_APPLY_EFFECT", gameState, effect)) {
-                finalDamage = effect.modifier(finalDamage, gameState);
+        
+        // Apply modifications
+        for (const modification of modifications) {
+            if (typeof modification === 'number') {
+                finalDamage = modification;
             }
         }
     }
@@ -114,17 +70,28 @@ export function applyDamageCalculation(
     const actualDamage = applyDamageCounters(
         gameState,
         targetZone,
-        finalDamage,
-        eventHandler
+        finalDamage
     );
+    
+    // Emit damage event
+    if (actualDamage > 0) {
+        gameState.addUIEvent(new GameEvent({
+            type: GameEventType.DAMAGE,
+            data: {
+                target: targetZone.getPokemon(),
+                amount: actualDamage,
+                damageType
+            }
+        }));
+    }
+    
     return actualDamage;
 }
 
 export function applyDamageCounters(
     gameState: GameState,
     targetZone: Zone,
-    amount: number,
-    eventHandler: GameEvent[],
+    amount: number
 ): number {
     const oldDamage = targetZone.damage || 0;
     
@@ -138,29 +105,13 @@ export function applyDamageCounters(
     
     // Update zone's damage
     targetZone.damage = newDamage;
-
-    // Emit damage event with actual amount applied
-    if (actualDamage !== 0) {
-        // Get and apply damage reaction effects
-        const reactionEffects = gameState.effectManager.getActiveEffects(
-            gameState,
-            EffectType.DAMAGE_REACTION
-        );
-
-        for (const effect of reactionEffects) {
-            if (effect.modifier && gameState.effectManager.canApplyEffect(gameState, effect)) {
-                effect.modifier(actualDamage, gameState);
-            }
-        }
-    }
     
     return actualDamage;
 }
 
 export function drawInitialHand(
     gameState: GameState,
-    player_index: number,
-    eventHandler: GameEvent[]
+    player_index: number
 ): Card[] {
     const player = gameState.players[player_index];
     const deck = player.deck;
@@ -182,7 +133,7 @@ export function drawInitialHand(
     player.addToHand(basicPokemon);
 
     // Emit event for the basic Pokemon draw
-    eventHandler.push(new GameEvent({
+    gameState.addUIEvent(new GameEvent({
         type: GameEventType.CARD_MOVE,
         data: {
             card: basicPokemon,
@@ -195,7 +146,7 @@ export function drawInitialHand(
     // Draw 4 more cards
     const drawnCards = [basicPokemon];
     for (let i = 0; i < 4; i++) {
-        const card = drawCard(gameState, player_index, eventHandler);
+        const card = drawCard(gameState, player_index);
         drawnCards.push(card);
     }
 
@@ -204,8 +155,7 @@ export function drawInitialHand(
 
 export function drawCard(
     gameState: GameState,
-    player_index: number,
-    eventHandler: GameEvent[]
+    player_index: number
 ): Card {
     const player = gameState.players[player_index];
     
@@ -213,7 +163,7 @@ export function drawCard(
     const card = player.drawCard();
     
     // Emit game state event
-    eventHandler.push(new GameEvent({
+    gameState.addUIEvent(new GameEvent({
         type: GameEventType.CARD_MOVE,
         data: {
             card: card,
@@ -227,14 +177,13 @@ export function drawCard(
 
 export function shuffleDeck(
     gameState: GameState,
-    player_index: number,
-    eventHandler: GameEvent[]
+    player_index: number
 ): void {
     const player = gameState.players[player_index];
     player.shuffleDeck();
     
     // Emit game state event
-    eventHandler.push(new GameEvent({
+    gameState.addUIEvent(new GameEvent({
         type: GameEventType.SHUFFLE_DECK,
         data: {
             playerIndex: player_index,
@@ -247,8 +196,7 @@ export function playPokemonCard(
     gameState: GameState,
     playerIndex: number,
     handIndex: number,
-    targetZoneName: ZoneName,
-    eventHandler: GameEvent[]
+    targetZoneName: ZoneName
 ): void {
     const player = gameState.players[playerIndex];
     
@@ -263,7 +211,7 @@ export function playPokemonCard(
     player.addCardToZone(card, targetZoneName);
 
     // Emit game state event
-    eventHandler.push(new GameEvent({
+    gameState.addUIEvent(new GameEvent({
         type: GameEventType.CARD_MOVE,
         data: {
             card: card,
@@ -275,15 +223,14 @@ export function playPokemonCard(
 }
 
 export function endTurn(
-    gameState: GameState,
-    eventHandler: GameEvent[]
+    gameState: GameState
 ): void {
     const nextPlayerIndex = 1 - gameState.currentPlayerIndex;
     const currentPlayer = gameState.players[gameState.currentPlayerIndex];
     const nextPlayer = gameState.players[nextPlayerIndex];
 
     // Emit turn end event
-    eventHandler.push(new GameEvent({
+    gameState.addUIEvent(new GameEvent({
         type: GameEventType.TURN_END,
         data: {
             playerIndex: gameState.currentPlayerIndex,
@@ -298,7 +245,7 @@ export function endTurn(
     gameState.turn++;
 
     // Emit turn start event
-    eventHandler.push(new GameEvent({
+    gameState.addUIEvent(new GameEvent({
         type: GameEventType.TURN_START,
         data: {
             playerIndex: nextPlayerIndex,
@@ -326,19 +273,18 @@ export function endTurn(
     gameState.effectManager.tickdown(gameState);
 
     // end of turn stuff
-    checkStateBasedActions(gameState, eventHandler);
+    checkStateBasedActions(gameState);
 }
 
 export function startFirstTurn(
     playerIndex: number,
-    gameState: GameState,
-    eventHandler: GameEvent[]
+    gameState: GameState
 ): void {
     gameState.currentPlayerIndex = playerIndex;
     gameState.turn++;
     
     // Emit turn start event for the first turn
-    eventHandler.push(new GameEvent({
+    gameState.addUIEvent(new GameEvent({
         type: GameEventType.TURN_START,
         data: {
             playerIndex: playerIndex,

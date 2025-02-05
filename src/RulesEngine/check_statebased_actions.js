@@ -1,13 +1,12 @@
 import { Phase, ZoneName, BENCH_ZONES } from './enums.js';
 import { GameEvent, GameEventType, GameEventData } from './event_models.js';
-import { InputRequestEvent, PlayerInput,  SelectReason, InputData } from './input_event_models.js';
+import { InputRequestEvent, PlayerInput, SelectReason, InputData } from './input_event_models.js';
 
 /**
  * Checks and handles state-based actions
  * @param {GameState} gameState - Current game state
- * @param {eventHandler} eventHandler - Bus to emit events on
  */
-export function checkStateBasedActions(gameState, eventHandler) {
+export function checkStateBasedActions(gameState) {
     // Don't check during setup phases
     if (gameState.phase === Phase.SETUP_PLACE_ACTIVE || 
         gameState.phase === Phase.SETUP_PLACE_BENCH) {
@@ -24,7 +23,7 @@ export function checkStateBasedActions(gameState, eventHandler) {
         
         if (activePokemon && activeZone.isKnockedOut()) {
             // Emit knockout event first
-            eventHandler.put(new GameEvent({
+            gameState.addUIEvent(new GameEvent({
                 type: GameEventType.KNOCKOUT,
                 data: {
                     playerIndex: gameState.players.indexOf(player)
@@ -32,11 +31,14 @@ export function checkStateBasedActions(gameState, eventHandler) {
             }));
 
             // Move to discard and emit card move event
-            eventHandler.put(GameEvent.createCardMove({
-                card: activePokemon,
-                playerIndex: gameState.players.indexOf(player),
-                sourceZone: ZoneName.ACTIVE,
-                targetZone: ZoneName.DISCARD
+            gameState.addUIEvent(new GameEvent({
+                type: GameEventType.CARD_MOVE,
+                data: {
+                    card: activePokemon,
+                    playerIndex: gameState.players.indexOf(player),
+                    sourceZone: ZoneName.ACTIVE,
+                    targetZone: ZoneName.DISCARD
+                }
             }));
 
             // Award point to opponent
@@ -55,7 +57,7 @@ export function checkStateBasedActions(gameState, eventHandler) {
             const pokemon = zone.getPokemon();
             if (pokemon && zone.isKnockedOut()) {
                 // Emit knockout event first
-                eventHandler.put(new GameEvent({
+                gameState.addUIEvent(new GameEvent({
                     type: GameEventType.KNOCKOUT,
                     data: {
                         playerIndex: gameState.players.indexOf(player),
@@ -64,11 +66,14 @@ export function checkStateBasedActions(gameState, eventHandler) {
                 }));
 
                 // Move to discard and emit card move event
-                eventHandler.put(GameEvent.createCardMove({
-                    card: pokemon,
-                    playerIndex: gameState.players.indexOf(player),
-                    sourceZone: benchZone,
-                    targetZone: ZoneName.DISCARD
+                gameState.addUIEvent(new GameEvent({
+                    type: GameEventType.CARD_MOVE,
+                    data: {
+                        card: pokemon,
+                        playerIndex: gameState.players.indexOf(player),
+                        sourceZone: benchZone,
+                        targetZone: ZoneName.DISCARD
+                    }
                 }));
 
                 // Award point to opponent
@@ -111,7 +116,7 @@ export function checkStateBasedActions(gameState, eventHandler) {
                     }))
                 });
 
-                eventHandler.put(new GameEvent({
+                gameState.addUIEvent(new GameEvent({
                     type: GameEventType.INPUT_REQUEST,
                     data: {
                         playerIndex: gameState.players.indexOf(player),
@@ -120,7 +125,7 @@ export function checkStateBasedActions(gameState, eventHandler) {
                 }));
             } else {
                 // Game over - no Pokemon left
-                eventHandler.put(new GameEvent({
+                gameState.addUIEvent(new GameEvent({
                     type: GameEventType.GAME_END,
                     data: {
                         winner: player === currentPlayer ? opponentPlayer : currentPlayer,
@@ -134,7 +139,7 @@ export function checkStateBasedActions(gameState, eventHandler) {
     // Check win conditions
     [currentPlayer, opponentPlayer].forEach(player => {
         if (player.points >= 3) {
-            eventHandler.put(new GameEvent({
+            gameState.addUIEvent(new GameEvent({
                 type: GameEventType.GAME_END,
                 data: {
                     winner: player,
@@ -145,7 +150,7 @@ export function checkStateBasedActions(gameState, eventHandler) {
 
         // Check deck out
         if (player.deck.cards.length === 0) {
-            eventHandler.put(new GameEvent({
+            gameState.addUIEvent(new GameEvent({
                 type: GameEventType.GAME_END,
                 data: {
                     winner: player === currentPlayer ? opponentPlayer : currentPlayer,

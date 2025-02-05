@@ -1,8 +1,7 @@
-// effect_manager.ts
 import { GameState } from './models';
 import { EffectSourceType, EffectTiming, DURATION } from './enums';
 import { GameContext } from './types';
-
+import { Effect, effectRegistry } from './effect_types';
 
 /**
  * Effect system for Pokemon TCG.
@@ -21,59 +20,32 @@ import { GameContext } from './types';
  */
 
 /**
- * Represents an ongoing effect in the game.
- * Effects can either:
- * 1. Return values when queried (QUERY_ timings)
- * 2. Perform game actions (ON_ timings)
- * 
- * Effects also have two cleanup behaviors:
- * 1. Continuous effects (requiresSource=true): Removed when source leaves play
- * 2. Applied effects (requiresSource=false): Last until duration expires
+ * Create a new effect instance of the specified type
  */
-export class Effect {
-    id: string;
-    source: any;  // Card/ability that created the effect
-    sourceType: EffectSourceType;  // ABILITY/ATTACK/TRAINER
-    target: any | null;  // What the effect is attached to/affecting
-    duration: number;  // How long effect lasts (see DURATION enum)
-    timing: EffectTiming;  // When effect runs
-    run: (gameState: GameState, context: GameContext) => any;
-    requiresSource: boolean;  // Whether effect is removed when source leaves play
-
-    /**
-     * @param props.target Can mean two things:
-     * 1. Target of an attack/trainer (for one-time effects)
-     * 2. What the effect is attached to (for ongoing effects)
-     * 
-     * @param props.duration How long effect lasts:
-     * - PERMANENT (999): Lasts until explicitly removed
-     * - UNTIL_END_OF_TURN (0): Removed at end of turn
-     * - UNTIL_NEXT_TURN (1): Removed at end of next turn
-     * 
-     * @param props.requiresSource Whether effect depends on source:
-     * - true: Effect removed when source leaves play (e.g. abilities)
-     * - false: Effect lasts until duration expires (e.g. status effects)
-     * Defaults to true for abilities, false otherwise
-     */
-    constructor(props: {
-        id: string,
-        source: any,
-        sourceType: EffectSourceType,
-        timing: EffectTiming,
-        run: (gameState: GameState, context: GameContext) => any,
-        target?: any,
-        duration?: number,
-        requiresSource?: boolean
-    }) {
-        this.id = props.id;
-        this.source = props.source;
-        this.sourceType = props.sourceType;
-        this.timing = props.timing;
-        this.run = props.run;
-        this.target = props.target || null;
-        this.duration = props.duration || DURATION.PERMANENT;
-        this.requiresSource = props.requiresSource ?? (props.sourceType === EffectSourceType.ABILITY);
+export function createEffect(
+    effectType: string,
+    source: any,
+    sourceType: EffectSourceType,
+    target: any,
+    data: any = {}
+): Effect {
+    const config = effectRegistry[effectType];
+    if (!config) {
+        throw new Error(`Unknown effect type: ${effectType}`);
     }
+
+    const instance = config.create(data);
+    
+    return {
+        id: crypto.randomUUID(),
+        source,
+        sourceType,
+        target,
+        timing: config.timing,
+        duration: config.duration,
+        requiresSource: config.requiresSource,
+        run: instance.run
+    };
 }
 
 /**
@@ -176,57 +148,4 @@ export class EffectManager {
             }
         }
     }
-}
-
-// Type definitions
-type EffectConfig = {
-    timing: EffectTiming;
-    duration: number;
-    requiresSource: boolean;
-    create: (data: any) => {
-        run: (gameState: GameState, context: GameContext) => any;
-    };
-};
-
-type EffectRegistry = {
-    [key: string]: EffectConfig;
-};
-
-// Global registry of effect types
-const effectRegistry: EffectRegistry = {};
-
-/**
- * Register a new effect type with its configuration
- */
-export function registerEffect(effectType: string, config: EffectConfig): void {
-    if (effectRegistry[effectType]) {
-        throw new Error(`Effect type ${effectType} is already registered`);
-    }
-    effectRegistry[effectType] = config;
-}
-
-/**
- * Create a new effect instance of the specified type
- */
-export function createEffect(effectType: string, source, sourceType, target): Effect {
-    const config = effectRegistry[effectType];
-    if (!config) {
-        throw new Error(`Unknown effect type: ${effectType}`);
-    }
-
-    // Create the effect instance using the registered configuration
-    const instance = config.create(data);
-
-    // Return a new Effect that combines the fixed config with the instance's run function
-    // and includes required source/sourceType
-    return new Effect({
-        id: crypto.randomUUID(),
-        source: data.source,
-        sourceType: data.sourceType,
-        target: data.target,
-        timing: config.timing,
-        duration: config.duration,
-        requiresSource: config.requiresSource,
-        run: instance.run
-    });
 }

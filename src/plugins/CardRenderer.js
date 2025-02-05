@@ -25,7 +25,7 @@ class CardRenderer {
         const gameWidth = this.scene.game.config.width;
         const gameHeight = this.scene.game.config.height;
         
-        // Create temporary card to get dimensions
+        // Create temporary card to ge tdimensions
         const originalCard = this.scene.add.image(0, 0, cardKey);
         originalCard.setVisible(false);
         

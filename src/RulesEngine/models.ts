@@ -1,4 +1,4 @@
-import { Type, Rarity, Phase, ZoneName, Stage,CardType} from './enums';
+import { Type, Rarity, Phase, ZoneName, Stage, CardType} from './enums';
 import type { 
     Attack, 
     CardProps, 
@@ -6,7 +6,9 @@ import type {
     PlayerStateProps,
 } from './types';
 import { EffectManager } from './effect_manager.js';
-import {PlayerInput} from './input_event_models.js'
+import { PlayerInput } from './input_event_models.js';
+import { GameEvent } from './event_models.js';
+
 /**
  * Represents the current state of the game
  */
@@ -18,6 +20,8 @@ export class GameState {
     effectManager: EffectManager;
     lastinput: PlayerInput;
     activeEffects: any[]; // TODO: Define effect type? could use effect_manager.ts definition, except, circular import problem!
+    uiEvents: GameEvent[];  // Events for UI updates
+
     constructor(player1: PlayerState, player2: PlayerState) {
         this.phase = Phase.DEAL_CARDS;
         this.players = {
@@ -27,7 +31,8 @@ export class GameState {
         this.turn = 0;
         this.currentPlayerIndex = -1;
         this.effectManager = new EffectManager();
-        this.lastinput=null;
+        this.lastinput = null;
+        this.uiEvents = [];
 
         // Initialize card ownership for both players
         player1.deck.cards.forEach(card => {
@@ -44,6 +49,14 @@ export class GameState {
 
     getOpponentPlayer(): PlayerState {
         return this.players[1 - this.currentPlayerIndex];
+    }
+
+    addUIEvent(event: GameEvent): void {
+        this.uiEvents.push(event);
+    }
+
+    clearUIEvents(): void {
+        this.uiEvents = [];
     }
 }
 
